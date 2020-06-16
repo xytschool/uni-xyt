@@ -71,5 +71,10 @@
     },
     "mp-qq" : {
         "usingComponents" : true
-    }
+	},
+	"h5" :{
+		"publicPath": "http://data.xytschool.com",
+		"router" : {
+        }
+	}
 }

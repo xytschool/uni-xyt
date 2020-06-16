@@ -1,9 +1,36 @@
 {
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/index/index",
+        {
+			"path": "pages/ticket/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "门票列表"
+			}
+		},
+        {
+			"path": "pages/notify/detail",
+			"style": {
+				"navigationBarTitleText": "通知详情"
+			}
+		},
+		{
+			"path": "pages/ticket/index",
+			"style": {
+				"navigationBarTitleText": "门票列表"
+			}
+		},
+		{
+			"path": "pages/comment/index",
+			"style": {
+				"navigationBarTitleText": "评论列表"
+			}
+		},
+		{
+			"path": "pages/comment/reply",
+			"style": {
+				"navigationBarTitleText": "评论回复"
 			}
 		}
 	],
