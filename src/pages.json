@@ -24,7 +24,8 @@
 		{
 			"path": "pages/comment/index",
 			"style": {
-				"navigationBarTitleText": "评论列表"
+				"navigationBarTitleText": "评论列表",
+			    "enablePullDownRefresh" : true
 			}
 		},
 		{
