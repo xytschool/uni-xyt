@@ -3,24 +3,16 @@
 var host = ""
 //var host = "https://mobile.xytschool.com"
 var baseUrl = ""
-
-function getComId() {
-    let com_id_storge = wx.getStorageSync('com_id');
-    if (com_id_storge) {
-        return com_id_storge;
-    }
-    return 0
-}
+import {getAuthToken, getComId} from "./utils"
 
 function request(method, url, query, is_raw) {
-    query.com_id = 14
     var com_id = getComId()
-    if (com_id) {
+    if (!query.com_id&&com_id) {
         query.com_id = com_id
     }
     //query.com_id = 9
     return new Promise((resolve, reject) => {
-        var token = wx.getStorageSync('token')
+        var token = getAuthToken()
         var fullUrl = ""
         if (url.startsWith("http")) {
             fullUrl = url

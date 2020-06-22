@@ -7,7 +7,10 @@ module.exports = {
     async  getNotifyList(){
         return get(host + '/getNotifyList')
     },
-     async  getNotifyDetail(params){
+    async  getNotifyDetail(params){
         return get(host + '/getNotifyDetail',params)
     },
+    async applyPartTimer(){
+        return get(host + '/getNotifyDetail',params)
+    }
 }

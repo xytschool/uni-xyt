@@ -33,7 +33,15 @@
 			"style": {
 				"navigationBarTitleText": "评论回复"
 			}
+		},
+		{
+			"path": "pages/apply/index",
+			"style": {
+				"navigationStyle":"custom",
+				"navigationBarTitleText": "申请合作伙伴"
+			}
 		}
+
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
