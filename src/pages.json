@@ -1,52 +1,262 @@
 {
-	"easycom": {
-		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
-	},
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-        {
-			"path": "pages/ticket/index",
-			"style": {
-				"navigationBarTitleText": "门票列表"
-			}
-		},
-        {
-			"path": "pages/notify/detail",
-			"style": {
-				"navigationBarTitleText": "通知详情"
-			}
-		},
-		{
-			"path": "pages/ticket/index",
-			"style": {
-				"navigationBarTitleText": "门票列表"
-			}
-		},
-		{
-			"path": "pages/comment/index",
-			"style": {
-				"navigationBarTitleText": "评论列表",
-			    "enablePullDownRefresh" : true
-			}
-		},
-		{
-			"path": "pages/comment/reply",
-			"style": {
-				"navigationBarTitleText": "评论回复"
-			}
-		},
-		{
-			"path": "pages/apply/index",
-			"style": {
-				"navigationStyle":"custom",
-				"navigationBarTitleText": "申请合作伙伴"
-			}
-		}
+  "easycom": {
+    "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+  },
+  "pages": [
+    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/index/index",
+      "style": {
+        // #ifdef MP
+        "navigationBarTitleText": "Dloud商城",
+        //"navigationStyle": "custom",
+        // #endif
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent",
+            "searchInput": {
+              "backgroundColor": "rgba(231, 231, 231,.7)",
+              "borderRadius": "16px",
+              "placeholder": "请输入地址 如：大钟寺",
+              "disabled": true,
+              "placeholderColor": "#606266"
+            },
+            "buttons": [
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue60d",
+                "fontSize": "26",
+                "color": "#303133",
+                "float": "left",
+                "background": "rgba(0,0,0,0)"
+              },
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue744",
+                "fontSize": "27",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "redDot": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/product/product",
+      "style": {
+        "navigationBarTitleText": "详情展示",
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent"
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/set/set",
+      "style": {
+        "navigationBarTitleText": "设置"
+      }
+    },
+    {
+      "path": "pages/userinfo/userinfo",
+      "style": {
+        "navigationBarTitleText": "修改资料"
+      }
+    },
+    {
+      "path": "pages/cart/cart",
+      "style": {
+        "navigationBarTitleText": "购物车"
+      }
+    },
+    {
+      "path": "pages/public/login",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleNView": false,
+          "animationType": "slide-in-bottom"
+        }
+      }
+    },
+    {
+      "path": "pages/user/user",
+      "style": {
+        "navigationBarTitleText": "我的",
+        // #ifdef MP
+        "navigationStyle": "custom",
+        // #endif
+        "app-plus": {
+          "bounce": "none",
+          "titleNView": {
+            "type": "transparent",
+            "buttons": [
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue60f",
+                "fontSize": "24",
+                "color": "#303133",
+                "width": "46px",
+                "background": "rgba(0,0,0,0)"
+              },
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue744",
+                "fontSize": "28",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "redDot": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/detail/detail",
+      "style": {
+        "navigationBarTitleText": "",
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent"
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/order/order",
+      "style": {
+        "navigationBarTitleText": "我的订单",
+        "app-plus": {
+          "bounce": "none"
+        }
+      }
+    },
+    {
+      "path": "pages/money/money",
+      "style": {}
+    },
+    {
+      "path": "pages/order/createOrder",
+      "style": {
+        "navigationBarTitleText": "创建订单"
+      }
+    },
+    {
+      "path": "pages/address/address",
+      "style": {
+        "navigationBarTitleText": "收货地址"
+      }
+    },
+    {
+      "path": "pages/address/addressManage",
+      "style": {
+        "navigationBarTitleText": ""
+      }
+    },
+    {
+      "path": "pages/money/pay",
+      "style": {
+        "navigationBarTitleText": "支付"
+      }
+    },
+    {
+      "path": "pages/money/paySuccess",
+      "style": {
+        "navigationBarTitleText": "支付成功"
+      }
+    },
+    {
+      "path": "pages/notice/notice",
+      "style": {
+        "navigationBarTitleText": "通知"
+      }
+    },
+    {
+      "path": "pages/category/category",
+      "style": {
+        "navigationBarTitleText": "分类",
+        "app-plus": {
+          "bounce": "none"
+        }
+      }
+    },
+    {
+      "path": "pages/product/list",
+      "style": {
+        "enablePullDownRefresh": true,
+        "navigationBarTitleText": "商品列表"
+      }
+    }
+//    {
+//      "path": "pages/ticket/index",
+//      "style": {
+//        "navigationBarTitleText": "门票列表"
+//      }
+//    },
+//    {
+//      "path": "pages/notify/detail",
+//      "style": {
+//        "navigationBarTitleText": "通知详情"
+//      }
+//    },
+//    {
+//      "path": "pages/ticket/index",
+//      "style": {
+//        "navigationBarTitleText": "门票列表"
+//      }
+//    },
+//    {
+//      "path": "pages/comment/index",
+//      "style": {
+//        "navigationBarTitleText": "评论列表",
+//        "enablePullDownRefresh": true
+//      }
+//    },
+//    {
+//      "path": "pages/comment/reply",
+//      "style": {
+//        "navigationBarTitleText": "评论回复"
+//      }
+//    },
+//    {
+//      "path": "pages/apply/index",
+//      "style": {
+//        "navigationStyle": "custom",
+//        "navigationBarTitleText": "申请合作伙伴"
+//      }
+//    },
+//    {
+//      "path": "pages/login/index",
+//      "style": {
+//        "navigationStyle": "custom",
+//        "navigationBarTitleText": "登录"
+//      }
+//    },
+//    {
+//      "path": "pages/login/index2",
+//      "style": {
+//        "navigationStyle": "custom",
+//        "navigationBarTitleText": "登录"
+//      }
+//    },
+//    {
+//      "path": "pages/login/code",
+//      "style": {
+//        "navigationStyle": "custom",
+//        "navigationBarTitleText": "发送短信"
+//      }
+//    }
 
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	}
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  }
 }

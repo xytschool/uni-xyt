@@ -1,18 +1,19 @@
-
 //var host = "http://shop.laravelschool.xyt"
 var host = ""
 //var host = "https://mobile.xytschool.com"
 var baseUrl = ""
-import {getAuthToken, getComId} from "./utils"
+import {getAuthToken, getClientID, getComId} from "./utils"
 
 function request(method, url, query, is_raw) {
     var com_id = getComId()
-    if (!query.com_id&&com_id) {
+    if (!query.com_id && com_id) {
         query.com_id = com_id
     }
     //query.com_id = 9
     return new Promise((resolve, reject) => {
         var token = getAuthToken()
+        var clientId = getClientID()
+
         var fullUrl = ""
         if (url.startsWith("http")) {
             fullUrl = url
@@ -21,22 +22,32 @@ function request(method, url, query, is_raw) {
         } else {
             fullUrl = host + baseUrl + url
         }
+        var header = {}
+        if (token) {
+            header = {
+                'content-type': 'application/json',// 默认值
+                'Authorization': 'Bearer ' + token,
+                'ClientID': clientId
+            }
+        } else {
+            header = {
+                'content-type': 'application/json',// 默认值
+                'ClientID': clientId
+            }
+        }
 
         wx.request({
             url: fullUrl,
             data: query,
             method: method,
-            header: {
-                'content-type': 'application/json',// 默认值
-                'Authorization': 'Bearer ' + token
-            },
+            header: header,
             success(res) {
                 res = res.data
                 if (res.code === 200 || res.code === 700 || res.code === 0) {
                     resolve(res)
                 } else {
                     uni.showToast({
-                        icon:"none",
+                        icon: "none",
                         title: res.msg,
                         duration: 3000
                     });
@@ -46,7 +57,7 @@ function request(method, url, query, is_raw) {
             },
             fail(res) {
                 uni.showToast({
-                    icon:"none",
+                    icon: "none",
                     title: '请求异常',
                     duration: 3000
                 });
