@@ -3,7 +3,7 @@
 		<!-- 小程序头部兼容 -->
 		<!-- #ifdef MP -->
 		<view class="mp-search-box">
-			<input class="ser-input" type="text" value="输入关键字搜索" disabled />
+			<input class="ser-input" type="text" value="输入关键字搜索"  />
 		</view>
 		<!-- #endif -->
 		
@@ -15,7 +15,7 @@
 			<view class="titleNview-background" :style="{backgroundColor:titleNViewBackground}"></view>
 			<swiper class="carousel" circular @change="swiperChange">
 				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({title: '轮播广告'})">
-					<image :src="item.src" />
+					<image :src="item.cover" />
 				</swiper-item>
 			</swiper>
 			<!-- 自定义swiper指示器 -->
@@ -70,9 +70,9 @@
 						class="floor-item"
 						@click="navToDetailPage(item)"
 					>
-						<image :src="item.image" mode="aspectFill"></image>
-						<text class="title clamp">{{item.title}}</text>
-						<text class="price">￥{{item.price}}</text>
+						<image :src="item.small_cover" mode="aspectFill"></image>
+						<text class="title clamp">{{item.name}}</text>
+						<text class="price">￥{{item.real_price}}</text>
 					</view>
 				</view>
 			</scroll-view>
@@ -96,11 +96,11 @@
 					@click="navToDetailPage(item)"
 				>
 					<view class="g-item left">
-						<image :src="item.image" mode="aspectFill"></image>
+						<image :src="item.small_cover" mode="aspectFill"></image>
 						<view class="t-box">
-							<text class="title clamp">{{item.title}}</text>
+							<text class="title clamp">{{item.name}}</text>
 							<view class="price-box">
-								<text class="price">￥{{item.price}}</text> 
+								<text class="price">￥{{item.real_price}}</text>
 								<text class="m-price">￥188</text> 
 							</view>
 							
@@ -114,7 +114,7 @@
 						            
 					</view>
 					<view class="g-item right">
-						<image :src="goodsList[index+1].image" mode="aspectFill"></image>
+						<image :src="goodsList[index+1].small_cover" mode="aspectFill"></image>
 						<view class="t-box">
 							<text class="title clamp">{{goodsList[index+1].title}}</text>
 							<view class="price-box">
@@ -154,9 +154,9 @@
 						class="floor-item"
 						@click="navToDetailPage(item)"
 					>
-						<image :src="item.image" mode="aspectFill"></image>
-						<text class="title clamp">{{item.title}}</text>
-						<text class="price">￥{{item.price}}</text>
+						<image :src="item.small_cover" mode="aspectFill"></image>
+						<text class="title clamp">{{item.name}}</text>
+						<text class="price">￥{{item.real_price}}</text>
 					</view>
 					<view class="more">
 						<text>查看全部</text>
@@ -176,9 +176,9 @@
 						class="floor-item"
 						@click="navToDetailPage(item)"
 					>
-						<image :src="item.image3" mode="aspectFill"></image>
-						<text class="title clamp">{{item.title}}</text>
-						<text class="price">￥{{item.price}}</text>
+						<image :src="item.small_cover" mode="aspectFill"></image>
+						<text class="title clamp">{{item.name}}</text>
+						<text class="price">￥{{item.real_price}}</text>
 					</view>
 					<view class="more">
 						<text>查看全部</text>
@@ -198,9 +198,9 @@
 						class="floor-item"
 						@click="navToDetailPage(item)"
 					>
-						<image :src="item.image2" mode="aspectFill"></image>
-						<text class="title clamp">{{item.title}}</text>
-						<text class="price">￥{{item.price}}</text>
+						<image :src="item.small_cover" mode="aspectFill"></image>
+						<text class="title clamp">{{item.name}}</text>
+						<text class="price">￥{{item.real_price}}</text>
 					</view>
 					<view class="more">
 						<text>查看全部</text>
@@ -227,10 +227,10 @@
 				@click="navToDetailPage(item)"
 			>
 				<view class="image-wrapper">
-					<image :src="item.image" mode="aspectFill"></image>
+					<image :src="item.small_cover" mode="aspectFill"></image>
 				</view>
-				<text class="title clamp">{{item.title}}</text>
-				<text class="price">￥{{item.price}}</text>
+				<text class="title clamp">{{item.name}}</text>
+				<text class="price">￥{{item.real_price}}</text>
 			</view>
 		</view>
 		
@@ -261,13 +261,24 @@
 			 * 分次请求未作整合
 			 */
 			async loadData() {
-				let carouselList = await this.$api.json('carouselList');
-				this.titleNViewBackground = carouselList[0].background;
-				this.swiperLength = carouselList.length;
-				this.carouselList = carouselList;
+				//let carouselList = await this.$api.json('carouselList');
+				let res= await this.$api.site.getBannerList()
+                if(res.code == 200){
+                	let carouselList = res.data
+					this.titleNViewBackground = carouselList[0].background;
+					this.swiperLength = carouselList.length;
+					this.carouselList = carouselList;
+				}
+				let navListRes = await this.$api.site.getNavList()
+                if(navListRes.code = 200){
+            		console.log(navListRes)
+				}
 				
-				let goodsList = await this.$api.json('goodsList');
-				this.goodsList = goodsList || [];
+				//let goodsList = await this.$api.json('goodsList');
+				let goodsRes = await this.$api.goods.getRecommendGoodsList();
+                if(goodsRes.code == 200){
+					this.goodsList = goodsRes.data || [];
+				}
 			},
 			//轮播图切换修改背景色
 			swiperChange(e) {
@@ -278,7 +289,7 @@
 			//详情页
 			navToDetailPage(item) {
 				//测试数据没有写id，用title代替
-				let id = item.title;
+				let id = item.name;
 				uni.navigateTo({
 					url: `/pages/product/product?id=${id}`
 				})

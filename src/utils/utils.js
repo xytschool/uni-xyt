@@ -74,8 +74,6 @@ function getClientID() {
         }
         client_id = JSON.stringify(params)
         uni.setStorageSync('client_id', client_id)
-        getNewClientID(params).then(res => {
-        })
     }
     return client_id
 }

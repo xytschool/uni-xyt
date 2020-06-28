@@ -191,52 +191,52 @@
         "enablePullDownRefresh": true,
         "navigationBarTitleText": "商品列表"
       }
+    },
+    {
+      "path": "pages/ticket/index",
+      "style": {
+        "navigationBarTitleText": "门票列表"
+      }
+    },
+    {
+      "path": "pages/notify/detail",
+      "style": {
+        "navigationBarTitleText": "通知详情"
+      }
+    },
+    {
+      "path": "pages/ticket/index",
+      "style": {
+        "navigationBarTitleText": "门票列表"
+      }
+    },
+    {
+      "path": "pages/comment/index",
+      "style": {
+        "navigationBarTitleText": "评论列表",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/comment/reply",
+      "style": {
+        "navigationBarTitleText": "评论回复"
+      }
+    },
+    {
+      "path": "pages/apply/index",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "申请合作伙伴"
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "登录"
+      }
     }
-//    {
-//      "path": "pages/ticket/index",
-//      "style": {
-//        "navigationBarTitleText": "门票列表"
-//      }
-//    },
-//    {
-//      "path": "pages/notify/detail",
-//      "style": {
-//        "navigationBarTitleText": "通知详情"
-//      }
-//    },
-//    {
-//      "path": "pages/ticket/index",
-//      "style": {
-//        "navigationBarTitleText": "门票列表"
-//      }
-//    },
-//    {
-//      "path": "pages/comment/index",
-//      "style": {
-//        "navigationBarTitleText": "评论列表",
-//        "enablePullDownRefresh": true
-//      }
-//    },
-//    {
-//      "path": "pages/comment/reply",
-//      "style": {
-//        "navigationBarTitleText": "评论回复"
-//      }
-//    },
-//    {
-//      "path": "pages/apply/index",
-//      "style": {
-//        "navigationStyle": "custom",
-//        "navigationBarTitleText": "申请合作伙伴"
-//      }
-//    },
-//    {
-//      "path": "pages/login/index",
-//      "style": {
-//        "navigationStyle": "custom",
-//        "navigationBarTitleText": "登录"
-//      }
-//    },
 //    {
 //      "path": "pages/login/index2",
 //      "style": {

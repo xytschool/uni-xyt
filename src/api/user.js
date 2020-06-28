@@ -29,5 +29,8 @@ module.exports = {
     },
     async getApplyPartTimerStatus() {
         return get(host + '/getApplyPartTimerStatus')
+    },
+    async getCartList(){
+        return get(host + '/getCartList')
     }
 }
