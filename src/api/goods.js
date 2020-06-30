@@ -30,5 +30,10 @@ module.exports = {
     async getGoodsList() {
         return get(host + '/getGoodsList')
     },
-
+    /**
+     *   [{icon: '' , title: '' , link: ''}]
+     * */
+    async getGoodsDetail(params) {
+        return get(host + '/getGoodsDetail',params)
+    },
 }

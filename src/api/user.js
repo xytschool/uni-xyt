@@ -30,7 +30,16 @@ module.exports = {
     async getApplyPartTimerStatus() {
         return get(host + '/getApplyPartTimerStatus')
     },
-    async getCartList(){
-        return get(host + '/getCartList')
+    async getCartGoodsList() {
+        return get(host + '/getCartGoodsList')
+    },
+    async addCartGoods(data) {
+        return post(host + '/addCartGoods', data)
+    },
+    async delCartGoods(data) {
+        return post(host + '/delCartGoods', data)
+    },
+    async updateCartGoods(data) {
+        return post(host + '/updateCartGoods', data)
     }
 }

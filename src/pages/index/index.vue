@@ -6,7 +6,7 @@
 			<input class="ser-input" type="text" value="输入关键字搜索"  />
 		</view>
 		<!-- #endif -->
-		
+
 		<!-- 头部轮播 -->
 		<view class="carousel-section">
 			<!-- 标题栏和状态栏占位符 -->
@@ -27,32 +27,16 @@
 		</view>
 		<!-- 分类 -->
 		<view class="cate-section">
-			<view class="cate-item">
-				<image src="/static/temp/c3.png"></image>
-				<text>环球美食</text>
-			</view>
-			<view class="cate-item">
-				<image src="/static/temp/c5.png"></image>
-				<text>个护美妆</text>
-			</view>
-			<view class="cate-item">
-				<image src="/static/temp/c6.png"></image>
-				<text>营养保健</text>
-			</view>
-			<view class="cate-item">
-				<image src="/static/temp/c7.png"></image>
-				<text>家居厨卫</text>
-			</view>
-			<view class="cate-item">
-				<image src="/static/temp/c8.png"></image>
-				<text>速食生鲜</text>
+			<view class="cate-item" v-for="item in navList" :key="item.id" @click="gotoNav(item)">
+				<image :src="item.icon"></image>
+				<text class="cate-name">{{item.name}}</text>
 			</view>
 		</view>
-		
+
 		<view class="ad-1">
 			<image src="/static/temp/ad1.jpg" mode="scaleToFill"></image>
 		</view>
-		
+
 		<!-- 秒杀楼层 -->
 		<view class="seckill-section m-t">
 			<view class="s-header">
@@ -65,8 +49,8 @@
 			</view>
 			<scroll-view class="floor-list" scroll-x>
 				<view class="scoll-wrapper">
-					<view 
-						v-for="(item, index) in goodsList" :key="index"
+					<view
+						v-for="(item, index) in recommendGoodsList" :key="index"
 						class="floor-item"
 						@click="navToDetailPage(item)"
 					>
@@ -77,7 +61,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		
+
 		<!-- 团购楼层 -->
 		<view class="f-header m-t">
 			<image src="/static/temp/h1.png"></image>
@@ -101,9 +85,9 @@
 							<text class="title clamp">{{item.name}}</text>
 							<view class="price-box">
 								<text class="price">￥{{item.real_price}}</text>
-								<text class="m-price">￥188</text> 
+								<text class="m-price">￥188</text>
 							</view>
-							
+
 							<view class="pro-box">
 							  	<view class="progress-box">
 							  		<progress percent="72" activeColor="#fa436a" active stroke-width="6" />
@@ -111,15 +95,15 @@
 								<text>6人成团</text>
 							</view>
 						</view>
-						            
+
 					</view>
 					<view class="g-item right">
 						<image :src="goodsList[index+1].small_cover" mode="aspectFill"></image>
 						<view class="t-box">
 							<text class="title clamp">{{goodsList[index+1].title}}</text>
 							<view class="price-box">
-								<text class="price">￥{{goodsList[index+1].price}}</text> 
-								<text class="m-price">￥188</text> 
+								<text class="price">￥{{goodsList[index+1].price}}</text>
+								<text class="m-price">￥188</text>
 							</view>
 							<view class="pro-box">
 							  	<view class="progress-box">
@@ -149,8 +133,8 @@
 			</view>
 			<scroll-view class="floor-list" scroll-x>
 				<view class="scoll-wrapper">
-					<view 
-						v-for="(item, index) in goodsList" :key="index"
+					<view
+						v-for="(item, index) in recommendGoodsList" :key="index"
 						class="floor-item"
 						@click="navToDetailPage(item)"
 					>
@@ -171,7 +155,7 @@
 			</view>
 			<scroll-view class="floor-list" scroll-x>
 				<view class="scoll-wrapper">
-					<view 
+					<view
 						v-for="(item, index) in goodsList" :key="index"
 						class="floor-item"
 						@click="navToDetailPage(item)"
@@ -193,7 +177,7 @@
 			</view>
 			<scroll-view class="floor-list" scroll-x>
 				<view class="scoll-wrapper">
-					<view 
+					<view
 						v-for="(item, index) in goodsList" :key="index"
 						class="floor-item"
 						@click="navToDetailPage(item)"
@@ -219,9 +203,9 @@
 			</view>
 			<text class="yticon icon-you"></text>
 		</view>
-		
+
 		<view class="guess-section">
-			<view 
+			<view
 				v-for="(item, index) in goodsList" :key="index"
 				class="guess-item"
 				@click="navToDetailPage(item)"
@@ -233,7 +217,7 @@
 				<text class="price">￥{{item.real_price}}</text>
 			</view>
 		</view>
-		
+
 
 	</view>
 </template>
@@ -248,7 +232,9 @@
 				swiperCurrent: 0,
 				swiperLength: 0,
 				carouselList: [],
-				goodsList: []
+				goodsList: [],
+				recommendGoodsList: [],
+				navList: []
 			};
 		},
 
@@ -272,11 +258,17 @@
 				let navListRes = await this.$api.site.getNavList()
                 if(navListRes.code = 200){
             		console.log(navListRes)
+                    this.navList = navListRes.data
 				}
-				
+
 				//let goodsList = await this.$api.json('goodsList');
-				let goodsRes = await this.$api.goods.getRecommendGoodsList();
-                if(goodsRes.code == 200){
+				let recommendGoodsRes = await this.$api.goods.getRecommendGoodsList();
+                if(recommendGoodsRes.code == 200){
+					this.recommendGoodsList = recommendGoodsRes.data || [];
+				}
+
+				let goodsRes = await this.$api.goods.getGoodsList();
+				if(goodsRes.code == 200){
 					this.goodsList = goodsRes.data || [];
 				}
 			},
@@ -289,9 +281,20 @@
 			//详情页
 			navToDetailPage(item) {
 				//测试数据没有写id，用title代替
-				let id = item.name;
+				let id = item.id;
 				uni.navigateTo({
 					url: `/pages/product/product?id=${id}`
+				})
+			},
+			//详情页
+			gotoNav(item) {
+			    if(!item.link){
+			      uni.showToast({title:"请配置跳转地址"})
+                  return
+				}
+                console.log(item.link)
+				uni.navigateTo({
+					url: item.link
 				})
 			},
 		},
@@ -368,8 +371,8 @@
 		}
 	}
 	/* #endif */
-	
-	
+
+
 	page {
 		background: #f5f5f5;
 	}
@@ -449,7 +452,7 @@
 		justify-content: space-around;
 		align-items: center;
 		flex-wrap:wrap;
-		padding: 30upx 22upx; 
+		padding: 30upx 22upx;
 		background: #fff;
 		.cate-item {
 			display: flex;
@@ -457,6 +460,10 @@
 			align-items: center;
 			font-size: $font-sm + 2upx;
 			color: $font-color-dark;
+            .cate-name{
+				display: block;
+				text-align: center;
+			}
 		}
 		/* 原图标颜色太深,不想改图了,所以加了透明度 */
 		image {
@@ -475,7 +482,7 @@
 		background: #fff;
 		image{
 			width:100%;
-			height: 100%; 
+			height: 100%;
 		}
 	}
 	/* 秒杀专区 */
@@ -538,7 +545,7 @@
 			}
 		}
 	}
-	
+
 	.f-header{
 		display:flex;
 		align-items:center;
@@ -744,6 +751,6 @@
 			line-height: 1;
 		}
 	}
-	
+
 
 </style>

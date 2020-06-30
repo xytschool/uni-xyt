@@ -2,33 +2,33 @@
 	<view class="container">
 		<view class="carousel">
 			<swiper indicator-dots circular=true duration="400">
-				<swiper-item class="swiper-item" v-for="(item,index) in imgList" :key="index">
+				<swiper-item class="swiper-item" v-for="(item,index) in goods.covers" :key="index">
 					<view class="image-wrapper">
 						<image
-							:src="item.src" 
-							class="loaded" 
+							:src="item"
+							class="loaded"
 							mode="aspectFill"
 						></image>
 					</view>
 				</swiper-item>
 			</swiper>
 		</view>
-		
+
 		<view class="introduce-section">
-			<text class="title">恒源祥2019春季长袖白色t恤 新款春装</text>
+			<text class="title">{{goods.name}}</text>
 			<view class="price-box">
 				<text class="price-tip">¥</text>
-				<text class="price">341.6</text>
-				<text class="m-price">¥488</text>
-				<text class="coupon-tip">7折</text>
+				<text class="price">{{goods.real_price}}</text>
+				<text class="m-price">¥{{goods.price}}</text>
+				<text class="coupon-tip">折扣</text>
 			</view>
 			<view class="bot-row">
-				<text>销量: 108</text>
-				<text>库存: 4690</text>
-				<text>浏览量: 768</text>
+				<text>销量: {{goods.sale_num}}</text>
+				<text>库存: {{goods.num}}</text>
+				<text>浏览量: {{goods.pv}}</text>
 			</view>
 		</view>
-		
+
 		<!--  分享 -->
 		<view class="share-section" @click="share">
 			<view class="share-icon">
@@ -41,9 +41,9 @@
 				立即分享
 				<text class="yticon icon-you"></text>
 			</view>
-			
+
 		</view>
-		
+
 		<view class="c-list">
 			<view class="c-row b-b" @click="toggleSpec">
 				<text class="tit">购买类型</text>
@@ -76,15 +76,15 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<!-- 评价 -->
 		<view class="eva-section">
 			<view class="e-header">
 				<text class="tit">评价</text>
-				<text>(86)</text>
+				<text>({{commentNum}})</text>
 				<text class="tip">好评率 100%</text>
 				<text class="yticon icon-you"></text>
-			</view> 
+			</view>
 			<view class="eva-box">
 				<image class="portrait" src="http://img3.imgtn.bdimg.com/it/u=1150341365,1327279810&fm=26&gp=0.jpg" mode="aspectFill"></image>
 				<view class="right">
@@ -97,14 +97,16 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="detail-desc">
 			<view class="d-header">
 				<text>图文详情</text>
 			</view>
-			<rich-text :nodes="desc"></rich-text>
+            <view class="detail-desc-text">
+				<rich-text :nodes="goods.body"></rich-text>
+			</view>
 		</view>
-		
+
 		<!-- 底部操作菜单 -->
 		<view class="page-bottom">
 			<navigator url="/pages/index/index" open-type="switchTab" class="p-b-btn">
@@ -119,17 +121,17 @@
 				<text class="yticon icon-shoucang"></text>
 				<text>收藏</text>
 			</view>
-			
+
 			<view class="action-btn-group">
 				<button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
-				<button type="primary" class=" action-btn no-border add-cart-btn">加入购物车</button>
+				<button type="primary" class=" action-btn no-border add-cart-btn" @click="joinCart">加入购物车</button>
 			</view>
 		</view>
-		
-		
+
+
 		<!-- 规格-模态层弹窗 -->
-		<view 
-			class="popup spec" 
+		<view
+			class="popup spec"
 			:class="specClass"
 			@touchmove.stop.prevent="stopPrevent"
 			@click="toggleSpec"
@@ -153,8 +155,8 @@
 				<view v-for="(item,index) in specList" :key="index" class="attr-list">
 					<text>{{item.name}}</text>
 					<view class="item-list">
-						<text 
-							v-for="(childItem, childIndex) in specChildList" 
+						<text
+							v-for="(childItem, childIndex) in specChildList"
 							v-if="childItem.pid === item.id"
 							:key="childIndex" class="tit"
 							:class="{selected: childItem.selected}"
@@ -168,8 +170,8 @@
 			</view>
 		</view>
 		<!-- 分享 -->
-		<share 
-			ref="share" 
+		<share
+			ref="share"
 			:contentHeight="580"
 			:shareList="shareList"
 		></share>
@@ -186,35 +188,17 @@
 			return {
 				specClass: 'none',
 				specSelected:[],
-				
 				favorite: true,
 				shareList: [],
-				imgList: [
-					{
-						src: 'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg'
-					},
-					{
-						src: 'https://gd3.alicdn.com/imgextra/i3/TB1RPFPPFXXXXcNXpXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg'
-					},
-					{
-						src: 'https://gd2.alicdn.com/imgextra/i2/38832490/O1CN01IYq7gu1UGShvbEFnd_!!38832490.jpg_400x400.jpg'
-					}
-				],
-				desc: `
-					<div style="width:100%">
-						<img style="width:100%;display:block;" src="https://gd3.alicdn.com/imgextra/i4/479184430/O1CN01nCpuLc1iaz4bcSN17_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd2.alicdn.com/imgextra/i2/479184430/O1CN01gwbN931iaz4TzqzmG_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd3.alicdn.com/imgextra/i3/479184430/O1CN018wVjQh1iaz4aupv1A_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd4.alicdn.com/imgextra/i4/479184430/O1CN01tWg4Us1iaz4auqelt_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd1.alicdn.com/imgextra/i1/479184430/O1CN01Tnm1rU1iaz4aVKcwP_!!479184430.jpg_400x400.jpg" />
-					</div>
-				`,
+                commentList:[],
+                commentNum:0,
+                goods:{},
 				specList: [
 					{
 						id: 1,
 						name: '尺寸',
 					},
-					{	
+					{
 						id: 2,
 						name: '颜色',
 					},
@@ -269,14 +253,12 @@
 			};
 		},
 		async onLoad(options){
-			
-			//接收传值,id里面放的是标题，因为测试数据并没写id 
+			//接收传值,id里面放的是标题，因为测试数据并没写id
 			let id = options.id;
-			if(id){
-				this.$api.msg(`点击了${id}`);
+			let goodsRes = await this.$api.goods.getGoodsDetail({id})
+            if(goodsRes.code == 200){
+				this.goods = Object.assign({}, goodsRes.data)
 			}
-			
-			
 			//规格 默认选中第一条
 			this.specList.forEach(item=>{
 				for(let cItem of this.specChildList){
@@ -287,6 +269,16 @@
 					}
 				}
 			})
+
+			let commentListRes = await this.$api.comment.getCommentList({goods_id: this.goods.id})
+			if(commentListRes.code == 200){
+				this.commentList = commentListRes.data
+			}
+
+			let commentNumRes = await this.$api.comment.getGoodsCommentNum({goods_id: this.goods.id})
+			if(commentNumRes.code == 200){
+				this.commentNumList = commentNumRes.data.num
+			}
 			this.shareList = await this.$api.json('shareList');
 		},
 		methods:{
@@ -317,17 +309,17 @@
 				 * 将这几行代码替换即可
 				 * 选择的规格存放在specSelected中
 				 */
-				this.specSelected = []; 
-				list.forEach(item=>{ 
-					if(item.selected === true){ 
-						this.specSelected.push(item); 
-					} 
+				this.specSelected = [];
+				list.forEach(item=>{
+					if(item.selected === true){
+						this.specSelected.push(item);
+					}
 				})
-				
+
 			},
 			//分享
 			share(){
-				this.$refs.share.toggleMask();	
+				this.$refs.share.toggleMask();
 			},
 			//收藏
 			toFavorite(){
@@ -374,14 +366,14 @@
 				height: 100%;
 			}
 		}
-		
+
 	}
-	
+
 	/* 标题简介 */
 	.introduce-section{
 		background: #fff;
 		padding: 20upx 30upx;
-		
+
 		.title{
 			font-size: 32upx;
 			color: $font-color-dark;
@@ -412,7 +404,7 @@
 			color: #fff;
 			border-radius: 6upx;
 			line-height: 1;
-			transform: translateY(-4upx); 
+			transform: translateY(-4upx);
 		}
 		.bot-row{
 			display:flex;
@@ -485,7 +477,7 @@
 			color: $uni-color-primary;
 		}
 	}
-	
+
 	.c-list{
 		font-size: $font-sm + 2upx;
 		color: $font-color-base;
@@ -526,7 +518,7 @@
 			color: $uni-color-primary;
 		}
 	}
-	
+
 	/* 评价 */
 	.eva-section{
 		display: flex;
@@ -587,6 +579,7 @@
 	.detail-desc{
 		background: #fff;
 		margin-top: 16upx;
+        padding: 0 5px;
 		.d-header{
 			display: flex;
 			justify-content: center;
@@ -595,7 +588,7 @@
 			font-size: $font-base + 2upx;
 			color: $font-color-dark;
 			position: relative;
-				
+
 			text{
 				padding: 0 20upx;
 				background: #fff;
@@ -610,11 +603,15 @@
 				width: 300upx;
 				height: 0;
 				content: '';
-				border-bottom: 1px solid #ccc; 
+				border-bottom: 1px solid #ccc;
 			}
 		}
+		.detail-desc-text{
+
+		}
+
 	}
-	
+
 	/* 规格选择弹窗 */
 	.attr-content{
 		padding: 10upx 30upx;
@@ -676,7 +673,7 @@
 			}
 		}
 	}
-	
+
 	/*  弹出层 */
 	.popup {
 		position: fixed;
@@ -685,7 +682,7 @@
 		right: 0;
 		bottom: 0;
 		z-index: 99;
-		
+
 		&.show {
 			display: block;
 			.mask{
@@ -765,7 +762,7 @@
 			}
 		}
 	}
-	
+
 	/* 底部操作菜单 */
 	.page-bottom{
 		position:fixed;
@@ -780,7 +777,7 @@
 		background: rgba(255,255,255,.9);
 		box-shadow: 0 0 20upx 0 rgba(0,0,0,.5);
 		border-radius: 16upx;
-		
+
 		.p-b-btn{
 			display:flex;
 			flex-direction: column;
@@ -839,5 +836,5 @@
 			}
 		}
 	}
-	
+
 </style>

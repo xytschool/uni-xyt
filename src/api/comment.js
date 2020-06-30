@@ -1,7 +1,8 @@
 import {get ,post} from '../utils/request'
-const host = "/v1/comment"
+//const host = "/v1/comment"
 //const host = "http://comment.ideatest.top:8885/v1/comment"
 //const host = "http://localhost:8885/v1/comment"
+const host = "http://m.xytschool.com/dev/comment/16"
 module.exports = {
     async  submitComment(data){
         return post(host + '/submitComment',data)
