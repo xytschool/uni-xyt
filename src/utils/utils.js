@@ -1,4 +1,3 @@
-import {getNewClientUUID} from "../api/user";
 
 function getQueryParam(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -28,7 +27,6 @@ function getUserInfo() {
 function setUserInfo(userInfo) {
     user = userInfo
     uni.setStorageSync('userInfo', userInfo)
-    console.log(user.jws_token)
     setAuthToken(user.jws_token)
 }
 

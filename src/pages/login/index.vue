@@ -122,7 +122,6 @@
 </template>
 
 <script>
-    import {sendLoginMessage,login} from "../../api/user";
     import {setUserInfo} from "../../utils/utils";
 
     export default {
@@ -169,7 +168,7 @@
                     username: this.mobile,
                     password: this.password
                 }
-                login(params).then(res =>{
+                this.$api.user.login(params).then(res =>{
                     if(res.code != 200) {
                         uni.showToast({
                             'title': '短信发生失败' + res.msg ? res.msg : '',
@@ -194,7 +193,7 @@
                     var params = {
                         mobile: this.mobile,
                     }
-                    sendLoginMessage(params).then(res => {
+                    this.$api.user.sendLoginMessage(params).then(res => {
                         if (res.code == 200) {
                             this.$u.route({
                                 url: 'pages/login/code?mobile=' + this.mobile,

@@ -75,7 +75,7 @@
 		watch: {
 			inputValue(number) {
 				const data = {
-					number: number,
+					num: number,
 					index: this.index
 				}
 				this.$emit('eventChange', data);

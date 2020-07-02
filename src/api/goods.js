@@ -34,6 +34,21 @@ module.exports = {
      *   [{icon: '' , title: '' , link: ''}]
      * */
     async getGoodsDetail(params) {
-        return get(host + '/getGoodsDetail',params)
+        return get(host + '/getGoodsDetail', params)
     },
+    async getCartGoodsList() {
+        return get(host + '/getCartGoodsList')
+    },
+    async addCartGoods(data) {
+        return post(host + '/addCartGoods', data)
+    },
+    async delCartGoods(data) {
+        return post(host + '/delCartGoods', data)
+    },
+    async clearCart() {
+        return post(host + '/clearCart')
+    },
+    async updateCartGoods(data) {
+        return post(host + '/updateCartGoods', data)
+    }
 }

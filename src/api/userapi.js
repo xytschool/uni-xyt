@@ -5,9 +5,6 @@ import {get, post} from '../utils/request'
 //const host = "/dev/user"
 const host = "http://m.xytschool.com/dev/user/16"
 module.exports = {
-    async getNewClientID(params) {
-        return post(host + '/getNewClientID', params)
-    },
     async sendLoginMessage(params) {
         return post(host + '/sendVerifyCodeSms', params)
     },
@@ -30,16 +27,5 @@ module.exports = {
     async getApplyPartTimerStatus() {
         return get(host + '/getApplyPartTimerStatus')
     },
-    async getCartGoodsList() {
-        return get(host + '/getCartGoodsList')
-    },
-    async addCartGoods(data) {
-        return post(host + '/addCartGoods', data)
-    },
-    async delCartGoods(data) {
-        return post(host + '/delCartGoods', data)
-    },
-    async updateCartGoods(data) {
-        return post(host + '/updateCartGoods', data)
-    }
+
 }

@@ -79,14 +79,21 @@ Vue.config.productionTip = false
 Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store;
 
-
 import site from './api/site' //测试用数据
-import user from './api/user' //测试用数据
+import user from './api/userapi' //测试用数据
 import order from './api/order' //测试用数据
 import goods from './api/goods' //测试用数据
-import comment from './api/comment' //测试用数据
+import comment from './api/comment'
+import {getUserInfo} from "./utils/utils"; //测试用数据
 
-Vue.prototype.$api = {msg, json, prePage, site, user,order,goods,comment};
+
+let userInfo = getUserInfo()
+//console.log('getUserInfo', userInfo)
+if (user) {
+    store.commit('login', userInfo)
+}
+
+Vue.prototype.$api = {msg, json, prePage, site, user, order, goods, comment};
 
 const app = new Vue({
     ...App
