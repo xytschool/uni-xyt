@@ -82,10 +82,28 @@
             <view class="e-header">
                 <text class="tit">评价</text>
                 <text>({{commentNum}})</text>
-                <text class="tip">好评率 100%</text>
-                <text class="yticon icon-you"></text>
+                <text class="tip">好评率 {{(100*goodCommentNum/commentNum).toFixed(1)}}%</text>
+                <text class="yticon icon-you" @click="gotoCommentList"></text>
             </view>
-            <view class="eva-box">
+
+            <view class="eva-box" v-for="(item,index) in commentList">
+                <image class="portrait" :src="item.avatar" mode="aspectFill"></image>
+                <view class="right">
+                    <text class="name">{{item.nickname ? item.nickname :'匿名用户'}}</text>
+                    <text class="con">{{item.content}}</text>
+                    <view class="content">
+                        <img v-for="(cover ,index) in item.covers"
+                             style="width:48%;margin-right:2%"
+                             :key="index" :src="cover" mode="aspectFit"/>
+                    </view>
+                    <view class="bot">
+                        <text class="attr">购买类型：默认类型</text>
+                        <text class="time">{{item.created_at}}</text>
+                    </view>
+                </view>
+            </view>
+
+            <view class="eva-box" v-if="false">
                 <image class="portrait" src="http://img3.imgtn.bdimg.com/it/u=1150341365,1327279810&fm=26&gp=0.jpg"
                        mode="aspectFill"></image>
                 <view class="right">
@@ -114,7 +132,7 @@
                 <text class="yticon icon-xiatubiao--copy"></text>
                 <text>首页</text>
             </navigator>
-            <navigator url="/pages/cart/index" open-type="switchTab" class="p-b-btn">
+            <navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
                 <text class="yticon icon-gouwuche"></text>
                 <text>购物车</text>
             </navigator>
@@ -181,6 +199,7 @@
 
 <script>
     import share from '@/components/share';
+    import {isCollect} from "../../api/userapi";
 
     export default {
         components: {
@@ -190,10 +209,11 @@
             return {
                 specClass: 'none',
                 specSelected: [],
-                favorite: true,
+                favorite: false,
                 shareList: [],
                 commentList: [],
                 commentNum: 0,
+                goodCommentNum: 0,
                 goods: {},
                 specList: [
                     {
@@ -272,14 +292,22 @@
                 }
             })
 
-            let commentListRes = await this.$api.comment.getCommentList({goods_id: this.goods.id})
+            let commentListRes = await this.$api.comment.getCommentList({goods_id: this.goods.id,limit:5})
             if (commentListRes.code == 200) {
                 this.commentList = commentListRes.data
             }
 
             let commentNumRes = await this.$api.comment.getGoodsCommentNum({goods_id: this.goods.id})
             if (commentNumRes.code == 200) {
-                this.commentNumList = commentNumRes.data.num
+                this.commentNum = commentNumRes.data.num
+                this.goodCommentNum = commentNumRes.data.good_num
+            }
+
+            let collectRes = await isCollect('goods', this.goods.id)
+            if(collectRes.code == 200){
+                console.log('collectRes',collectRes.data)
+                this.favorite = collectRes.data
+                //this.favorite = !this.favorite;
             }
             this.shareList = await this.$api.json('shareList');
         },
@@ -294,6 +322,11 @@
                 } else if (this.specClass === 'none') {
                     this.specClass = 'show';
                 }
+            },
+            gotoCommentList(){
+                uni.navigateTo({
+                    url: `/pages/comment/index?goods_id=` + this.goods.id
+                })
             },
             //选择规格
             selectSpec(index, pid) {
@@ -333,19 +366,50 @@
                     real_price: parseFloat(this.goods.real_price),
                     cover: this.goods.small_cover
                 }
-                console.log('cartGoodsItem', cartGoodsItem)
+
+                //console.log('cartGoodsItem', cartGoodsItem)
                 let res = await this.$api.goods.addCartGoods(cartGoodsItem)
                 if (res.code == 200) {
-                    uni.navigateTo({url: "/pages/cart/cart"})
+                    console.log('res', res)
+                    uni.showToast({title: "添加成功"})
+                    //uni.navigateTo({url: "/pages/cart/cart"})
+                    
                 } else {
                     uni.showToast({title: "添加失败" + res.msg})
                 }
             },
             //收藏
             toFavorite() {
-                this.favorite = !this.favorite;
+                let flag = !this.favorite;
+                if(flag){
+                    this.$api.user.addUserCollection('goods', this.goods.id).then(res=>{
+                        if(res.statusCode == 401){
+                            uni.showToast({title: "请登录后尝试"})
+                            return 
+                        }
+                        if(res.code == 200){
+                            this.favorite = flag
+                        }
+                    })
+                }else {
+                    this.$api.user.delUserCollection('goods', this.goods.id).then(res=>{
+                        if(res.code == 200){
+                            this.favorite = flag
+                        }
+                    })
+                }
             },
             buy() {
+                this.$store.dispatch('order/preOrderByGoodsList', [{
+                    goods_id: parseInt(this.goods.id),
+                    sku_id: 0,
+                    name: this.goods.name,
+                    sku_name: '',
+                    cover: this.goods.small_cover,
+                    num: 1,
+                    price: parseFloat(this.goods.price),
+                    real_price: parseFloat(this.goods.real_price),
+                }])
                 uni.navigateTo({
                     url: `/pages/order/createOrder`
                 })

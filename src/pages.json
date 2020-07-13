@@ -4,11 +4,17 @@
   },
   "pages": [
     //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+//    {
+//      "path": "pages/test/test",
+//      "style": {
+//        "navigationBarTitleText": "测试本地"
+//      }
+//    },
     {
       "path": "pages/index/index",
       "style": {
         // #ifdef MP
-        "navigationBarTitleText": "Dloud商城",
+        "navigationBarTitleText": "商城",
         //"navigationStyle": "custom",
         // #endif
         "app-plus": {
@@ -17,8 +23,8 @@
             "searchInput": {
               "backgroundColor": "rgba(231, 231, 231,.7)",
               "borderRadius": "16px",
-              "placeholder": "请输入地址 如：大钟寺",
-              "disabled": true,
+              "placeholder": "请输入搜索商品关键词",
+              "disabled": false,
               "placeholderColor": "#606266"
             },
             "buttons": [
@@ -136,6 +142,15 @@
         }
       }
     },
+//    {
+//      "path": "pages/order/uv-index",
+//      "style": {
+//        "navigationBarTitleText": "我的订单",
+//        "app-plus": {
+//          "bounce": "none"
+//        }
+//      }
+//    },
     {
       "path": "pages/money/money",
       "style": {}
@@ -193,15 +208,52 @@
       }
     },
     {
+      "path": "pages/product/search",
+      "style": {
+        "enablePullDownRefresh": true,
+        "navigationBarTitleText": "搜索商品",
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent",
+            "searchInput": {
+              "backgroundColor": "rgba(231, 231, 231,.7)",
+              "borderRadius": "16px",
+              "placeholder": "请输入搜索商品关键词",
+              "disabled": false,
+              "placeholderColor": "#606266"
+            },
+            "buttons": [
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue60d",
+                "fontSize": "26",
+                "color": "#303133",
+                "float": "left",
+                "background": "rgba(0,0,0,0)"
+              },
+              {
+                "fontSrc": "/static/yticon.ttf",
+                "text": "\ue744",
+                "fontSize": "27",
+                "color": "#303133",
+                "background": "rgba(0,0,0,0)",
+                "redDot": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
       "path": "pages/ticket/index",
       "style": {
         "navigationBarTitleText": "门票列表"
       }
     },
     {
-      "path": "pages/notify/detail",
+      "path": "pages/activity/detail",
       "style": {
-        "navigationBarTitleText": "通知详情"
+        "navigationBarTitleText": "活动详情"
       }
     },
     {
@@ -221,6 +273,12 @@
       "path": "pages/comment/reply",
       "style": {
         "navigationBarTitleText": "评论回复"
+      }
+    },
+    {
+      "path": "pages/comment/comment",
+      "style": {
+        "navigationBarTitleText": "评论"
       }
     },
     {
@@ -255,8 +313,39 @@
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
+    "navigationBarTitleText": "创意堂",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#C0C4CC",
+    "selectedColor": "#fa436a",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [{
+      "pagePath": "pages/index/index",
+      "iconPath": "static/tab-home.png",
+      "selectedIconPath": "static/tab-home-current.png",
+      "text": "首页"
+    },
+      {
+        "pagePath": "pages/category/category",
+        "iconPath": "static/tab-cate.png",
+        "selectedIconPath": "static/tab-cate-current.png",
+        "text": "分类"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "iconPath": "static/tab-cart.png",
+        "selectedIconPath": "static/tab-cart-current.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "static/tab-my.png",
+        "selectedIconPath": "static/tab-my-current.png",
+        "text": "我的"
+      }
+    ]
   }
 }

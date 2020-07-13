@@ -16,7 +16,7 @@
         <view v-else>
             <!-- 列表 -->
             <view class="cart-list">
-                <block v-for="(item, index) in cartList" :key="item.id">
+                <block v-for="(item, index) in cartList" :key="index">
                     <view
                             class="cart-item"
                             :class="{'b-b': index!==cartList.length-1}"
@@ -67,10 +67,10 @@
                     </view>
                 </view>
                 <view class="total-box">
-                    <text class="price">¥{{total}}</text>
+                    <text class="price">¥{{real_total}}</text>
                     <text class="coupon">
                         已优惠
-                        <text>74.35</text>
+                        <text>{{total_discount}}</text>
                         元
                     </text>
                 </view>
@@ -92,14 +92,19 @@
         },
         data() {
             return {
+                real_total: 0,
+                total_discount: 0,
                 total: 0, //总价格
                 allChecked: false, //全选状态  true|false
                 empty: false, //空白页现实  true|false
                 cartList: [],
-            };
+            }
         },
         onLoad() {
-            this.loadData();
+        },
+        onShow(){
+           console.log('onShow')
+           this.loadData();
         },
         watch: {
             //显示空白页
@@ -111,12 +116,26 @@
             }
         },
         computed: {
-            ...mapState(['hasLogin'])
+            hasLogin: state => state.user.hasLogin,
         },
         methods: {
             //请求数据
             async loadData() {
                 let listRes = await this.$api.goods.getCartGoodsList()
+                if(listRes.statusCode == 401){
+                    uni.showModal({
+                        content: '您换还没有登录，去登录',
+                        success: (e) => {
+                            if (e.confirm) {
+                                uni.navigateTo({
+                                    url: '/pages/login/index'
+                                })
+                            }
+                        }
+                    })
+                    return
+                }
+
                 if(listRes.code == 200){
                     let list = listRes.data
                     let cartList = list.map(item => {
@@ -124,7 +143,7 @@
                         return item;
                     });
                     this.cartList = cartList;
-                    console.log('cartList', cartList)
+                    //console.log('cartList', cartList)
                     this.calcTotal();  //计算总价
                 }
             },
@@ -175,8 +194,8 @@
             async deleteCartItem(index) {
                 let list = this.cartList;
                 let row = list[index];
-                let id = row.id;
                 uni.showLoading()
+                row.num = 0
                 let res = await this.$api.goods.delCartGoods(row)
                 if (res.code == 200) {
                     this.cartList.splice(index, 1);
@@ -196,6 +215,9 @@
                             let res = this.$api.goods.clearCart()
                             if (res.code == 200) {
                                 this.cartList = [];
+                                this.cartList.push({})
+                                this.cartList.pop()
+                                uni.showToast({title: '清空成功'})
                             } else {
                                 uni.showToast({title: res.msg})
                             }
@@ -211,17 +233,22 @@
                     this.empty = true;
                     return;
                 }
+                let real_total = 0;
                 let total = 0;
                 let checked = true;
                 list.forEach(item => {
                     if (item.checked === true) {
-                        total += item.price * item.number;
+                        real_total += item.real_price * item.num;
+                        total += item.price * item.num;
                     } else if (checked === true) {
                         checked = false;
                     }
                 })
                 this.allChecked = checked;
+                this.real_total = Number(real_total.toFixed(2));
                 this.total = Number(total.toFixed(2));
+                this.total_discount = this.total - this.real_total
+                //console.log(this.real_total,this.total,this.total - this.real_total)
             },
             //创建订单
             createOrder() {
@@ -231,10 +258,11 @@
                     if (item.checked) {
                         goodsData.push({
                             attr_val: item.attr_val,
-                            number: item.number
+                            num: item.number
                         })
                     }
                 })
+                this.$store.dispatch('order/preOrderByGoodsList', this.cartList)
 
                 uni.navigateTo({
                     url: `/pages/order/createOrder?data=${JSON.stringify({

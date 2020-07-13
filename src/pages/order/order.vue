@@ -27,46 +27,52 @@
 						class="order-item"
 					>
 						<view class="i-top b-b">
-							<text class="time">{{item.time}}</text>
-							<text class="state" :style="{color: item.stateTipColor}">{{item.stateTip}}</text>
+							<text class="time">{{item.order_no}}</text>
+							<text class="time">{{item.created_at}}</text>
+							<text class="state" :style="{color: item.stateTipColor}">{{item.state}}</text>
 							<text 
-								v-if="item.state===9" 
+								v-if="item.pay_status==='unpay'"
 								class="del-btn yticon icon-iconfontshanchu1"
 								@click="deleteOrder(index)"
 							></text>
 						</view>
 						
-						<scroll-view v-if="item.goodsList.length > 1" class="goods-box" scroll-x>
+						<scroll-view v-if="item.goodsList &&item.goodsList.length > 1" class="goods-box" scroll-x>
 							<view
 								v-for="(goodsItem, goodsIndex) in item.goodsList" :key="goodsIndex"
 								class="goods-item"
 							>
-								<image class="goods-img" :src="goodsItem.image" mode="aspectFill"></image>
+								<image class="goods-img" :src="goodsItem.cover" mode="aspectFill"></image>
+								<text class="title clamp">{{goodsItem.name}}</text>
+								<text class="price">{{goodsItem.real_price}} x {{goodsItem.num}}</text>
 							</view>
 						</scroll-view>
-						<view 
-							v-if="item.goodsList.length === 1" 
+						<view
+							v-if="item.goodsList.length === 1"
 							class="goods-box-single"
 							v-for="(goodsItem, goodsIndex) in item.goodsList" :key="goodsIndex"
 						>
-							<image class="goods-img" :src="goodsItem.image" mode="aspectFill"></image>
+							<image class="goods-img" :src="goodsItem.cover" mode="aspectFill"></image>
 							<view class="right">
-								<text class="title clamp">{{goodsItem.title}}</text>
-								<text class="attr-box">{{goodsItem.attr}}  x {{goodsItem.number}}</text>
-								<text class="price">{{goodsItem.price}}</text>
+								<text class="title clamp">{{goodsItem.name}}</text>
+								<text class="attr-box">{{goodsItem.attr}}  x {{goodsItem.num}}</text>
+								<text class="price">{{goodsItem.real_price}}</text>
 							</view>
 						</view>
 						
 						<view class="price-box">
 							共
-							<text class="num">7</text>
+							<text class="num">{{item.total_num}}</text>
 							件商品 实付款
-							<text class="price">143.7</text>
+							<text class="price">{{item.real_total}}</text>
 						</view>
-						<view class="action-box b-t" v-if="item.state != 9">
-							<button class="action-btn" @click="cancelOrder(item)">取消订单</button>
-							<button class="action-btn recom">立即支付</button>
+						<view class="action-box b-t" >
+							<button class="action-btn" v-if="item.pay_status == 'unpay'" @click="cancelOrder(item)">取消订单</button>
+							<button class="action-btn  recom" v-if="item.pay_status == 'unpay'">立即支付</button>
+							<button class="action-btn" v-if="item.status == 'signed'" @click="gotoComment(item)">去评价</button>
+							<button class="action-btn" v-if="item.pay_status == 'paid'" @click="gotoRefund(item)">退款</button>
 						</view>
+						
 					</view>
 					 
 					<uni-load-more :status="tabItem.loadingType"></uni-load-more>
@@ -81,6 +87,7 @@
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 	import empty from "@/components/empty";
 	import Json from '@/Json';
+	import {getOrderList} from "../../api/order";
 	export default {
 		components: {
 			uniLoadMore,
@@ -90,32 +97,32 @@
 			return {
 				tabCurrentIndex: 0,
 				navList: [{
-						state: 0,
+						state: 'all',
 						text: '全部',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
-						state: 1,
+						state: 'unpay',
 						text: '待付款',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
-						state: 2,
+						state: 'shipping',
 						text: '待收货',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
-						state: 3,
+						state: 'signed',
 						text: '待评价',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
-						state: 4,
-						text: '售后',
+						state: 'refund',
+						text: '退款',
 						loadingType: 'more',
 						orderList: []
 					}
@@ -142,7 +149,7 @@
 		 
 		methods: {
 			//获取订单列表
-			loadData(source){
+			async loadData(source){
 				//这里是将订单挂载到tab列表下
 				let index = this.tabCurrentIndex;
 				let navItem = this.navList[index];
@@ -158,27 +165,53 @@
 				}
 				
 				navItem.loadingType = 'loading';
-				
-				setTimeout(()=>{
-					let orderList = Json.orderList.filter(item=>{
-						//添加不同状态下订单的表现形式
-						item = Object.assign(item, this.orderStateExp(item.state));
-						//演示数据所以自己进行状态筛选
-						if(state === 0){
-							//0为全部订单
-							return item;
+				let len = navItem.orderList.length
+				var last_id = len > 0 ? navItem.orderList[len - 1].id : 0
+			    let res = await getOrderList(state, last_id)
+				if(res.code == 200){
+				    let orderList = res.data
+                    if(orderList.length ==0 ){
+						navItem.loadingType = 'noMore';
+						return 
+					}
+                    orderList.forEach(item =>{
+						let  num = 0
+                        if(item.goodsList instanceof Array){
+							item.goodsList.forEach( goods =>{
+								num += goods.num
+							})
 						}
-						return item.state === state
-					});
-					orderList.forEach(item=>{
-						navItem.orderList.push(item);
+						item.total_num = num
+						//console.log(item)
+                    	navItem.orderList.push(item)
 					})
 					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
 					this.$set(navItem, 'loaded', true);
-					
-					//判断是否还有数据， 有改为 more， 没有改为noMore 
+
+					//判断是否还有数据， 有改为 more， 没有改为noMore
 					navItem.loadingType = 'more';
-				}, 600);	
+				}
+
+				// setTimeout(()=>{
+				// 	let orderList = Json.orderList.filter(item=>{
+				// 		//添加不同状态下订单的表现形式
+				// 		item = Object.assign(item, this.orderStateExp(item.state));
+				// 		//演示数据所以自己进行状态筛选
+				// 		if(state === 0){
+				// 			//0为全部订单
+				// 			return item;
+				// 		}
+				// 		return item.state === state
+				// 	});
+				// 	orderList.forEach(item=>{
+				// 		navItem.orderList.push(item);
+				// 	})
+				// 	//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
+				// 	this.$set(navItem, 'loaded', true);
+				//
+				// 	//判断是否还有数据， 有改为 more， 没有改为noMore
+				// 	navItem.loadingType = 'more';
+				// }, 600);	
 			}, 
 
 			//swiper 切换
@@ -205,23 +238,43 @@
 				uni.showLoading({
 					title: '请稍后'
 				})
-				setTimeout(()=>{
-					let {stateTip, stateTipColor} = this.orderStateExp(9);
-					item = Object.assign(item, {
-						state: 9,
-						stateTip, 
-						stateTipColor
-					})
-					
-					//取消订单后删除待付款中该项
-					let list = this.navList[1].orderList;
-					let index = list.findIndex(val=>val.id === item.id);
-					index !== -1 && list.splice(index, 1);
-					
+				this.$api.order.cancelOrder(item).then(res => {
 					uni.hideLoading();
-				}, 600)
+					if(res.code == 200){
+					    uni.showToast({title:'取消订单成功'})
+					}else {
+						uni.showToast({title:'取消订单失败'+ res.msg})
+					}
+				})
+				// setTimeout(()=>{
+				// 	let {stateTip, stateTipColor} = this.orderStateExp(9);
+				// 	item = Object.assign(item, {
+				// 		state: 9,
+				// 		stateTip,
+				// 		stateTipColor
+				// 	})
+				//
+				// 	//取消订单后删除待付款中该项
+				// 	let list = this.navList[1].orderList;
+				// 	let index = list.findIndex(val=>val.id === item.id);
+				// 	index !== -1 && list.splice(index, 1);
+				//
+				// 	uni.hideLoading();
+				// }, 600)
 			},
-
+			gotoComment(item){
+				console.log('item', item)
+				let goodsList = JSON.stringify(item.goodsList)
+                uni.navigateTo({
+					url:'/pages/comment/comment?type=order&order_no=' + item.order_no + '&goodsList=' + goodsList
+				})
+			},
+			gotoRefund(item){
+				uni.showToast({
+					title: '暂不支持线上退款',
+					duration: 2000
+				});
+			},
 			//订单状态文字和颜色
 			orderStateExp(state){
 				let stateTip = '',
@@ -332,7 +385,7 @@
 		}
 		/* 多条商品 */
 		.goods-box{
-			height: 160upx;
+			height: 230upx;
 			padding: 20upx 0;
 			white-space: nowrap;
 			.goods-item{
@@ -345,6 +398,34 @@
 				display: block;
 				width: 100%;
 				height: 100%;
+			}
+			.title {
+				text-align: left;
+				font-size: $font-base + 0upx;
+				color: $font-color-dark;
+				//line-height: 1;
+			}
+			.price{
+                margin: 0px;
+                text-align: left;
+                display: block;
+				&:before{
+					content: '￥';
+					font-size: $font-sm;
+				}
+			}
+            .action-btn{
+				width: 160upx;
+				height: 60upx;
+				margin: 0;
+				padding: 0;
+				text-align: center;
+				line-height: 45upx;
+				font-size: $font-sm + 2upx;
+				color: $font-color-dark;
+				background: #fff;
+				border-radius: 100px;
+				border-color: #f7bcc8;
 			}
 		}
 		/* 单条商品 */
@@ -363,9 +444,9 @@
 				padding: 0 30upx 0 24upx;
 				overflow: hidden;
 				.title{
-					font-size: $font-base + 2upx;
+					font-size: $font-base + 0upx;
 					color: $font-color-dark;
-					line-height: 1;
+					//line-height: 1;
 				}
 				.attr-box{
 					font-size: $font-sm + 2upx;

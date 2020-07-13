@@ -62,15 +62,15 @@ function setComId(com_id_storge) {
 function getClientID() {
     var client_id = uni.getStorageSync('client_id')
     if (!client_id) {
-        let key = Math.floor(new Date().getMilliseconds() / 2000)
-        let rand = Math.floor(Math.random() * 1000000)
-        let rand2 = Math.floor(Math.random() * 1000000)
+        let key = Math.floor(new Date().getTime() / 30000)
+        let rand = Math.floor(Math.random() * 100000000)
+        let rand2 = Math.floor(Math.random() * 100000000)
         let params = {
             r: rand,
             r2: rand2,
-            key: key - rand * (rand2 + 2020),
+            key: key + (rand2 + rand +20201314),
         }
-        client_id = JSON.stringify(params)
+        client_id = rand+"_" +rand2+"_"+ params.key
         uni.setStorageSync('client_id', client_id)
     }
     return client_id

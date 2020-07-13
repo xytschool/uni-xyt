@@ -65,7 +65,6 @@
 			
 		},
 		methods: {
-			...mapMutations(['login']),
 			inputChange(e){
 				const key = e.currentTarget.dataset.key;
 				this[key] = e.detail.value;
@@ -94,7 +93,7 @@
 				};
 				const result = await this.$api.json('userInfo');
 				if(result.status === 1){
-					this.login(result.data);
+					//this.login(result.data);
                     uni.navigateBack();  
 				}else{
 					this.$api.msg(result.msg);

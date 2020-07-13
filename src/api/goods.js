@@ -1,7 +1,7 @@
 import {get, post} from '../utils/request'
-
+import {baseUrl} from '../config'
 //const host = "/v1/site"
-const host = "http://m.xytschool.com/dev/goods/14"
+const host = baseUrl + "/goods/14"
 //const host = "http://site.ideatest.top:8889/v1/site"
 //const host = "http://localhost:8889/v1/site"
 
@@ -27,8 +27,17 @@ module.exports = {
     /**
      *   [{icon: '' , title: '' , link: ''}]
      * */
-    async getGoodsList() {
-        return get(host + '/getGoodsList')
+    async getGoodsList(params) {
+        return get(host + '/getGoodsList',params)
+    },
+    /**
+     *   [{icon: '' , title: '' , link: ''}]
+     * */
+    async getGoodsTags() {
+        return get(host + '/getGoodsTags')
+    },
+    async getGoodsByTagId() {
+        return get(host + '/getGoodsListByTagId')
     },
     /**
      *   [{icon: '' , title: '' , link: ''}]

@@ -9,43 +9,7 @@ import uView from "uview-ui";
 Vue.use(uView);
 App.mpType = 'app'
 
-console.log(process)
-
-function ready() {
-    console.log(window.__wxjs_environment === 'miniprogram') // true
-}
-
-if (!window.WeixinJSBridge || !WeixinJSBridge.invoke) {
-    document.addEventListener('WeixinJSBridgeReady', ready, false)
-    //alert("123333")
-} else {
-    ready()
-}
-
-if (wx && wx.config) {
-    wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-        appId: '', // 必填，公众号的唯一标识
-        timestamp: 0, // 必填，生成签名的时间戳
-        nonceStr: '', // 必填，生成签名的随机串
-        signature: '',// 必填，签名
-        jsApiList: [] // 必填，需要使用的JS接口列表
-    });
-    wx.ready(() => {
-        console.log(ready)
-    })
-    wx.error(function (res) {
-        console.log(res)
-    })
-
-    if (wx.miniProgram) {
-        wx.miniProgram.getEnv(function (res) {
-            console.log(res.miniprogram) // true
-            alert('xx')
-        })
-    }
-}
-
+//console.log(process)
 
 const msg = (title, duration = 1500, mask = false, icon = 'none') => {
     //统一提示方便全局修改
@@ -84,16 +48,17 @@ import user from './api/userapi' //测试用数据
 import order from './api/order' //测试用数据
 import goods from './api/goods' //测试用数据
 import comment from './api/comment'
+import message from './api/message'
 import {getUserInfo} from "./utils/utils"; //测试用数据
 
 
 let userInfo = getUserInfo()
 //console.log('getUserInfo', userInfo)
-if (user) {
-    store.commit('login', userInfo)
+if (userInfo) {
+    store.commit('user/setUser', userInfo)
 }
 
-Vue.prototype.$api = {msg, json, prePage, site, user, order, goods, comment};
+Vue.prototype.$api = {msg, json, prePage, message, site, user, order, goods, comment};
 
 const app = new Vue({
     ...App

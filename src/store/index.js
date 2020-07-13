@@ -1,34 +1,28 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import order from './modules/order'
+import user from './modules/user'
+import goods from './modules/goods'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-	state: {
-		hasLogin: false,
-		userInfo: {},
-	},
-	mutations: {
-		login(state, provider) {
-			state.hasLogin = true;
-			state.userInfo = provider;
-			uni.setStorage({//缓存用户登陆状态
-			    key: 'userInfo',  
-			    data: provider  
-			}) 
-			console.log(state.userInfo);
-		},
-		logout(state) {
-			state.hasLogin = false;
-			state.userInfo = {};
-			uni.removeStorage({  
-                key: 'userInfo'  
-            })
-		}
-	},
-	actions: {
-	
-	}
+    state: {
+        company: {},
+        comId: 0,
+        source: '小程序',
+        pay_method: '微信',
+    },
+    modules: {
+        order,
+        user,
+        goods
+    },
+    mutations: {
+    },
+    actions: {
+
+    }
 })
 
 export default store
