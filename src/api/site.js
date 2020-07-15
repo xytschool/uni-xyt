@@ -1,16 +1,42 @@
-import {get ,post} from '../utils/request'
-const host = "/v1/site"
+import {get ,post,ws} from '../utils/request'
+import {getAuthToken, getClientID} from '../utils/utils'
+
+import {baseUrl} from '../config'
+//const host = "/v1/site"
 //const host = "http://site.ideatest.top:8889/v1/site"
 //const host = "http://localhost:8889/v1/site"
+const host = baseUrl + "/site/{$com_id}"
+//var ws = new WebSocket();
 
 module.exports = {
+   /**
+    *   [{src: '' , background: '' , link: ''}]
+    * */
+    async  getBannerList(){
+        return get(host + '/getBannerList')
+    },
+    /**
+     *   [{icon: '' , title: '' , link: ''}]
+     * */
+    async  getNavList(){
+        return get(host + '/getNavList')
+    },
     async  getNotifyList(){
         return get(host + '/getNotifyList')
     },
     async  getNotifyDetail(params){
         return get(host + '/getNotifyDetail',params)
     },
+    async  getActivityList(){
+        return get(host + '/getActivityList')
+    },
+    async  getActivityDetail(params){
+        return get(host + '/getActivityDetail',params)
+    },
     async applyPartTimer(){
         return get(host + '/getNotifyDetail',params)
-    }
+    },
+    async message(){
+        return get(host + '/getNotifyDetail',params)
+    },
 }

@@ -234,7 +234,7 @@ export default {
     gotoNotify(i){
       var item = this.notifyList[i]
     	uni.navigateTo({
-				url: '/pages/notify/detail?notify_id=' + item.id 
+				url: '/pages/activity/detail?notify_id=' + item.id
 			});
     },
     getDetail(code){

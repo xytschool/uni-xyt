@@ -11,8 +11,14 @@
  *
  * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
  */
+/**************************** uview ***************************************************************/
+img{
+ width: 100%;
+}
+
  @import 'uview-ui/theme.scss';
 /* 颜色变量 */
+
 
 /* 行为相关颜色 */
 $uni-color-primary: #007aff;
@@ -44,25 +50,25 @@ $uni-font-size-base:28upx;
 $uni-font-size-lg:32upx;
 
 /* 图片尺寸 */
-$uni-img-size-sm:40upx;
-$uni-img-size-base:52upx;
-$uni-img-size-lg:80upx;
+//$uni-img-size-sm:40upx;
+//$uni-img-size-base:52upx;
+//$uni-img-size-lg:80upx;
 
 /* Border Radius */
-$uni-border-radius-sm: 4upx;
-$uni-border-radius-base: 6upx;
-$uni-border-radius-lg: 12upx;
-$uni-border-radius-circle: 50%;
+//$uni-border-radius-sm: 4upx;
+//$uni-border-radius-base: 6upx;
+//$uni-border-radius-lg: 12upx;
+//$uni-border-radius-circle: 50%;
 
 /* 水平间距 */
-$uni-spacing-row-sm: 10px;
-$uni-spacing-row-base: 20upx;
-$uni-spacing-row-lg: 30upx;
+//$uni-spacing-row-sm: 10px;
+//$uni-spacing-row-base: 20upx;
+//$uni-spacing-row-lg: 30upx;
 
 /* 垂直间距 */
-$uni-spacing-col-sm: 8upx;
-$uni-spacing-col-base: 16upx;
-$uni-spacing-col-lg: 24upx;
+//$uni-spacing-col-sm: 8upx;
+//$uni-spacing-col-base: 16upx;
+//$uni-spacing-col-lg: 24upx;
 
 /* 透明度 */
 $uni-opacity-disabled: 0.3; // 组件禁用态的透明度
@@ -74,3 +80,32 @@ $uni-color-subtitle: #555555; // 二级标题颜色
 $uni-font-size-subtitle:36upx;
 $uni-color-paragraph: #3F536E; // 文章段落颜色
 $uni-font-size-paragraph:30upx;
+
+/**************************** uview ***************************************************************/
+/* 页面左右间距 */
+$page-row-spacing: 30upx;
+$page-color-base: #f8f8f8;
+$page-color-light: #f8f6fc;
+$base-color: #fa436a;
+
+/* 文字尺寸 */
+$font-sm: 24upx;
+$font-base: 28upx;
+$font-lg: 32upx;
+/*文字颜色*/
+$font-color-dark: #303133;
+$font-color-base: #606266;
+$font-color-light: #909399;
+$font-color-disabled: #C0C4CC;
+$font-color-spec: #4399fc;
+/* 边框颜色 */
+$border-color-dark: #DCDFE6;
+$border-color-base: #E4E7ED;
+$border-color-light: #EBEEF5;
+/* 图片加载中颜色 */
+$image-bg-color: #eee;
+/* 行为相关颜色 */
+$uni-color-primary:#fa436a;
+$uni-color-success: #4cd964;
+$uni-color-warning: #f0ad4e;
+$uni-color-error: #dd524d;

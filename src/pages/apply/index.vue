@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import {applyPartTimer, getApplyPartTimerStatus } from "../../api/user"
+//import {applyPartTimer, getApplyPartTimerStatus } from "../../api/user"
 import {parseDate} from "../../utils/date"
 import {setAuthToken} from "../../utils/utils"
 export default {
@@ -92,7 +92,7 @@ export default {
       uni.showLoading({
         title: '加载中'
       });
-      applyPartTimer(this.form).then(res => {
+      this.$api.user.applyPartTimer(this.form).then(res => {
         uni.hideLoading();
         if(res.code == 200){
           uni.showToast({
@@ -108,7 +108,7 @@ export default {
       })
     },
     getDetail(){
-      getApplyPartTimerStatus({}).then((response) => {
+      this.$api.user.getApplyPartTimerStatus({}).then((response) => {
         console.log(response)
         if(response.code == 200) {
           this.notify = response.data
