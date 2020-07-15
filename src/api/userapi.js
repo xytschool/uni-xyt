@@ -54,5 +54,8 @@ module.exports = {
     },
     async getUserCollectionList() {
         return post(host + '/getUserCollectionList')
+    },
+    checkVerifyCode(params) {
+        return post(host + '/getUserCollectionList')
     }
 }

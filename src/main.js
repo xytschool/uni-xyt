@@ -51,7 +51,6 @@ import comment from './api/comment'
 import message from './api/message'
 import {getUserInfo} from "./utils/utils"; //测试用数据
 
-
 let userInfo = getUserInfo()
 //console.log('getUserInfo', userInfo)
 if (userInfo) {

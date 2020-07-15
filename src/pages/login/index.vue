@@ -88,7 +88,7 @@
 
             <view class="u-margin-bottom-40" v-else>
                 <view class="tips">未注册的手机号验证后自动创建创意堂账号</view>
-                <button @tap="submit" :style="[inputStyle]" class="getCaptcha">获取短信验证码</button>
+                <button @tap="sendSms" :style="[inputStyle]" class="getCaptcha">获取短信验证码</button>
             </view>
 
             <view class="alternative">
@@ -122,12 +122,10 @@
 </template>
 
 <script>
-    import {setUserInfo} from "../../utils/utils";
-
     export default {
         data() {
             return {
-                mobile: '18618184632',
+                mobile: '17150014402',
                 password: '',
                 loginMethod: 'password',
                 com_id: 0
@@ -164,23 +162,17 @@
                 }
                 
                 var params = {
-                    com_id: this.com_id,
+                    com_id: parseInt(this.com_id),
                     username: this.mobile,
                     password: this.password
                 }
-                this.$api.user.login(params).then(res =>{
-                    if(res.code != 200) {
-                        uni.showToast({
-                            'title': '短信发生失败' + res.msg ? res.msg : '',
-                            'icon': 'none'
-                        })
-                    }else{
-                        uni.showToast({
-                            'title': '登录成功',
-                        })
-                        setUserInfo(res.data)
+                this.$store.dispatch('user/login', params).then((ret)=>{
+                    let pages = getCurrentPages();
+                    if(pages.length >= 2) {
+                        uni.navigateBack()
+                    }else {
                         this.$u.route({
-                            url: '/pages/order/index',
+                            url: 'pages/index/index?com_id=' + this.com_id,
                             queryParams: {
                                 com_id: this.com_id
                             }
@@ -188,19 +180,15 @@
                     }
                 })
             },
-            submit() {
+            sendSms() {
                 if (this.$u.test.mobile(this.mobile)) {
                     var params = {
+                        com_id: parseInt(this.com_id),
                         mobile: this.mobile,
                     }
                     this.$api.user.sendLoginMessage(params).then(res => {
                         if (res.code == 200) {
-                            this.$u.route({
-                                url: 'pages/login/code?mobile=' + this.mobile,
-                                queryParams: {
-                                    com_id: this.com_id
-                                }
-                            })
+                            uni.navigateTo({url: '/pages/login/code?mobile=' + this.mobile +'&com_id=' + this.com_id})
                         } else {
                             uni.showToast({
                                 'title': '短信发生失败' + res.msg ? res.msg : '',

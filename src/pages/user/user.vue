@@ -5,10 +5,10 @@
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box">
-					<image class="portrait" :src="userInfo.portrait || '/static/missing-face.png'"></image>
+					<image class="portrait" :src="user.avatar || '/static/missing-face.png'"></image>
 				</view>
 				<view class="info-box">
-					<text class="username">{{userInfo.nickname || '游客'}}</text>
+					<text class="username">{{user.nickname || user.name}}</text>
 				</view>
 			</view>
 			<view class="vip-card-box">
@@ -39,7 +39,7 @@
 			
 			<view class="tj-sction">
 				<view class="tj-item">
-					<text class="num">128.8</text>
+					<text class="num">{{user.balance||0}}</text>
 					<text>余额</text>
 				</view>
 				<view class="tj-item">
@@ -47,7 +47,7 @@
 					<text>优惠券</text>
 				</view>
 				<view class="tj-item">
-					<text class="num">20</text>
+					<text class="num">{{user.score}}</text>
 					<text>积分</text>
 				</view>
 			</view>
@@ -92,9 +92,7 @@
 				<list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 			</view>
 		</view>
-			
-		
-    </view>  
+    </view>
 </template>  
 <script>  
 	import listCell from '@/components/mix-list-cell';
@@ -108,12 +106,15 @@
 		},
 		data(){
 			return {
+				com_id: 0,
 				coverTransform: 'translateY(0px)',
 				coverTransition: '0s',
 				moving: false,
 			}
 		},
-		onLoad(){
+		onLoad(params){
+		    this.com_id = params.com_id
+			this.$store.dispatch('user/checkLogin', this.com_id)
 		},
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {
@@ -137,19 +138,18 @@
 		// #endif
         computed: {
 			...mapState({
-				userInfo: state => state.user.user,
+				user: state => state.user.user,
 				hasLogin: state => state.user.hasLogin,
 			})
 		},
         methods: {
-
 			/**
 			 * 统一跳转接口,拦截未登录路由
 			 * navigator标签现在默认没有转场动画，所以用view
 			 */
 			navTo(url){
 				if(!this.hasLogin){
-					url = '/pages/public/login';
+					url = '/pages/login/index';
 				}
 				uni.navigateTo({  
 					url

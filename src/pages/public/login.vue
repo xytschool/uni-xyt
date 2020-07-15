@@ -76,6 +76,7 @@
 				this.$api.msg('去注册');
 			},
 			async toLogin(){
+
 				this.logining = true;
 				const {mobile, password} = this;
 				/* 数据验证模块

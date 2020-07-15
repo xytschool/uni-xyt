@@ -6,7 +6,7 @@ const userMoudle = {
         user: {},
         hasLogin: false,
         addressList: [],
-        defaultAddress: {}
+        defaultAddress: {},
     }),
     mutations: {
         setUser(state, user) {
@@ -16,12 +16,19 @@ const userMoudle = {
                 key: 'userInfo',
                 data: user
             })
+            uni.setStorage({//缓存用户登陆状态
+                key: 'authToken',
+                data: user.jws_token
+            })
         },
         logout(state) {
             state.hasLogin = false;
             state.user = {};
             uni.removeStorage({
                 key: 'userInfo'
+            })
+            uni.removeStorage({
+                key: 'authToken'
             })
         },
         setAddressList(state, list) {
@@ -48,13 +55,32 @@ const userMoudle = {
         },
     },
     actions: {
-        login({commit, dispatch, state}, data) {
-            let res = login(data)
+        async login({commit, dispatch, state}, data) {
+            let res = await login(data)
             if (res.code == 200) {
-                console.log('login', res)
+                commit('setUser', res.data)
+                return true
             }else {
-
+                uni.showToast({
+                    'title': '登录失败' + res.msg ? res.msg : '',
+                    'icon': 'none'
+                })
+                return false
             }
+        },
+        checkLogin({commit, dispatch, state},com_id){
+            if(!state.hasLogin){
+                uni.showModal({
+                    content: '您换还没有登录，去登录',
+                    success: (e) => {
+                        if (e.confirm) {
+                            uni.navigateTo({url: '/pages/login/index?com_id='+com_id})
+                        }
+                    }
+                })
+                return false
+            }
+            return true
         },
         logout({commit, dispatch, state}) {
             commit('logout')

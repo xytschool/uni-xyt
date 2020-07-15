@@ -92,6 +92,7 @@
         },
         data() {
             return {
+                com_id: 0,
                 real_total: 0,
                 total_discount: 0,
                 total: 0, //总价格
@@ -100,11 +101,20 @@
                 cartList: [],
             }
         },
-        onLoad() {
+        onLoad(params) {
+           this.com_id = params.com_id
         },
         onShow(){
-           console.log('onShow')
+           this.$store.dispatch('user/checkLogin',this.com_id)
+           if(!this.hasLogin){
+               return
+           }
            this.loadData();
+        },
+        computed: {
+            ...mapState({
+                hasLogin: state => state.user.hasLogin,
+            })
         },
         watch: {
             //显示空白页
@@ -114,9 +124,6 @@
                     this.empty = empty;
                 }
             }
-        },
-        computed: {
-            hasLogin: state => state.user.hasLogin,
         },
         methods: {
             //请求数据
@@ -138,10 +145,13 @@
 
                 if(listRes.code == 200){
                     let list = listRes.data
-                    let cartList = list.map(item => {
-                        item.checked = true;
-                        return item;
-                    });
+                    let cartList = []
+                    if(list instanceof Array){
+                        cartList = list.map(item => {
+                            item.checked = true;
+                            return item;
+                        });
+                    }
                     this.cartList = cartList;
                     //console.log('cartList', cartList)
                     this.calcTotal();  //计算总价
@@ -157,7 +167,7 @@
             },
             navToLogin() {
                 uni.navigateTo({
-                    url: '/pages/public/login'
+                    url: '/pages/login/index'
                 })
             },
             //选中状态处理
