@@ -128,7 +128,7 @@
                 mobile: '17150014402',
                 password: '',
                 loginMethod: 'password',
-                com_id: 0
+                //com_id: 0
             }
         },
         computed: {
@@ -142,7 +142,7 @@
             }
         },
         onLoad(params){
-            this.com_id = parseInt(params.com_id)
+            //this.com_id = parseInt(params.com_id)
         },
         methods: {
             login(){
@@ -162,7 +162,7 @@
                 }
                 
                 var params = {
-                    com_id: parseInt(this.com_id),
+                    com_id: parseInt(this.$com_id),
                     username: this.mobile,
                     password: this.password
                 }
@@ -183,7 +183,7 @@
             sendSms() {
                 if (this.$u.test.mobile(this.mobile)) {
                     var params = {
-                        com_id: parseInt(this.com_id),
+                        com_id: parseInt(this.$com_id),
                         mobile: this.mobile,
                     }
                     this.$api.user.sendLoginMessage(params).then(res => {

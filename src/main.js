@@ -39,6 +39,11 @@ const prePage = () => {
     // #endif
     return prePage.$vm;
 }
+
+//
+var com_id = getComId()
+Vue.prototype.$com_id = com_id
+
 Vue.config.productionTip = false
 Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store;
@@ -49,7 +54,7 @@ import order from './api/order' //测试用数据
 import goods from './api/goods' //测试用数据
 import comment from './api/comment'
 import message from './api/message'
-import {getUserInfo} from "./utils/utils"; //测试用数据
+import {getComId, getUserInfo} from "./utils/utils"; //测试用数据
 
 let userInfo = getUserInfo()
 //console.log('getUserInfo', userInfo)

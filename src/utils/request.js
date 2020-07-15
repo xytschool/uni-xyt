@@ -8,8 +8,10 @@ import {getAuthToken, getClientID, getComId} from "./utils"
 
 function request(method, url, query, is_raw) {
     var com_id = getComId()
-    if (!query.com_id && com_id) {
-        query.com_id = com_id
+    if (com_id) {
+        //query.com_id = com_id
+        //console.log('replace')
+        url = url.replace('{$com_id}', com_id)
     }
     //query.com_id = 9
     return new Promise((resolve, reject) => {

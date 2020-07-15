@@ -4,7 +4,7 @@ import {baseUrl} from '../config'
 //const host = "http://site.ideatest.top:8889/v1/site"
 //const host = "http://localhost:8889/v1/site"
 //const host = "/dev/user"
-const host = baseUrl + "/user/14"
+const host = baseUrl + "/user/{$com_id}"
 module.exports = {
     async sendLoginMessage(params) {
         return post(host + '/sendVerifyCodeSms', params)
