@@ -44,46 +44,6 @@
       }
     },
     {
-      "path": "pages/index/index-jump",
-      "style": {
-        // #ifdef MP
-        "navigationBarTitleText": "商城",
-        //"navigationStyle": "custom",
-        // #endif
-        "app-plus": {
-          "titleNView": {
-            "type": "transparent",
-            "searchInput": {
-              "backgroundColor": "rgba(231, 231, 231,.7)",
-              "borderRadius": "16px",
-              "placeholder": "请输入搜索商品关键词",
-              "disabled": false,
-              "placeholderColor": "#606266"
-            },
-            "buttons": [
-              {
-                "fontSrc": "/static/yticon.ttf",
-                "text": "\ue60d",
-                "fontSize": "26",
-                "color": "#303133",
-                "float": "left",
-                "background": "rgba(0,0,0,0)"
-              },
-              {
-                "fontSrc": "/static/yticon.ttf",
-                "text": "\ue744",
-                "fontSize": "27",
-                "color": "#303133",
-                "background": "rgba(0,0,0,0)",
-                "redDot": true
-              }
-            ]
-          }
-        }
-      }
-    },
-
-    {
       "path": "pages/product/product",
       "style": {
         "navigationBarTitleText": "详情展示",

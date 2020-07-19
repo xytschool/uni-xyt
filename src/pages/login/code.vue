@@ -31,7 +31,7 @@
         computed: {},
         onLoad(options) {
             this.mobile = options.mobile
-            this.com_id = parseInt(options.com_id)
+            //this.com_id = parseInt(options.com_id)
             // this.getCaptcha()
             let interval = setInterval(() => {
                 this.second--;
@@ -57,8 +57,9 @@
             },
             sendSms() {
                 if (this.$u.test.mobile(this.mobile)) {
+                    console.log(this.$com_id)
                     var params = {
-                        com_id: parseInt(this.com_id),
+                        com_id: parseInt(this.$com_id),
                         mobile: this.mobile,
                     }
                     this.$api.user.sendLoginMessage(params).then(res => {
@@ -91,7 +92,7 @@
             },
             login(code) {
                 let params = {
-                    com_id: this.com_id,
+                    com_id: parseInt(this.$com_id),
                     method: 'sms',
                     username: this.mobile,
                     sms_code: code,

@@ -324,7 +324,6 @@
         },
         onNavigationBarSearchInputConfirmed(e) {
             console.log('onNavigationBarSearchInputConfirmed', e.text)
-            // #endif
             uni.navigateTo({
                 url: '/pages/product/search?keyword=' + e.text
             })

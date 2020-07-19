@@ -55,7 +55,7 @@ function getComId() {
     var lo = window.location.pathname
     var arr = lo.split('/')
     var com_id= arr.pop()
-    return com_id
+    return parseInt(com_id)
 }
 
 function setComId(com_id_storge) {
