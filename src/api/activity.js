@@ -29,7 +29,7 @@ module.exports = {
         return get(host + '/getUserCoupons', params)
     },
     async getCouponsByOrder(params) {
-        return get(host + '/getCouponsByOrder', params)
+        return post(host + '/getCouponsByOrder', params)
     },
     async createUserCoupon(params) {
         return post(host + '/createUserCoupon', params)

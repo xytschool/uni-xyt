@@ -49,12 +49,14 @@ Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store;
 
 import site from './api/site' //测试用数据
+import activity from './api/activity' //测试用数据
 import user from './api/userapi' //测试用数据
 import order from './api/order' //测试用数据
 import goods from './api/goods' //测试用数据
 import comment from './api/comment'
 import message from './api/message'
-import {getComId, getUserInfo} from "./utils/utils"; //测试用数据
+import {getComId, getUserInfo} from "./utils/utils";
+import {parseDate} from "./utils/date";
 
 let userInfo = getUserInfo()
 //console.log('getUserInfo', userInfo)
@@ -62,7 +64,20 @@ if (userInfo) {
     store.commit('user/setUser', userInfo)
 }
 
-Vue.prototype.$api = {msg, json, prePage, message, site, user, order, goods, comment};
+Vue.prototype.$api = {msg, json, prePage, activity, message, site, user, order, goods, comment};
+
+Vue.directive('datetime', {
+    bind: function (el, binding, vnode) {
+        el.innerText = parseDate(binding.value)
+        // el.innerHTML =
+        //     'name: '       + s(binding.name) + '<br>' +
+        //     'value: '      + s(binding.value) + '<br>' +
+        //     'expression: ' + s(binding.expression) + '<br>' +
+        //     'argument: '   + s(binding.arg) + '<br>' +
+        //     'modifiers: '  + s(binding.modifiers) + '<br>' +
+        //     'vnode keys: ' + Object.keys(vnode).join(', ')
+    }
+})
 
 const app = new Vue({
     ...App

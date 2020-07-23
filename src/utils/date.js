@@ -14,6 +14,8 @@ export function formatDate(time) {
   return time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + d + ' ' + h + ':' + m
 }
 
+
+
 export function parseDate(timeStr) {
   var time = new Date(Date.parse(timeStr))
   return formatDate(time)

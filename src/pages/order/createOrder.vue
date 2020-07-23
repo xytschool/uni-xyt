@@ -50,7 +50,7 @@
 
         <!-- 优惠明细 -->
         <view class="yt-list">
-            <view class="yt-list-cell b-b" @click="toggleMask('show')">
+            <view class="yt-list-cell b-b" @click="showCouponMask = 1">
                 <view class="cell-icon">
                     券
                 </view>
@@ -59,6 +59,15 @@
                     选择优惠券
                 </text>
                 <text class="cell-more wanjia wanjia-gengduo-d"></text>
+            </view>
+            <view>
+                <view class="yt-list-cell b-b" v-for="coupon in couponList">
+                    <text class="cell-tit clamp">&nbsp;{{coupon.name}}</text>
+                    <text class="cell-tip active">
+                        金额{{coupon.amount}}元
+                    </text>
+                    <text class="cell-more wanjia wanjia-gengduo-d"></text>
+                </view>
             </view>
             <view class="yt-list-cell b-b">
                 <view class="cell-icon hb">
@@ -99,55 +108,47 @@
             <text class="submit" @click="submit">提交订单</text>
         </view>
 
-        <!-- 优惠券面板 -->
-        <view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">
-            <view class="mask-content" @click.stop.prevent="stopPrevent">
-                <!-- 优惠券页面，仿mt -->
-                <view class="coupon-item" v-for="(item,index) in couponList" :key="index">
-                    <view class="con">
-                        <view class="left">
-                            <text class="title">{{item.title}}</text>
-                            <text class="time">有效期至2019-06-30</text>
-                        </view>
-                        <view class="right">
-                            <text class="price">{{item.price}}</text>
-                            <text>满30可用</text>
-                        </view>
+        <!--        &lt;!&ndash; 优惠券面板 &ndash;&gt;-->
+        <!--        <view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">-->
+        <!--            <view class="mask-content" @click.stop.prevent="stopPrevent">-->
+        <!--                &lt;!&ndash; 优惠券页面，仿mt &ndash;&gt;-->
+        <!--                <view class="coupon-item" v-for="(item,index) in couponList" :key="index">-->
+        <!--                    <view class="con">-->
+        <!--                        <view class="left">-->
+        <!--                            <text class="title">{{item.title}}</text>-->
+        <!--                            <text class="time">有效期至2019-06-30</text>-->
+        <!--                        </view>-->
+        <!--                        <view class="right">-->
+        <!--                            <text class="price">{{item.price}}</text>-->
+        <!--                            <text>满30可用</text>-->
+        <!--                        </view>-->
 
-                        <view class="circle l"></view>
-                        <view class="circle r"></view>
-                    </view>
-                    <text class="tips">限新用户使用</text>
-                </view>
-            </view>
-        </view>
+        <!--                        <view class="circle l"></view>-->
+        <!--                        <view class="circle r"></view>-->
+        <!--                    </view>-->
+        <!--                    <text class="tips">限新用户使用</text>-->
+        <!--                </view>-->
+        <!--            </view>-->
+        <!--        </view>-->
+        <coupons :order="order" :display.sync="showCouponMask"
+                 @update="updateChoosedCoupon"
+                 :position="'createOrder'"></coupons>
 
     </view>
 </template>
 
 <script>
     import {mapState} from "vuex";
+    import coupons from "@/components/coupons";
 
     export default {
+        components: {coupons},
         data() {
             return {
-                maskState: 0, //优惠券面板显示状态
+                showCouponMask: 0, //优惠券面板显示状态
                 desc: '', //备注
                 payType: 1, //1微信 2支付宝
-                couponList: [
-                    {
-                        title: '新用户专享优惠券',
-                        price: 5,
-                    },
-                    {
-                        title: '庆五一发一波优惠券',
-                        price: 10,
-                    },
-                    {
-                        title: '优惠券优惠券优惠券优惠券',
-                        price: 15,
-                    }
-                ],
+                couponList: [],
                 from: 'goods', //goods ,cart
                 addressData: {
                     name: '许小星',
@@ -171,7 +172,8 @@
                 note: state => state.order.tempOrder.note,
                 defaultAddress: state => state.user.defaultAddress,
                 orderAddress: state => state.order.tempAddress,
-                goodsType : state => state.order.goods_type
+                goodsType: state => state.order.goods_type,
+                order: state => state.order.tempOrder
             })
         },
         watch: {
@@ -179,9 +181,13 @@
                 //console.log(newVal)
                 this.$store.commit('order/changeNote', newVal)
             },
+            couponList(list) {
+                console.log('couponList change', this.couponList)
+                this.$store.dispatch('order/updateCouponList', this.couponList)
+            }
         },
         onLoad(option) {
-            if(option.from) {
+            if (option.from) {
                 this.from = option.from
             }
 
@@ -202,14 +208,8 @@
             // }
         },
         methods: {
-            //显示优惠券面板
-            toggleMask(type) {
-                let timer = type === 'show' ? 10 : 300;
-                let state = type === 'show' ? 1 : 0;
-                this.maskState = 2;
-                setTimeout(() => {
-                    this.maskState = state;
-                }, timer)
+            updateChoosedCoupon(coupons) {
+                this.couponList = coupons
             },
             numberChange(data) {
                 this.number = data.number;
@@ -550,7 +550,6 @@
         }
     }
 
-    /* 优惠券面板 */
     .mask {
         display: flex;
         align-items: flex-end;
@@ -586,94 +585,5 @@
         }
     }
 
-    /* 优惠券列表 */
-    .coupon-item {
-        display: flex;
-        flex-direction: column;
-        margin: 20upx 24upx;
-        background: #fff;
-
-        .con {
-            display: flex;
-            align-items: center;
-            position: relative;
-            height: 120upx;
-            padding: 0 30upx;
-
-            &:after {
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                content: '';
-                width: 100%;
-                height: 0;
-                border-bottom: 1px dashed #f3f3f3;
-                transform: scaleY(50%);
-            }
-        }
-
-        .left {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            flex: 1;
-            overflow: hidden;
-            height: 100upx;
-        }
-
-        .title {
-            font-size: 32upx;
-            color: $font-color-dark;
-            margin-bottom: 10upx;
-        }
-
-        .time {
-            font-size: 24upx;
-            color: $font-color-light;
-        }
-
-        .right {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 26upx;
-            color: $font-color-base;
-            height: 100upx;
-        }
-
-        .price {
-            font-size: 44upx;
-            color: $base-color;
-
-            &:before {
-                content: '￥';
-                font-size: 34upx;
-            }
-        }
-
-        .tips {
-            font-size: 24upx;
-            color: $font-color-light;
-            line-height: 60upx;
-            padding-left: 30upx;
-        }
-
-        .circle {
-            position: absolute;
-            left: -6upx;
-            bottom: -10upx;
-            z-index: 10;
-            width: 20upx;
-            height: 20upx;
-            background: #f3f3f3;
-            border-radius: 100px;
-
-            &.r {
-                left: auto;
-                right: -6upx;
-            }
-        }
-    }
 
 </style>

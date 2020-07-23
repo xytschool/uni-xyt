@@ -272,6 +272,7 @@
                         })
                     }
                 })
+                this.$store.dispatch('order/reset')
                 this.$store.dispatch('order/preOrderByGoodsList', this.cartList)
 
                 uni.navigateTo({

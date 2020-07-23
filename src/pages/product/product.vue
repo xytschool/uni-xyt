@@ -54,7 +54,7 @@
                 </view>
                 <text class="yticon icon-you"></text>
             </view>
-            <view class="c-row b-b">
+            <view class="c-row b-b" @click="showCouponMask = 1">
                 <text class="tit">优惠券</text>
                 <text class="con t-r red">领取优惠券</text>
                 <text class="yticon icon-you"></text>
@@ -194,19 +194,23 @@
                 :contentHeight="580"
                 :shareList="shareList"
         ></share>
+        <coupons v-if="goods.id" :goods_id="goods.id" :display.sync="showCouponMask"></coupons>
     </view>
 </template>
 
 <script>
     import share from '@/components/share';
     import {isCollect} from "../../api/userapi";
+    import coupons from "@/components/coupons";
 
     export default {
         components: {
-            share
+            coupons,
+            share,
         },
         data() {
             return {
+                showCouponMask: 0,
                 specClass: 'none',
                 specSelected: [],
                 favorite: false,
@@ -292,7 +296,7 @@
                 }
             })
 
-            let commentListRes = await this.$api.comment.getCommentList({goods_id: this.goods.id,limit:5})
+            let commentListRes = await this.$api.comment.getCommentList({goods_id: this.goods.id, limit: 5})
             if (commentListRes.code == 200) {
                 this.commentList = commentListRes.data
             }
@@ -304,8 +308,8 @@
             }
 
             let collectRes = await isCollect('goods', this.goods.id)
-            if(collectRes.code == 200){
-                console.log('collectRes',collectRes.data)
+            if (collectRes.code == 200) {
+                console.log('collectRes', collectRes.data)
                 this.favorite = collectRes.data
                 //this.favorite = !this.favorite;
             }
@@ -323,7 +327,7 @@
                     this.specClass = 'show';
                 }
             },
-            gotoCommentList(){
+            gotoCommentList() {
                 uni.navigateTo({
                     url: `/pages/comment/index?goods_id=` + this.goods.id
                 })
@@ -373,7 +377,7 @@
                     console.log('res', res)
                     uni.showToast({title: "添加成功"})
                     //uni.navigateTo({url: "/pages/cart/cart"})
-                    
+
                 } else {
                     uni.showToast({title: "添加失败" + res.msg})
                 }
@@ -381,25 +385,26 @@
             //收藏
             toFavorite() {
                 let flag = !this.favorite;
-                if(flag){
-                    this.$api.user.addUserCollection('goods', this.goods.id).then(res=>{
-                        if(res.statusCode == 401){
+                if (flag) {
+                    this.$api.user.addUserCollection('goods', this.goods.id).then(res => {
+                        if (res.statusCode == 401) {
                             uni.showToast({title: "请登录后尝试"})
-                            return 
+                            return
                         }
-                        if(res.code == 200){
+                        if (res.code == 200) {
                             this.favorite = flag
                         }
                     })
-                }else {
-                    this.$api.user.delUserCollection('goods', this.goods.id).then(res=>{
-                        if(res.code == 200){
+                } else {
+                    this.$api.user.delUserCollection('goods', this.goods.id).then(res => {
+                        if (res.code == 200) {
                             this.favorite = flag
                         }
                     })
                 }
             },
             buy() {
+                this.$store.dispatch('order/reset')
                 this.$store.dispatch('order/preOrderByGoodsList', [{
                     goods_id: parseInt(this.goods.id),
                     sku_id: 0,

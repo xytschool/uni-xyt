@@ -8,7 +8,7 @@ const orderMoudle = {
             positions: 'goods',
             method: '',
             goodsList: [],
-            coupons: {},
+            coupons: [],
             score: 0,
             total: 0,
             real_total: 0,
@@ -20,10 +20,8 @@ const orderMoudle = {
             pay_method: '微信',
             goods_type: 'goods',
         },
-        tempAddress:{
-
-        },
-        payData:{}
+        tempAddress: {},
+        payData: {}
     }),
     mutations: {
         createTempOrderByGoodsList(state, goodsList) {
@@ -47,16 +45,52 @@ const orderMoudle = {
         changeNote(state, note) {
             state.tempOrder.note = note
         },
+        updateCouponList(state, coupons) {
+            state.tempOrder.coupons = coupons
+        },
         buildOrder(state) {
             var goodsList = state.tempOrder.goodsList
+            state.tempOrder.real_total = 0
+            state.tempOrder.total = 0
+            state.tempOrder.num = 0
             goodsList.forEach((item) => {
                 state.tempOrder.real_total += item.real_price * item.num
                 state.tempOrder.total += item.price * item.num
                 state.tempOrder.num += item.num
             })
+            let discount = 0
+            state.tempOrder.coupons.forEach((c) => {
+                console.log(c.id)
+                discount += c.amount
+            })
+            state.tempOrder.discount = discount
+            state.tempOrder.real_total -= discount
         },
     },
     actions: {
+        reset({commit, state}) {
+            state.tempOrder = {
+                isOk: false,
+                positions: 'goods',
+                method: '',
+                goodsList: [],
+                coupons: [],
+                score: 0,
+                total: 0,
+                real_total: 0,
+                num: 0,
+                discount: 0,
+                express: 0,
+                note: '',
+                source: '小程序',
+                pay_method: '微信',
+                goods_type: 'goods',
+            }
+        },
+        updateCouponList({commit}, coupons) {
+            commit('updateCouponList', coupons)
+            commit('buildOrder')
+        },
         async preOrderByGoodsList({commit, dispatch, state}, goodsList) {
             commit('createTempOrderByGoodsList', goodsList)
             commit('buildOrder')
@@ -67,14 +101,14 @@ const orderMoudle = {
         //     commit('buildOrder')
         //     //await dispatch('preOrder', state.tempOrder)
         // },
-        async placePreOrder({state,commit}) {
-            console.log('preOrder ->',state.tempOrder)
-            if(state.tempOrder.goods_type == 'goods'){
-                if(state.tempAddress.id){
+        async placePreOrder({state, commit}) {
+            console.log('preOrder ->', state.tempOrder)
+            if (state.tempOrder.goods_type == 'goods') {
+                if (state.tempAddress.id) {
                     state.tempOrder.address_id = state.tempAddress.id
                     state.tempOrder.address = state.tempAddress
-                }else {
-                    uni.showToast({title:'请添加收货地址'})
+                } else {
+                    uni.showToast({title: '请添加收货地址'})
                     return false
                 }
             }
@@ -89,7 +123,7 @@ const orderMoudle = {
                 return false
             }
         },
-        async placeOrder({state,commit}) {
+        async placeOrder({state, commit}) {
             let res = await placeOrder(state.tempOrder)
             if (res.code == 200) {
                 uni.showToast({title: "下单成功:"})
