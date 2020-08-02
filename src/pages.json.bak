@@ -245,6 +245,18 @@
       }
     },
     {
+      "path": "pages/activity/detail",
+      "style": {
+        "navigationBarTitleText": "活动详情"
+      }
+    },
+    {
+      "path": "pages/ticket/index",
+      "style": {
+        "navigationBarTitleText": "门票列表"
+      }
+    },
+    {
       "path": "pages/comment/index",
       "style": {
         "navigationBarTitleText": "评论列表",
@@ -252,10 +264,43 @@
       }
     },
     {
+      "path": "pages/comment/reply",
+      "style": {
+        "navigationBarTitleText": "评论回复"
+      }
+    },
+    {
+      "path": "pages/comment/comment",
+      "style": {
+        "navigationBarTitleText": "评论"
+      }
+    },
+    {
+      "path": "pages/apply/index",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "申请合作伙伴"
+      }
+    },
+    {
       "path": "pages/login/index",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "登录"
+      }
+    },
+//    {
+//      "path": "pages/login/index2",
+//      "style": {
+//        "navigationStyle": "custom",
+//        "navigationBarTitleText": "登录"
+//      }
+//    },
+    {
+      "path": "pages/login/code",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "发送短信"
       }
     }
   ],

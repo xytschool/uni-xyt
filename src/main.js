@@ -2,7 +2,7 @@
 import App from './App'
 import Json from './Json' //测试用数据
 import store from './store'
-
+import {getComId ,getUserInfo, setUserInfo} from "./utils/utils";
 Vue.config.productionTip = false
 import uView from "uview-ui";
 
@@ -40,10 +40,19 @@ const prePage = () => {
     return prePage.$vm;
 }
 
+//#ifdef H5
+var clientType = "h5"
+//#endif
+
+//#ifndef H5
+var clientType = "wx_miniapp"
+//#endif
+
 //
 var com_id = getComId()
-Vue.prototype.$com_id = com_id
+console.log("com_id", com_id)
 
+Vue.prototype.$com_id = com_id
 Vue.config.productionTip = false
 Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store;
@@ -55,15 +64,19 @@ import order from './api/order' //测试用数据
 import goods from './api/goods' //测试用数据
 import comment from './api/comment'
 import message from './api/message'
-import {getComId, getUserInfo} from "./utils/utils";
 import {parseDate} from "./utils/date";
 
+//微信回调会在html中写入用户信息
+if (window && window.userInfo && window.userInfo.id) {
+    console.log("getUser fro window.userInfo", window.userInfo)
+    setUserInfo(window.userInfo)
+}
+
 let userInfo = getUserInfo()
-//console.log('getUserInfo', userInfo)
 if (userInfo) {
     store.commit('user/setUser', userInfo)
 }
-
+Vue.prototype.clientType = clientType
 Vue.prototype.$api = {msg, json, prePage, activity, message, site, user, order, goods, comment};
 
 Vue.directive('datetime', {

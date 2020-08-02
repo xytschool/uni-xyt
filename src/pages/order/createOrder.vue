@@ -151,7 +151,7 @@
                 couponList: [],
                 from: 'goods', //goods ,cart
                 addressData: {
-                    name: '许小星',
+                    name: '',
                     mobile: '13853989563',
                     addressName: '金九大道',
                     address: '山东省济南市历城区',
@@ -218,11 +218,32 @@
                 this.payType = type;
             },
             submit() {
+                //console.log(this.clientType)
+                //todo h5页面支付
+                // if (this.clientType == "h5") {
+                //     uni.redirectTo({
+                //         url: '/pages/money/pay'
+                //     })
+                //     return
+                // }
+
                 this.$store.dispatch('order/placePreOrder').then(res => {
                     if (res == true) {
-                        uni.redirectTo({
-                            url: '/pages/money/pay'
+                        uni.requestPayment({
+                            provider: 'wxpay',
+                            timeStamp: String(Date.now()),
+                            nonceStr: res.nonce_str,
+                            package: 'prepay_id=' + res.prepay_id,
+                            signType: 'MD5',
+                            paySign: res.sign,
+                            success: function (res) {
+                                console.log('success:' + JSON.stringify(res));
+                            },
+                            fail: function (err) {
+                                console.log('fail:' + JSON.stringify(err));
+                            }
                         })
+
                     }
                 })
             },
