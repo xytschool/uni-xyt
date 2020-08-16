@@ -87,7 +87,7 @@
 		}
 	},
 	"h5": {
-		"publicPath": "http://192.168.187.1:8889",
+		"publicPath": "http://m.xytschool.com/dev/public",
 		"router" : {},
 		"devServer": {
 			"proxy": {

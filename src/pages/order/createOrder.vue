@@ -140,6 +140,7 @@
 <script>
     import {mapState} from "vuex";
     import coupons from "@/components/coupons";
+    import {h5Pay, miniPay} from "../../utils/payment";
 
     export default {
         components: {coupons},
@@ -218,7 +219,6 @@
                 this.payType = type;
             },
             submit() {
-                //console.log(this.clientType)
                 //todo h5页面支付
                 // if (this.clientType == "h5") {
                 //     uni.redirectTo({
@@ -226,24 +226,21 @@
                 //     })
                 //     return
                 // }
-
-                this.$store.dispatch('order/placePreOrder').then(res => {
-                    if (res == true) {
-                        uni.requestPayment({
-                            provider: 'wxpay',
-                            timeStamp: String(Date.now()),
-                            nonceStr: res.nonce_str,
-                            package: 'prepay_id=' + res.prepay_id,
-                            signType: 'MD5',
-                            paySign: res.sign,
-                            success: function (res) {
-                                console.log('success:' + JSON.stringify(res));
-                            },
-                            fail: function (err) {
-                                console.log('fail:' + JSON.stringify(err));
-                            }
+                this.$store.dispatch('order/placePreOrder').then(preParams => {
+                    if (preParams) {
+                        //#ifdef H5
+                        h5Pay(preParams).then((res) => {
+                            console.log('h5Pay:', res)
+                            this.$api.order.queryOrder(preParams.order_no)
                         })
+                        //#endif
 
+                        //#ifndef H5
+                        miniPay(preParams).then( (res) => {
+                            console.log('h5Pay:', res)
+                            this.$api.order.queryOrder(preParams.order_no)
+                        })
+                        //#endif
                     }
                 })
             },

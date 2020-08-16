@@ -147,7 +147,6 @@
             </view>
         </view>
 
-
         <!-- 规格-模态层弹窗 -->
         <view
                 class="popup spec"
@@ -202,6 +201,7 @@
     import share from '@/components/share';
     import {isCollect} from "../../api/userapi";
     import coupons from "@/components/coupons";
+    import {mapState} from "vuex";
 
     export default {
         components: {
@@ -277,6 +277,12 @@
                     },
                 ]
             };
+        },
+        computed: {
+            ...mapState({
+                user: state => state.user.user,
+                hasLogin: state => state.user.hasLogin,
+            })
         },
         async onLoad(options) {
             //接收传值,id里面放的是标题，因为测试数据并没写id
@@ -384,13 +390,22 @@
             },
             //收藏
             toFavorite() {
+                if(!this.hasLogin){
+                    uni.showModal({
+                        content: '您还没有登录，去登录',
+                        success: (e) => {
+                            if (e.confirm) {
+                                uni.navigateTo({
+                                    url: '/pages/login/index'
+                                })
+                            }
+                        }
+                    })
+                    return
+                }
                 let flag = !this.favorite;
                 if (flag) {
                     this.$api.user.addUserCollection('goods', this.goods.id).then(res => {
-                        if (res.statusCode == 401) {
-                            uni.showToast({title: "请登录后尝试"})
-                            return
-                        }
                         if (res.code == 200) {
                             this.favorite = flag
                         }

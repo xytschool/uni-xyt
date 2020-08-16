@@ -44,4 +44,7 @@ module.exports = {
     async refund(data) {
         return post(host + '/refund', data)
     },
+    queryOrder(orderNo) {
+        return post(host + '/queryOrder', {order_no: orderNo})
+    }
 }

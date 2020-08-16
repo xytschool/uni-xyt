@@ -117,7 +117,7 @@ const orderMoudle = {
             if (res.code == 200) {
                 uni.showToast({title: "下单成功:"})
                 commit('setPayData', res.data)
-                return true
+                return res.data
             } else {
                 uni.showToast({title: "下单失败:" + res.msg})
                 return false

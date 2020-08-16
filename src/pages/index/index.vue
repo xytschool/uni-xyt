@@ -250,13 +250,11 @@
             this.loadData();
         },
         methods: {
-            /**
-             * 请求静态数据只是为了代码不那么乱
-             * 分次请求未作整合
-             */
             async loadData() {
                 //let carouselList = await this.$api.json('carouselList');
+                //console.log('bannerList', this.carouselList)
                 let res = await this.$api.site.getBannerList()
+                //console.log('bannerList', res)
                 if (res.code == 200) {
                     let carouselList = res.data
                     this.titleNViewBackground = carouselList[0].background;
@@ -265,7 +263,7 @@
                 }
                 let navListRes = await this.$api.site.getNavList()
                 if (navListRes.code = 200) {
-                    //console.log(navListRes)
+                    console.log('navListRes::', navListRes.code ,navListRes.data)
                     this.navList = navListRes.data
                 }
 
@@ -293,10 +291,9 @@
             navToDetailPage(item) {
                 //测试数据没有写id，用title代替
                 let id = item.id;
-                console.log(item.href)
-                if(item.href){
-                    uni.navigateTo({ url: item.href})
-                }else {
+                if (item.href) {
+                    uni.navigateTo({url: item.href})
+                } else {
                     uni.navigateTo({
                         url: `/pages/product/product?id=${id}`
                     })

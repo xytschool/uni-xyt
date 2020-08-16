@@ -46,7 +46,8 @@ function request(method, url, query, is_raw) {
             method: method,
             header: header,
             success(res) {
-                if(res.statusCode == 200){
+                //console.log('request', res)
+                if (res.statusCode == 200) {
                     res = res.data
                     if (res.code === 200 || res.code === 700 || res.code === 0) {
                         resolve(res)
@@ -58,8 +59,50 @@ function request(method, url, query, is_raw) {
                         });
                         resolve(res)
                     }
-                }else {
-                    resolve(res)
+                } else if (res.statusCode == 401) {
+                    // uni.getProvider({
+                    //     service: 'oauth',
+                    //     success: function (res) {
+                    //         console.log(res.provider)
+                    //         if (~res.provider.indexOf('qq')) {
+                    //             uni.login({
+                    //                 provider: 'qq',
+                    //                 success: function (loginRes) {
+                    //                     console.log(JSON.stringify(loginRes));
+                    //                 }
+                    //             });
+                    //         }
+                    //     },
+                    //     complete(res){ console.log(res)}
+                    // });
+                    uni.showModal({
+                        title: '当前未登录',
+                        content: '授权登陆',
+                        success: function (res) {
+                            console.log('授权登陆',res)
+                            if (res.confirm) {
+                                //#ifdef H5
+                                console.log("/pages/login/index")
+                                uni.navigateTo({
+                                    url: `/pages/login/index`
+                                })
+                                //#endif
+
+                                //#ifndef H5
+                                uni.login({
+                                    provider: 'weixin',
+                                    success: function (loginRes) {
+                                        console.log(loginRes.authResult);
+                                    }
+                                });
+                                //#endif
+                            } else if (res.cancel) {
+                                console.log('用户点击取消');
+                            }
+                        }
+                    });
+                } else {
+                    reject(res)
                 }
             },
             fail(res) {

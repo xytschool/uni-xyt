@@ -2,7 +2,9 @@
 import App from './App'
 import Json from './Json' //测试用数据
 import store from './store'
-import {getComId ,getUserInfo, setUserInfo} from "./utils/utils";
+import {getComId, getUserInfo, setUserInfo} from "./utils/utils";
+
+
 Vue.config.productionTip = false
 import uView from "uview-ui";
 
@@ -41,7 +43,15 @@ const prePage = () => {
 }
 
 //#ifdef H5
+import wx from 'weixin-js-sdk'
+var VConsole = require('vconsole');
+var vConsole = new VConsole();
 var clientType = "h5"
+var ua = navigator.userAgent.toLowerCase()
+if (ua.match(/MicroMessenger/i) == "micromessenger") {
+    //在微信中打开
+    clientType = "wx_official"
+}
 //#endif
 
 //#ifndef H5
@@ -82,17 +92,28 @@ Vue.prototype.$api = {msg, json, prePage, activity, message, site, user, order, 
 Vue.directive('datetime', {
     bind: function (el, binding, vnode) {
         el.innerText = parseDate(binding.value)
-        // el.innerHTML =
-        //     'name: '       + s(binding.name) + '<br>' +
-        //     'value: '      + s(binding.value) + '<br>' +
-        //     'expression: ' + s(binding.expression) + '<br>' +
-        //     'argument: '   + s(binding.arg) + '<br>' +
-        //     'modifiers: '  + s(binding.modifiers) + '<br>' +
-        //     'vnode keys: ' + Object.keys(vnode).join(', ')
     }
 })
 
-const app = new Vue({
-    ...App
-})
-app.$mount()
+//console.log("clientType", clientType)
+if (clientType == "wx_official") {
+   console.log("wxCof",window.wx_config)
+    wx.config(window.wx_config)
+    wx.ready(function () {
+        console.log("wx.ready")
+        const app = new Vue({
+            ...App
+        })
+        app.$mount()
+    });
+    wx.error(function (err) {
+        console.log(err)
+    })
+} else {
+    const app = new Vue({
+        ...App
+    })
+    app.$mount()
+}
+
+

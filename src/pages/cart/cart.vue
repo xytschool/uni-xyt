@@ -102,13 +102,11 @@
             }
         },
         onLoad(params) {
+            
            this.com_id = params.com_id
         },
         onShow(){
            this.$store.dispatch('user/checkLogin',this.com_id)
-           if(!this.hasLogin){
-               return
-           }
            this.loadData();
         },
         computed: {
@@ -126,23 +124,8 @@
             }
         },
         methods: {
-            //请求数据
             async loadData() {
                 let listRes = await this.$api.goods.getCartGoodsList()
-                if(listRes.statusCode == 401){
-                    uni.showModal({
-                        content: '您换还没有登录，去登录',
-                        success: (e) => {
-                            if (e.confirm) {
-                                uni.navigateTo({
-                                    url: '/pages/login/index'
-                                })
-                            }
-                        }
-                    })
-                    return
-                }
-
                 if(listRes.code == 200){
                     let list = listRes.data
                     let cartList = []
