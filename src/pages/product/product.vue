@@ -45,11 +45,11 @@
         </view>
 
         <view class="c-list">
-            <view class="c-row b-b" @click="toggleSpec">
+            <view class="c-row b-b"  @click="toggleSpec" v-show="goods.sku_labels && goods.sku_labels.length != 0">
                 <text class="tit">购买类型</text>
                 <view class="con">
                     <text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
-                        {{sItem.name}}
+                        {{sItem}}
                     </text>
                 </view>
                 <text class="yticon icon-you"></text>
@@ -63,8 +63,7 @@
                 <text class="tit">促销活动</text>
                 <view class="con-list">
                     <text>新人首单送20元无门槛代金券</text>
-                    <text>订单满50减10</text>
-                    <text>订单满100减30</text>
+                    <text>订单满100减10</text>
                     <text>单笔购买满两件免邮费</text>
                 </view>
             </view>
@@ -158,35 +157,37 @@
             <view class="mask"></view>
             <view class="layer attr-content" @click.stop="stopPrevent">
                 <view class="a-t">
-                    <image src="https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg"></image>
+                    <image :src="currentSku.cover"></image>
                     <view class="right">
-                        <text class="price">¥328.00</text>
-                        <text class="stock">库存：188件</text>
+                        <text class="price">¥{{currentSku.sku_name}}</text>
+                        <text class="stock">库存：{{currentSku.num}}件</text>
                         <view class="selected">
                             已选：
-                            <text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
-                                {{sItem.name}}
+                            <text class="selected-text" v-for="(val, label) in specSelected" :key="sIndex">
+                                {{val}}
                             </text>
                         </view>
                     </view>
                 </view>
-                <view v-for="(item,index) in specList" :key="index" class="attr-list">
-                    <text>{{item.name}}</text>
+
+                <view v-for="(item,index) in goods.sku_labels" :key="index" class="attr-list">
+                    <text>{{item.label}}</text>
                     <view class="item-list">
                         <text
-                                v-for="(childItem, childIndex) in specChildList"
-                                v-if="childItem.pid === item.id"
+                                v-for="(childItem, childIndex) in item.options"
                                 :key="childIndex" class="tit"
-                                :class="{selected: childItem.selected}"
-                                @click="selectSpec(childIndex, childItem.pid)"
+                                :class="{selected: item.selected == childItem}"
+                                @click="selectSpec(childItem, item)"
                         >
-                            {{childItem.name}}
+                            {{childItem}}
                         </text>
                     </view>
                 </view>
                 <button class="btn" @click="toggleSpec">完成</button>
             </view>
+
         </view>
+        
         <!-- 分享 -->
         <share
                 ref="share"
@@ -202,6 +203,8 @@
     import {isCollect} from "../../api/userapi";
     import coupons from "@/components/coupons";
     import {mapState} from "vuex";
+    import {updateShareMenu} from "../../utils/share";
+    import {deepEqual} from "../../utils/utils";
 
     export default {
         components: {
@@ -213,69 +216,19 @@
                 showCouponMask: 0,
                 specClass: 'none',
                 specSelected: [],
+                currentSku: {
+                    sku_name: '',
+                    price: '',
+                    cover: '',
+                    num: 0,
+                    id: 0,
+                },
                 favorite: false,
                 shareList: [],
                 commentList: [],
                 commentNum: 0,
                 goodCommentNum: 0,
                 goods: {},
-                specList: [
-                    {
-                        id: 1,
-                        name: '尺寸',
-                    },
-                    {
-                        id: 2,
-                        name: '颜色',
-                    },
-                ],
-                specChildList: [
-                    {
-                        id: 1,
-                        pid: 1,
-                        name: 'XS',
-                    },
-                    {
-                        id: 2,
-                        pid: 1,
-                        name: 'S',
-                    },
-                    {
-                        id: 3,
-                        pid: 1,
-                        name: 'M',
-                    },
-                    {
-                        id: 4,
-                        pid: 1,
-                        name: 'L',
-                    },
-                    {
-                        id: 5,
-                        pid: 1,
-                        name: 'XL',
-                    },
-                    {
-                        id: 6,
-                        pid: 1,
-                        name: 'XXL',
-                    },
-                    {
-                        id: 7,
-                        pid: 2,
-                        name: '白色',
-                    },
-                    {
-                        id: 8,
-                        pid: 2,
-                        name: '珊瑚粉',
-                    },
-                    {
-                        id: 9,
-                        pid: 2,
-                        name: '草木绿',
-                    },
-                ]
             };
         },
         computed: {
@@ -289,18 +242,38 @@
             let id = options.id;
             let goodsRes = await this.$api.goods.getGoodsDetail({id})
             if (goodsRes.code == 200) {
-                this.goods = Object.assign({}, goodsRes.data)
-            }
-            //规格 默认选中第一条
-            this.specList.forEach(item => {
-                for (let cItem of this.specChildList) {
-                    if (cItem.pid === item.id) {
-                        this.$set(cItem, 'selected', true);
-                        this.specSelected.push(cItem);
-                        break; //forEach不能使用break
-                    }
+                var goods = goodsRes.data
+                if (!goods.sku_labels) {
+                    goods.sku_labels = []
                 }
-            })
+                if (!goods.skus) {
+                    goods.skus = []
+                }
+                this.goods = Object.assign({}, goods)
+                uni.setNavigationBarTitle({title: goods.name + '-详情'})
+            } else {
+                uni.showToast({title: goodsRes.msg})
+                return
+            }
+
+            //规格 默认选中第一条(如果有规格)
+            if(this.goods.sku_labels){
+                this.goods.sku_labels.forEach((skuLabel, index) => {
+                    var val = skuLabel.options[0]
+                    this.selectSpec(val, skuLabel)
+                    this.goods.sku_labels[index].selected = val
+                })
+                this.specSelected = Object.assign({}, this.specSelected)
+            }
+
+
+            if (window) {
+                var shareUrl = window.location.host + window.location.path + "?share_user_id= " + this.user.id
+            } else {
+                var shareUrl = '/pages/index/index' + "?share_user_id= " + this.user.id
+            }
+
+            updateShareMenu(this.goods.name, this.goods.desc, shareUrl, this.goods.small_cover)
 
             let commentListRes = await this.$api.comment.getCommentList({goods_id: this.goods.id, limit: 5})
             if (commentListRes.code == 200) {
@@ -313,17 +286,20 @@
                 this.goodCommentNum = commentNumRes.data.good_num
             }
 
-            let collectRes = await isCollect('goods', this.goods.id)
-            if (collectRes.code == 200) {
-                console.log('collectRes', collectRes.data)
-                this.favorite = collectRes.data
-                //this.favorite = !this.favorite;
+            if (this.hasLogin) {
+                let collectRes = await isCollect('goods', this.goods.id)
+                if (collectRes.code == 200) {
+                    this.favorite = collectRes.data
+                }
             }
-            this.shareList = await this.$api.json('shareList');
+            //this.shareList = await this.$api.json('shareList');
         },
         methods: {
             //规格弹窗开关
             toggleSpec() {
+                if(!this.goods.sku_labels|| this.goods.sku_labels.length == 0){
+                    return
+                }
                 if (this.specClass === 'show') {
                     this.specClass = 'hide';
                     setTimeout(() => {
@@ -339,70 +315,57 @@
                 })
             },
             //选择规格
-            selectSpec(index, pid) {
-                let list = this.specChildList;
-                list.forEach(item => {
-                    if (item.pid === pid) {
-                        this.$set(item, 'selected', false);
-                    }
-                })
-
-                this.$set(list[index], 'selected', true);
-                //存储已选择
+            selectSpec(option, labelItem) {
+                //console.log(option, labelItem)
+                this.$set(labelItem, 'selected', option)
                 /**
                  * 修复选择规格存储错误
                  * 将这几行代码替换即可
                  * 选择的规格存放在specSelected中
                  */
-                this.specSelected = [];
-                list.forEach(item => {
-                    if (item.selected === true) {
-                        this.specSelected.push(item);
+                this.specSelected[labelItem.label] = option
+                var currentSku = null
+                this.goods.skus.forEach(sku => {
+                    if (deepEqual(this.specSelected, sku.label_combine)) {
+                        currentSku = sku
                     }
                 })
-
+                if (currentSku == null) {
+                    currentSku = {
+                        name: '缺货中'
+                    }
+                }
+                this.currentSku = currentSku
             },
             //分享
             share() {
-                this.$refs.share.toggleMask();
+                this.$api.msg(`分享给请点击右上方的功能按钮,选择分享`);
+                //this.$refs.share.toggleMask();
             },
             async addCartGoods() {
-                var cartGoodsItem = {
-                    goods_id: parseInt(this.goods.id),
-                    sku_id: 0,
-                    name: this.goods.name,
-                    sku_name: '',
-                    price: parseFloat(this.goods.price),
-                    real_price: parseFloat(this.goods.real_price),
-                    cover: this.goods.small_cover
+                if (!this.hasLogin) {
+                    this.$store.dispatch('user/checkLogin', this.com_id)
+                    return
                 }
 
-                //console.log('cartGoodsItem', cartGoodsItem)
+                this.$store.dispatch('order/reset')
+                var cartGoodsItem = this.buildCartGoods()
+
                 let res = await this.$api.goods.addCartGoods(cartGoodsItem)
                 if (res.code == 200) {
-                    console.log('res', res)
                     uni.showToast({title: "添加成功"})
                     //uni.navigateTo({url: "/pages/cart/cart"})
-
                 } else {
-                    uni.showToast({title: "添加失败" + res.msg})
+                    uni.showToast({title: "添加购物车失败" + res.msg})
                 }
             },
             //收藏
             toFavorite() {
-                if(!this.hasLogin){
-                    uni.showModal({
-                        content: '您还没有登录，去登录',
-                        success: (e) => {
-                            if (e.confirm) {
-                                uni.navigateTo({
-                                    url: '/pages/login/index'
-                                })
-                            }
-                        }
-                    })
+                if (!this.hasLogin) {
+                    this.$store.dispatch('user/checkLogin', this.com_id)
                     return
                 }
+
                 let flag = !this.favorite;
                 if (flag) {
                     this.$api.user.addUserCollection('goods', this.goods.id).then(res => {
@@ -419,25 +382,43 @@
                 }
             },
             buy() {
+                if (!this.hasLogin) {
+                    this.$store.dispatch('user/checkLogin', this.com_id)
+                    return
+                }
+
                 this.$store.dispatch('order/reset')
-                this.$store.dispatch('order/preOrderByGoodsList', [{
-                    goods_id: parseInt(this.goods.id),
-                    sku_id: 0,
-                    name: this.goods.name,
-                    sku_name: '',
-                    cover: this.goods.small_cover,
-                    num: 1,
-                    price: parseFloat(this.goods.price),
-                    real_price: parseFloat(this.goods.real_price),
-                }])
+                var cartGoodsItem = this.buildCartGoods()
+                this.$store.dispatch('order/preOrderByGoodsList', [cartGoodsItem])
                 uni.navigateTo({
                     url: `/pages/order/createOrder`
                 })
             },
+            buildCartGoods(){
+                var cartGoodsItem = {
+                    goods_id: parseInt(this.goods.id),
+                    sku_id: this.currentSku.id,
+                    name: this.goods.name,
+                    price: parseFloat(this.goods.price),
+                    real_price: parseFloat(this.goods.real_price),
+                    cover: this.goods.small_cover,
+                    num: 1
+                }
+                //
+                if(this.goods.sku_labels&&this.goods.sku_labels.length>0){
+                    if(this.currentSku.id){
+                        cartGoodsItem.sku_name = this.currentSku.sku_name
+                        cartGoodsItem.price = this.currentSku.price
+                        cartGoodsItem.real_price = this.currentSku.real_price
+                        cartGoodsItem.cover = this.currentSku.cover
+                        cartGoodsItem.label_combine = this.currentSku.label_combine
+                    }
+                }
+                return cartGoodsItem
+            },
             stopPrevent() {
             }
-        },
-
+        }
     }
 </script>
 

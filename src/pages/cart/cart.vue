@@ -37,8 +37,14 @@
                         </view>
                         <view class="item-right">
                             <text class="clamp title">{{item.name}}</text>
-                            <text class="attr">{{item.sku_name}}</text>
-                            <text class="price">¥{{item.real_price}}</text>
+                            <text class="attr">
+                                <text v-if="item.label_combine" style="padding-right: 15px"
+                                      v-for="(value ,key) in item.label_combine">
+                                {{key}}:&nbsp;{{value}}
+                                </text>
+                            </text>
+
+                            <text class="price">¥{{item.real_price}} <text class="origin_price">¥{{item.price}}</text></text>
                             <uni-number-box
                                     class="step"
                                     :min="1"
@@ -170,14 +176,18 @@
             //数量
             async numberChange(data) {
                 console.log('numberChange', data)
-                let goodsItem = this.cartList[data.index]
+                let goodsItem = Object.assign({},this.cartList[data.index])
                 if (data.num > 0) {
                     goodsItem.num = data.num
                     uni.showLoading()
                     this.$api.goods.updateCartGoods(goodsItem).then(res => {
+                        console.log(res)
                         uni.hideLoading()
-                        this.cartList[data.index].num = data.num
-                        this.calcTotal();
+                        if(res.code == 200){
+                            this.cartList[data.index].num = data.num
+                            this.calcTotal();
+                        }else {
+                        }
                     })
                 } else {
                     this.deleteCartItem(data.index)
@@ -240,7 +250,7 @@
                 this.allChecked = checked;
                 this.real_total = Number(real_total.toFixed(2));
                 this.total = Number(total.toFixed(2));
-                this.total_discount = this.total - this.real_total
+                this.total_discount = (this.total - this.real_total).toFixed(2)
                 //console.log(this.real_total,this.total,this.total - this.real_total)
             },
             //创建订单
@@ -348,6 +358,11 @@
                 color: $font-color-dark;
                 height: 40upx;
                 line-height: 40upx;
+                .origin_price{
+                    text-decoration:line-through;
+                    margin-left: 15px;
+                    color: $font-color-light;
+                }
             }
 
             .attr {

@@ -58,13 +58,13 @@ const orderMoudle = {
                 state.tempOrder.total += item.price * item.num
                 state.tempOrder.num += item.num
             })
-            let discount = 0
+            let coupon_discount = 0
             state.tempOrder.coupons.forEach((c) => {
                 console.log(c.id)
-                discount += c.amount
+                coupon_discount += c.amount
             })
-            state.tempOrder.discount = discount
-            state.tempOrder.real_total -= discount
+            state.tempOrder.real_total -= coupon_discount
+            state.tempOrder.discount = state.tempOrder.total - state.tempOrder.real_total
         },
     },
     actions: {
@@ -115,11 +115,11 @@ const orderMoudle = {
 
             let res = await preOrder(state.tempOrder)
             if (res.code == 200) {
-                uni.showToast({title: "下单成功:"})
+                //uni.showToast({title: "下单成功:"})
                 commit('setPayData', res.data)
                 return res.data
             } else {
-                uni.showToast({title: "下单失败:" + res.msg})
+                uni.showToast({title: "预下单失败:" + res.msg})
                 return false
             }
         },

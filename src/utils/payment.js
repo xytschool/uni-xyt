@@ -24,6 +24,14 @@ function jsPay(params) {
 }
 
 function h5Pay(params) {
+    console.log(WeixinJSBridge)
+    if (!WeixinJSBridge) {
+        uni.showToast({
+            title: "请在微信中打开下单"
+        })
+        return
+    }
+
     return new Promise(function (resolve, reject) {
         WeixinJSBridge.invoke(
             'getBrandWCPayRequest', {

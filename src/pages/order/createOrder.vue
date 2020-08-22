@@ -27,7 +27,9 @@
                 <image :src="goods.cover"></image>
                 <view class="right">
                     <text class="title clamp">{{goods.name}}</text>
-                    <text class="spec" v-if="goods.sku_name">{{goods.sku_name}}</text>
+                    <text class="spec" v-if="goods.label_combine" v-for="(value ,key) in goods.label_combine">
+                            {{key}}:&nbsp;{{value}}
+                    </text>
                     <view class="price-box">
                         <text class="real_price">￥{{goods.real_price}}</text>
                         <text class="price">￥{{goods.price}}</text>
@@ -361,8 +363,9 @@
             }
 
             .spec {
-                font-size: 26upx;
-                color: $font-color-light;
+                font-size: 30upx;
+                color: #d55c5c;
+                padding-right: 30upx;
             }
 
             .price-box {

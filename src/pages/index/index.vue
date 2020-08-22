@@ -38,6 +38,17 @@
             <image src="/static/temp/ad1.jpg" mode="scaleToFill"></image>
         </view>
 
+<!--        <wx-open-launch-weapp-->
+<!--                id="launch-btn"-->
+<!--                username="gh_df82fb548290"-->
+<!--                path="pages/index/index"-->
+<!--        >-->
+<!--            <script type="text/wxtag-template">-->
+<!--                <style>.btn { padding: 12px }</style>-->
+<!--                <button class="btn" >打开小程序</button>-->
+<!--            </script>-->
+<!--        </wx-open-launch-weapp>-->
+
         <!-- 秒杀楼层 -->
         <view class="seckill-section m-t">
             <view class="s-header">

@@ -78,7 +78,6 @@ import {parseDate} from "./utils/date";
 
 //微信回调会在html中写入用户信息
 if (window && window.userInfo && window.userInfo.id) {
-    console.log("getUser fro window.userInfo", window.userInfo)
     setUserInfo(window.userInfo)
 }
 
@@ -97,10 +96,10 @@ Vue.directive('datetime', {
 
 //console.log("clientType", clientType)
 if (clientType == "wx_official") {
-   console.log("wxCof",window.wx_config)
+    //console.log("wxCof",window.wx_config)
     wx.config(window.wx_config)
     wx.ready(function () {
-        console.log("wx.ready")
+        //console.log("wx.ready")
         const app = new Vue({
             ...App
         })
