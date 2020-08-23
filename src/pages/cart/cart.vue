@@ -242,6 +242,7 @@
                 list.forEach(item => {
                     if (item.checked === true) {
                         real_total += item.real_price * item.num;
+                        state.tempOrder.real_total -= coupon_discount
                         total += item.price * item.num;
                     } else if (checked === true) {
                         checked = false;

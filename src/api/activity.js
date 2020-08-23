@@ -34,5 +34,7 @@ module.exports = {
     async createUserCoupon(params) {
         return post(host + '/createUserCoupon', params)
     },
-
+    async getActivityByGoodsId(params) {
+        return get(host + '/getActivityByGoodsId', params)
+    }
 }

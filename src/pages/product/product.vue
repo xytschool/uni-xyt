@@ -62,16 +62,16 @@
             <view class="c-row b-b">
                 <text class="tit">促销活动</text>
                 <view class="con-list">
-                    <text>新人首单送20元无门槛代金券</text>
+<!--                    <text>新人首单送20元无门槛代金券</text>
                     <text>订单满100减10</text>
-                    <text>单笔购买满两件免邮费</text>
+                    <text>单笔购买满两件免邮费</text>-->
+                    <rich-text :nodes="activity.body"></rich-text>
                 </view>
             </view>
             <view class="c-row b-b">
                 <text class="tit">服务</text>
                 <view class="bz-list con">
-                    <text>7天无理由退换货 ·</text>
-                    <text>假一赔十 ·</text>
+                    <text>{{goods.service}}</text>
                 </view>
             </view>
         </view>
@@ -159,7 +159,7 @@
                 <view class="a-t">
                     <image :src="currentSku.cover"></image>
                     <view class="right">
-                        <text class="price">¥{{currentSku.sku_name}}</text>
+                        <text class="price">¥{{currentSku.real_price}} {{currentSku.sku_name}}</text>
                         <text class="stock">库存：{{currentSku.num}}件</text>
                         <view class="selected">
                             已选：
@@ -229,6 +229,7 @@
                 commentNum: 0,
                 goodCommentNum: 0,
                 goods: {},
+                activity:{},
             };
         },
         computed: {
@@ -274,6 +275,11 @@
             }
 
             updateShareMenu(this.goods.name, this.goods.desc, shareUrl, this.goods.small_cover)
+
+            let activityRes = await this.$api.activity.getActivityByGoodsId({goods_id: this.goods.id, com_id: this.goods.com_id})
+            if (activityRes.code == 200) {
+                this.activity = activityRes.data
+            }
 
             let commentListRes = await this.$api.comment.getCommentList({goods_id: this.goods.id, limit: 5})
             if (commentListRes.code == 200) {
@@ -332,7 +338,11 @@
                 })
                 if (currentSku == null) {
                     currentSku = {
-                        name: '缺货中'
+                        sku_id:0,
+                        sku_name: '缺货中',
+                        num:0,
+                        price:9999999,
+                        real_price:9999999,
                     }
                 }
                 this.currentSku = currentSku
@@ -350,7 +360,9 @@
 
                 this.$store.dispatch('order/reset')
                 var cartGoodsItem = this.buildCartGoods()
-
+                if(!cartGoodsItem){
+                    return;
+                }
                 let res = await this.$api.goods.addCartGoods(cartGoodsItem)
                 if (res.code == 200) {
                     uni.showToast({title: "添加成功"})
@@ -389,12 +401,19 @@
 
                 this.$store.dispatch('order/reset')
                 var cartGoodsItem = this.buildCartGoods()
+                if(!cartGoodsItem){
+                    return;
+                }
                 this.$store.dispatch('order/preOrderByGoodsList', [cartGoodsItem])
                 uni.navigateTo({
                     url: `/pages/order/createOrder`
                 })
             },
             buildCartGoods(){
+                if(this.currentSku.num == 0){
+                   uni.showToast({title:"该型号商品缺货中请选择其他型号"})
+                   return false
+                }
                 var cartGoodsItem = {
                     goods_id: parseInt(this.goods.id),
                     sku_id: this.currentSku.id,
