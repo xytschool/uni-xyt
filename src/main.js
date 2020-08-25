@@ -44,9 +44,10 @@ const prePage = () => {
 
 //#ifdef H5
 import wx from 'weixin-js-sdk'
-var VConsole = require('vconsole');
-var vConsole = new VConsole();
+//var VConsole = require('vconsole');
+//var vConsole = new VConsole();
 var clientType = "h5"
+
 var ua = navigator.userAgent.toLowerCase()
 if (ua.match(/MicroMessenger/i) == "micromessenger") {
     //在微信中打开
@@ -60,7 +61,7 @@ var clientType = "wx_miniapp"
 
 //
 var com_id = getComId()
-console.log("com_id", com_id)
+//console.log("com_id", com_id)
 
 Vue.prototype.$com_id = com_id
 Vue.config.productionTip = false

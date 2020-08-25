@@ -1,6 +1,3 @@
-//var host = "http://shop.laravelschool.xyt"
-import he from "@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist";
-
 var host = ""
 //var host = "https://mobile.xytschool.com"
 var baseUrl = ""
@@ -9,11 +6,8 @@ import {getAuthToken, getClientID, getComId} from "./utils"
 function request(method, url, query, is_raw) {
     var com_id = getComId()
     if (com_id) {
-        //query.com_id = com_id
-        //console.log('replace')
         url = url.replace('{$com_id}', com_id)
     }
-    //query.com_id = 9
     return new Promise((resolve, reject) => {
         var token = getAuthToken()
         var clientId = getClientID()
@@ -60,21 +54,7 @@ function request(method, url, query, is_raw) {
                         resolve(res)
                     }
                 } else if (res.statusCode == 401) {
-                    // uni.getProvider({
-                    //     service: 'oauth',
-                    //     success: function (res) {
-                    //         console.log(res.provider)
-                    //         if (~res.provider.indexOf('qq')) {
-                    //             uni.login({
-                    //                 provider: 'qq',
-                    //                 success: function (loginRes) {
-                    //                     console.log(JSON.stringify(loginRes));
-                    //                 }
-                    //             });
-                    //         }
-                    //     },
-                    //     complete(res){ console.log(res)}
-                    // });
+
                     uni.showModal({
                         title: '当前未登录',
                         content: '授权登陆',

@@ -265,8 +265,7 @@
                 //let carouselList = await this.$api.json('carouselList');
                 //console.log('bannerList', this.carouselList)
                 let res = await this.$api.site.getBannerList()
-                //console.log('bannerList', res)
-                if (res.code == 200) {
+                if (res.code == 200 && res.data.length>0) {
                     let carouselList = res.data
                     this.titleNViewBackground = carouselList[0].background;
                     this.swiperLength = carouselList.length;
@@ -312,14 +311,20 @@
             },
             //详情页
             gotoNav(item) {
-                if (!item.link) {
+                if (!item.href) {
                     uni.showToast({title: "请配置跳转地址"})
                     return
                 }
                 //console.log(item.link)
-                uni.navigateTo({
-                    url: item.link
-                })
+                if(item.href.indexOf("/pages/category/category") >= 0){
+                    uni.switchTab({
+                        url: item.href
+                    })
+                }else {
+                    uni.navigateTo({
+                      url: item.href
+                    })
+                }
             },
         },
         // #ifndef MP

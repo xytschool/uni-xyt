@@ -59,7 +59,8 @@
                 <text class="con t-r red">领取优惠券</text>
                 <text class="yticon icon-you"></text>
             </view>
-            <view class="c-row b-b">
+
+            <view class="c-row b-b" v-if="activity">
                 <text class="tit">促销活动</text>
                 <view class="con-list">
 <!--                    <text>新人首单送20元无门槛代金券</text>
@@ -229,7 +230,7 @@
                 commentNum: 0,
                 goodCommentNum: 0,
                 goods: {},
-                activity:{},
+                activity: null,
             };
         },
         computed: {
