@@ -88,7 +88,8 @@
 	},
 	"h5": {
 		"publicPath_dev": "http://m.xytschool.com/dev/public",
-		"publicPath": "http://data.xytschool.com/m/v1",
+		"publicPath_prod": "http://data.xytschool.com/m/v1",
+		"publicPath": "http://localhost:8889",
 		"router" : {},
 		"devServer": {
 			"proxy": {

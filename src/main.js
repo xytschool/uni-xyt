@@ -44,8 +44,8 @@ const prePage = () => {
 
 //#ifdef H5
 import wx from 'weixin-js-sdk'
-//var VConsole = require('vconsole');
-//var vConsole = new VConsole();
+var VConsole = require('vconsole');
+var vConsole = new VConsole();
 var clientType = "h5"
 
 var ua = navigator.userAgent.toLowerCase()

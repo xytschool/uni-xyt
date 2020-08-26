@@ -7,8 +7,8 @@
     "build": "npm run build:h5",
     "build:app-plus": "cross-env NODE_ENV=production UNI_PLATFORM=app-plus vue-cli-service uni-build",
     "build:custom": "cross-env NODE_ENV=production uniapp-cli custom",
-    "build:h5": "cross-env NODE_ENV=production UNI_OUTPUT_DIR=/data/go/src/github.com/gw123/echo-app/resources/public/m/v1  UNI_PLATFORM=h5 vue-cli-service uni-build",
-    "watch": "cross-env NODE_ENV=production UNI_OUTPUT_DIR=/data/go/src/github.com/gw123/echo-app/resources/public/m/dev UNI_PLATFORM=h5 vue-cli-service uni-build --watch",
+    "build:h5": "cross-env NODE_ENV=production UNI_OUTPUT_DIR=/Users/mac/code/go/src/github.com/gw123/echo-app/resources/public/m/v1  UNI_PLATFORM=h5 vue-cli-service uni-build",
+    "watch": "cross-env NODE_ENV=production UNI_OUTPUT_DIR=/Users/mac/code/go/src/github.com/gw123/echo-app/resources/public/m/dev UNI_PLATFORM=h5 vue-cli-service uni-build --watch",
     "build:mp-360": "cross-env NODE_ENV=production UNI_PLATFORM=mp-360 vue-cli-service uni-build",
     "build:mp-alipay": "cross-env NODE_ENV=production UNI_PLATFORM=mp-alipay vue-cli-service uni-build",
     "build:mp-baidu": "cross-env NODE_ENV=production UNI_PLATFORM=mp-baidu vue-cli-service uni-build",
@@ -54,6 +54,7 @@
     "regenerator-runtime": "^0.12.1",
     "uview-ui": "^1.4.5",
     "vant": "^2.8.5",
+    "vconsole": "^3.3.4",
     "vue": "^2.6.10",
     "vuex": "^3.2.0",
     "weixin-js-sdk": "^1.6.0"
