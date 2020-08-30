@@ -298,6 +298,7 @@
                 if (collectRes.code == 200) {
                     this.favorite = collectRes.data
                 }
+                this.$api.user.addUserHistory({ type:'goods', target_id:  this.goods.id})
             }
             //this.shareList = await this.$api.json('shareList');
         },
