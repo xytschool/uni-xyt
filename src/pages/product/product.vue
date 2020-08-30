@@ -270,7 +270,7 @@
 
 
             if (window) {
-                var shareUrl = window.location.host + window.location.path + "?share_user_id= " + this.user.id
+                var shareUrl = window.location.href + "&share_user_id= " + this.user.id
             } else {
                 var shareUrl = '/pages/index/index' + "?share_user_id= " + this.user.id
             }

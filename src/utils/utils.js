@@ -90,29 +90,22 @@ function deepEqual(x, y) {
         return true;
     } else if ((typeof x == "object" && x != null) && (typeof y == "object" && y != null)) {
         if (Object.keys(x).length != Object.keys(y).length){
-            console.log('length not equal')
             return false;
         }
-
         for (var prop in x) {
             if (y.hasOwnProperty(prop)) {
                 if (!deepEqual(x[prop], y[prop]))
                 {
-                    console.log('deep')
                     return false;
                 }
             } else
             {
-
-                console.log('has')
                 return false;
             }
         }
-
         return true;
     } else
     {
-        console.log(typeof x,typeof y)
         return false;
     }
 }

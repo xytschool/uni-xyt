@@ -1,4 +1,4 @@
-# uni-test
+# uni-xyt
 
 ## Project setup
 ```
@@ -15,5 +15,7 @@ npm run serve
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 注意index.css  文件名可能需要手动修改 echoapp的index模板文件
+## 注意线上版本需要修改 config.js 的baseUrl版本
+
+
