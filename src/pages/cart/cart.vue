@@ -142,7 +142,7 @@
                         });
                     }
                     this.cartList = cartList;
-                    //console.log('cartList', cartList)
+                    console.log('cartList', cartList)
                     this.calcTotal();  //计算总价
                 }
             },
@@ -236,13 +236,12 @@
                     this.empty = true;
                     return;
                 }
-                let real_total = 0;
-                let total = 0;
+              let real_total = 0;
+              let total = 0;
                 let checked = true;
                 list.forEach(item => {
                     if (item.checked === true) {
                         real_total += item.real_price * item.num;
-                        state.tempOrder.real_total -= coupon_discount
                         total += item.price * item.num;
                     } else if (checked === true) {
                         checked = false;
@@ -252,7 +251,7 @@
                 this.real_total = Number(real_total.toFixed(2));
                 this.total = Number(total.toFixed(2));
                 this.total_discount = (this.total - this.real_total).toFixed(2)
-                //console.log(this.real_total,this.total,this.total - this.real_total)
+                console.log('calcTotal' ,this.real_total,this.total,this.total - this.real_total)
             },
             //创建订单
             createOrder() {

@@ -412,30 +412,28 @@
                 })
             },
             buildCartGoods(){
+              var cartGoodsItem = {
+                goods_id: parseInt(this.goods.id),
+                sku_id: this.currentSku.id,
+                name: this.goods.name,
+                price: parseFloat(this.goods.price),
+                real_price: parseFloat(this.goods.real_price),
+                cover: this.goods.small_cover,
+                num: 1
+              }
+              if(this.goods.sku_labels &&this.goods.sku_labels.length>0){
+                //有sku的商品
                 if(this.currentSku.num == 0){
-                   uni.showToast({title:"该型号商品缺货中请选择其他型号"})
-                   return false
+                  uni.showToast({title:"该型号商品缺货中请选择其他型号"})
+                  return false
                 }
-                var cartGoodsItem = {
-                    goods_id: parseInt(this.goods.id),
-                    sku_id: this.currentSku.id,
-                    name: this.goods.name,
-                    price: parseFloat(this.goods.price),
-                    real_price: parseFloat(this.goods.real_price),
-                    cover: this.goods.small_cover,
-                    num: 1
-                }
-                //
-                if(this.goods.sku_labels&&this.goods.sku_labels.length>0){
-                    if(this.currentSku.id){
-                        cartGoodsItem.sku_name = this.currentSku.sku_name
-                        cartGoodsItem.price = this.currentSku.price
-                        cartGoodsItem.real_price = this.currentSku.real_price
-                        cartGoodsItem.cover = this.currentSku.cover
-                        cartGoodsItem.label_combine = this.currentSku.label_combine
-                    }
-                }
-                return cartGoodsItem
+                cartGoodsItem.sku_name = this.currentSku.sku_name
+                cartGoodsItem.price = this.currentSku.price
+                cartGoodsItem.real_price = this.currentSku.real_price
+                cartGoodsItem.cover = this.currentSku.cover
+                cartGoodsItem.label_combine = this.currentSku.label_combine
+              }
+              return cartGoodsItem
             },
             stopPrevent() {
             }
