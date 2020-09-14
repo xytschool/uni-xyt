@@ -100,27 +100,6 @@ if (clientType == "wx_official") {
     //console.log("wxCof",window.wx_config)
     wx.config(window.wx_config)
     wx.ready(function () {
-        console.log("wx.ready",'share')
-        // // 朋友圈
-        // wx.updateTimelineShareData({
-        //     title: 'xxxxx', // 分享标题
-        //     link: "http://m.xytschool.com?share_user_id= 6917", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        //     imgUrl: "http://data.xytschool.com/storage/image/20200522/1590103645499758.png",// 分享图标
-        //     success: function (res) {
-        //         console.log("updateTimelineShareData", res)
-        //         // 设置成功
-        //     }
-        // });
-        //
-        // // 微信朋友
-        // wx.updateAppMessageShareData({
-        //     title: 'abc', // 分享标题
-        //     desc: 'wwwww', // 分享描述
-        //     link: "http://m.xytschool.com?share_user_id= 6917", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        //     imgUrl: "http://data.xytschool.com/storage/image/20200522/1590103645499758.png",// 分享图标
-        //     type: 'link', // 分享类型,music、video或link，不填默认为link
-        //     dataUrl: '' // 如果type是music或video，则要提供数据链接，默认为空
-        // });
         const app = new Vue({
             ...App
         })
