@@ -90,7 +90,7 @@
         "publicPath_dev" : "http://m.xytschool.com/dev/public",
         "publicPath_prod" : "http://data.xytschool.com/m/v2",
         "publicPath_local" : "/dev/public",
-        "publicPath" : "http://data.xytschool.com/m/v2",
+        "publicPath" : "http://m.xytschool.com/dev/public",
         "router" : {},
         "devServer" : {
             "proxy" : {

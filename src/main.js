@@ -43,7 +43,6 @@ const prePage = () => {
 }
 
 //#ifdef H5
-import wx from 'weixin-js-sdk'
 var VConsole = require('vconsole');
 var vConsole = new VConsole();
 var clientType = "h5"
@@ -77,15 +76,20 @@ import comment from './api/comment'
 import message from './api/message'
 import {parseDate} from "./utils/date";
 
-//微信回调会在html中写入用户信息
-if (window && window.userInfo && window.userInfo.id) {
-    setUserInfo(window.userInfo)
+{
+    // 加载必要数据
+    store.dispatch('company/getCompany')
+    //微信回调会在html中写入用户信息
+    if (window && window.userInfo && window.userInfo.id) {
+        setUserInfo(window.userInfo)
+    }
+
+    let userInfo = getUserInfo()
+    if (userInfo) {
+        store.commit('user/setUser', userInfo)
+    }
 }
 
-let userInfo = getUserInfo()
-if (userInfo) {
-    store.commit('user/setUser', userInfo)
-}
 Vue.prototype.clientType = clientType
 Vue.prototype.$api = {msg, json, prePage, activity, message, site, user, order, goods, comment};
 
@@ -95,24 +99,9 @@ Vue.directive('datetime', {
     }
 })
 
-//console.log("clientType", clientType)
-if (clientType == "wx_official") {
-    //console.log("wxCof",window.wx_config)
-    wx.config(window.wx_config)
-    wx.ready(function () {
-        const app = new Vue({
-            ...App
-        })
-        app.$mount()
-    });
-    wx.error(function (err) {
-        console.log(err)
-    })
-} else {
-    const app = new Vue({
-        ...App
-    })
-    app.$mount()
-}
+const app = new Vue({
+    ...App
+})
+app.$mount()
 
 
