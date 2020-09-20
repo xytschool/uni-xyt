@@ -19,12 +19,14 @@ module.exports = {
 
     async preOrder(data) {
         return post(host + '/preOrder', data)
+        //return get('http://shop.laravelschool.xyt/jspay?com_id=14&openid=oNrV6w92st6gWbXxySDiohmC2KtM&order_no=123123123199&total=100')
     },
     /**
      *   [{icon: '' , title: '' , link: ''}]
      * */
     async placeOrder(data) {
-        return post(host + '/createOrder', data)
+        //return post(host + '/createOrder', data)
+        return get('http://shop.laravelschool.xyt/jspay?com_id=14&openid=oNrV6w92st6gWbXxySDiohmC2KtM&order_no=123123123199&total=100')
     },
     /**
      *   [{icon: '' , title: '' , link: ''}]
@@ -44,7 +46,7 @@ module.exports = {
     async refund(data) {
         return post(host + '/refund', data)
     },
-    queryOrder(orderNo) {
+    async queryOrder(orderNo) {
         return post(host + '/queryOrder', {order_no: orderNo})
     }
 }

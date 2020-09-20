@@ -107,7 +107,7 @@
                 <text class="price-tip">￥</text>
                 <text class="price">{{real_amount}}</text>
             </view>
-            <text class="submit" @click="submit">提交订单</text>
+            <text class="submit" @click="submit" :disabled="canSubmit">提交订单</text>
         </view>
 
         <!--        &lt;!&ndash; 优惠券面板 &ndash;&gt;-->
@@ -142,7 +142,7 @@
 <script>
     import {mapState} from "vuex";
     import coupons from "@/components/coupons";
-    import {h5Pay, miniPay} from "../../utils/payment";
+    import {jsPay, miniPay} from "../../utils/payment";
 
     export default {
         components: {coupons},
@@ -155,13 +155,15 @@
                 from: 'goods', //goods ,cart
                 addressData: {
                     name: '',
-                    mobile: '13853989563',
-                    addressName: '金九大道',
-                    address: '山东省济南市历城区',
-                    area: '149号',
+                    mobile: '',
+                    addressName: '',
+                    address: '',
+                    area: '',
                     default: false,
                 },
-                tempNote: ''
+                tempNote: '',
+                inviter_id: 0,
+                canSubmit: true
             }
         },
         computed: {
@@ -194,21 +196,16 @@
                 this.from = option.from
             }
 
+            if(option.from_user) {
+              this.inviter_id = parseInt(option.from_user)
+            }
+
             this.$store.dispatch('user/getUserAddressList').then(res => {
                 if (res == true && !this.orderAddress.id) {
                     this.$store.commit('order/updateTempAddress', this.defaultAddress)
                 }
             })
 
-            //console.log('goodsList', this.goodsList)
-            //商品数据
-            //let data = JSON.parse(option.data);
-            //console.log(data);
-
-            // let addrRes = this.$api.user.getUserDefaultAddress()
-            // if(addrRes.code == 200){
-            //
-            // }
         },
         methods: {
             updateChoosedCoupon(coupons) {
@@ -221,29 +218,35 @@
                 this.payType = type;
             },
             submit() {
-                //todo h5页面支付
-                // if (this.clientType == "h5") {
-                //     uni.redirectTo({
-                //         url: '/pages/money/pay'
-                //     })
-                //     return
-                // }
-                this.$store.dispatch('order/placePreOrder').then(preParams => {
+               if(!this.canSubmit){
+                 uni.showToast({title:"支付中请勿重复点击"})
+                 return
+               }
+               this.canSubmit = false
+               let params = {
+                   inviter_id : this.inviter_id
+               }
+               this.$store.dispatch('order/placePreOrder', params).then(preParams => {
                     if (preParams) {
-                        //#ifdef H5
-                        h5Pay(preParams).then((res) => {
-                            console.log('h5Pay:', res)
-                            this.$api.order.queryOrder(preParams.order_no)
+                        jsPay(preParams).then((res) => {
+                            //console.log('h5Pay:', res)
+                           this.$api.order.queryOrder(preParams.order_no).then((res)=>{
+                             this.canSubmit = true
+                             if( res.code == 200 && res.data.pay_status === "paid" ){
+                                uni.showToast({title:"支付成功"})
+                               setTimeout(function (){
+                                 uni.redirectTo({url:"/pages/order/order?state=2"})
+                               },1000)
+                             }
+                           }).catch( ()=>{
+                             this.canSubmit = true
+                           })
                         })
-                        //#endif
-
-                        //#ifndef H5
-                        miniPay(preParams).then( (res) => {
-                            console.log('h5Pay:', res)
-                            this.$api.order.queryOrder(preParams.order_no)
-                        })
-                        //#endif
+                    }else {
+                      this.canSubmit = true
                     }
+                }).catch(()=>{
+                  this.canSubmit = true
                 })
             },
             stopPrevent() {

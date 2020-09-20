@@ -101,8 +101,8 @@ const orderMoudle = {
         //     commit('buildOrder')
         //     //await dispatch('preOrder', state.tempOrder)
         // },
-        async placePreOrder({state, commit}) {
-            console.log('preOrder ->', state.tempOrder)
+        async placePreOrder({state, commit}, params) {
+            console.log('preOrder ->', state.tempOrder, params)
             if (state.tempOrder.goods_type == 'goods') {
                 if (state.tempAddress.id) {
                     state.tempOrder.address_id = state.tempAddress.id
@@ -111,6 +111,9 @@ const orderMoudle = {
                     uni.showToast({title: '请添加收货地址'})
                     return false
                 }
+            }
+            if(params.inviter_id){
+                state.tempOrder.inviter_id = params.inviter_id
             }
 
             let res = await preOrder(state.tempOrder)

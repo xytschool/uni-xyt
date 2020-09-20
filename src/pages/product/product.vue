@@ -206,9 +206,10 @@ import coupons from "@/components/coupons"
 import {mapState} from "vuex"
 import {updateShareMenu} from "../../utils/share"
 import {deepEqual} from "../../utils/utils"
+
+//#ifdef H5
 import wx from 'weixin-js-sdk'
-import Vue from "@dcloudio/vue-cli-plugin-uni/packages/h5-vue";
-import App from "@/App";
+//#endif
 
 export default {
   components: {
@@ -234,6 +235,7 @@ export default {
       goodCommentNum: 0,
       goods: {},
       activity: null,
+      from_user_id: 0
     };
   },
   computed: {
@@ -265,6 +267,7 @@ export default {
     let from_user_id = parseInt(options.from_user)
     let nickname = options.nickname
     if(from_user_id&&nickname) {
+      this.from_user_id = from_user_id
       uni.showToast({'title' : '来自用户' + nickname +'分享'})
     }
 
@@ -286,9 +289,11 @@ export default {
       this.activity = activityRes.data
     }
 
+    //#ifdef H5
     if (this.clientType == 'wx_official') {
       this.setShareInfo()
     }
+    //#endif
 
     if (this.hasLogin) {
       let collectRes = await isCollect('goods', this.goods.id)
@@ -312,6 +317,8 @@ export default {
     //this.shareList = await this.$api.json('shareList');
   },
   methods: {
+
+//#ifdef H5
     async setShareInfo() {
       var configRes = await this.$api.site.getWxConfig({url: window.location.href})
       if (configRes.code != 200) {
@@ -357,6 +364,8 @@ export default {
         console.log('err', err)
       })
     },
+//#endif
+
     //规格弹窗开关
     toggleSpec() {
       if (!this.goods.sku_labels || this.goods.sku_labels.length == 0) {
@@ -462,7 +471,7 @@ export default {
       }
       this.$store.dispatch('order/preOrderByGoodsList', [cartGoodsItem])
       uni.navigateTo({
-        url: `/pages/order/createOrder`
+        url: `/pages/order/createOrder?from_user=` + this.from_user_id
       })
     },
     buildCartGoods() {
