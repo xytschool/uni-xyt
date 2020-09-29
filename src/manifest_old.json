@@ -72,9 +72,35 @@
     "mp-qq" : {
         "usingComponents" : true
     },
-    "h5" : {
-        "publicPath" : "http://data.xytschool.com/m/v4",
+    "h5-prod" : {
+        "publicPath" : "http://data.xytschool.com",
         "router" : {},
-        "devServer" : {}
+        "devServer" : {
+            "proxy" : {
+                "/v1-/user/sendVerifyCodeSms" : {
+                    "target" : "http://m.xytschool.com/dev/user/sendVerifyCodeSms",
+                    "pathRewrite" : {
+                        "^/prefix" : ""
+                    }
+                }
+            }
+        }
+    },
+    "h5" : {
+        "publicPath_dev" : "http://m.xytschool.com/dev/public",
+        "publicPath_prod" : "http://data.xytschool.com/m/v2",
+        "publicPath_local" : "/dev/public",
+        "publicPath" : "http://m.xytschool.com/dev/public",
+        "router" : {},
+        "devServer" : {
+            "proxy" : {
+                "/v1-/user/sendVerifyCodeSms" : {
+                    "target" : "http://m.xytschool.com/dev/user/sendVerifyCodeSms",
+                    "pathRewrite" : {
+                        "^/prefix" : ""
+                    }
+                }
+            }
+        }
     }
 }
