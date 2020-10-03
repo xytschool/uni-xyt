@@ -1,5 +1,5 @@
 ## version
-VERSION=v4
+VERSION=v1
 ## 线上访问(使用CDN 速度快 但是需要上传)
 PUBLIC_PATH_PROD=http://data.xytschool.com/m/$(VERSION)
 
@@ -29,5 +29,5 @@ prod:
 
 watch:
 	sed 's@{publicPath}@$(PUBLIC_PATH_DEV)@' ./src/manifest_tpl.json > ./src/manifest.json &&\
-	sed 's@{API_BASE_URL}@$(API_BASE_URL_DEV)@' ./src/config_tpl.json > ./src/config.json &&\
+	sed 's@{API_BASE_URL}@$(API_BASE_URL_DEV)@' ./src/config_tpl.js > ./src/config.js &&\
 	export  UNI_OUTPUT_DIR=$(UNI_OUTPUT_DIR_DEV) && npm run watch

@@ -12,4 +12,8 @@ make watch
 
 ## 注意线上版本需要修改 config.js 的baseUrl版本
 
+./src/config.js 
+- API_BASE_URL  指定url请求的根路径
 
+./src/manifest.json
+- publicPath 指定静态资源加载的根路径

@@ -66,7 +66,7 @@
                 <view class="yt-list-cell b-b" v-for="coupon in couponList">
                     <text class="cell-tit clamp">&nbsp;{{coupon.name}}</text>
                     <text class="cell-tip active">
-                        金额{{coupon.amount}}元
+                        金额{{coupon.amount.toFixed(2)}}元
                     </text>
                     <text class="cell-more wanjia wanjia-gengduo-d"></text>
                 </view>
