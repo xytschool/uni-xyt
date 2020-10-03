@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="user-section">
-			<image class="bg" src="/static/user-bg.jpg"></image>
+			<image class="bg" src="http://data.xytschool.com/m/v1/static/user-bg.jpg"></image>
 			<text class="bg-upload-btn yticon icon-paizhao"></text>
 			<view class="portrait-box">
 				<image class="portrait" :src="userInfo.portrait || '/static/missing-face.png'"></image>

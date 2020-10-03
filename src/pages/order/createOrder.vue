@@ -218,7 +218,9 @@
                 this.payType = type;
             },
             submit() {
+               console.log('submit ...')
                if(!this.canSubmit){
+                 console.log('submit ... rep')
                  uni.showToast({title:"支付中请勿重复点击"})
                  return
                }

@@ -35,7 +35,7 @@
         </view>
 
         <view class="ad-1">
-            <image src="/static/temp/ad1.jpg" mode="scaleToFill"></image>
+            <image src="http://data.xytschool.com/m/v1/static/temp/ad1.jpg" mode="scaleToFill"></image>
         </view>
 
 <!--        <wx-open-launch-weapp-->
@@ -52,7 +52,7 @@
         <!-- 秒杀楼层 -->
         <view class="seckill-section m-t">
             <view class="s-header">
-                <image class="s-img" src="/static/temp/secskill-img.jpg" mode="widthFix"></image>
+                <image class="s-img" src="http://data.xytschool.com/m/v1/static/temp/secskill-img.jpg" mode="widthFix"></image>
                 <text class="tip">8点场</text>
                 <text class="hour timer">07</text>
                 <text class="minute timer">13</text>
@@ -76,7 +76,7 @@
 
         <!-- 团购楼层 -->
         <view class="f-header m-t">
-            <image src="/static/temp/h1.png"></image>
+            <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
             <view class="tit-box">
                 <text class="tit">精品团购</text>
                 <text class="tit2">Boutique Group Buying</text>
@@ -132,7 +132,7 @@
 
         <!-- 分类推荐楼层 -->
         <view class="f-header m-t">
-            <image src="/static/temp/h1.png"></image>
+            <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
             <view class="tit-box">
                 <text class="tit">分类精选</text>
                 <text class="tit2">Competitive Products For You</text>
@@ -214,7 +214,7 @@
 
         <!-- 猜你喜欢 -->
         <view class="f-header m-t">
-            <image src="/static/temp/h1.png"></image>
+            <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
             <view class="tit-box">
                 <text class="tit">猜你喜欢</text>
                 <text class="tit2">Guess You Like It</text>

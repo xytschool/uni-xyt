@@ -2,7 +2,7 @@
     <view class="container">  
 		
 		<view class="user-section">
-			<image class="bg" src="/static/user-bg.jpg"></image>
+			<image class="bg" src="http://data.xytschool.com/m/v1/static/user-bg.jpg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box">
 					<image class="portrait" :src="user.avatar || '/static/missing-face.png'"></image>
@@ -12,7 +12,7 @@
 				</view>
 			</view>
 			<view class="vip-card-box">
-				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
+				<image class="card-bg" src="http://data.xytschool.com/m/v1/static/vip-card-bg.png" mode=""></image>
 				<view class="b-btn">
 					立即开通
 				</view>
@@ -35,7 +35,7 @@
 			@touchmove="coverTouchmove"
 			@touchend="coverTouchend"
 		>
-			<image class="arc" src="/static/arc.png"></image>
+			<image class="arc" src="http://data.xytschool.com/m/v1/static/arc.png"></image>
 			
 			<view class="tj-sction">
 				<view class="tj-item">

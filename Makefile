@@ -1,5 +1,5 @@
 ## version
-VERSION=v1
+VERSION=v1.1.6
 ## 线上访问(使用CDN 速度快 但是需要上传)
 PUBLIC_PATH_PROD=http://data.xytschool.com/m/$(VERSION)
 
@@ -25,7 +25,14 @@ prod:
 	sed 's@{publicPath}@$(PUBLIC_PATH_PROD)@' ./src/manifest_tpl.json > ./src/manifest.json &&\
 	sed 's@{API_BASE_URL}@$(API_BASE_URL_PROD)@' ./src/config_tpl.js > ./src/config.js &&\
 	export UNI_OUTPUT_DIR=$(UNI_OUTPUT_DIR_PROD) && npm run build:h5\
-	&& qshell qupload qiniu.conf
+
+upload-sh2:
+	scp -r $(UNI_OUTPUT_DIR_PROD) root@sh2:/data/apps/echoapp/resources/public/m
+
+upload-qiniu:
+	 qshell qupload qiniu.conf
+
+all: prod upload-sh2 upload-qiniu
 
 watch:
 	sed 's@{publicPath}@$(PUBLIC_PATH_DEV)@' ./src/manifest_tpl.json > ./src/manifest.json &&\

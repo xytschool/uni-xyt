@@ -1,4 +1,5 @@
 import {placeOrder, preOrder} from "../../api/order";
+import userMoudle from "@/store/modules/user";
 
 const orderMoudle = {
     namespaced: true,
@@ -50,22 +51,24 @@ const orderMoudle = {
         },
         buildOrder(state) {
             var goodsList = state.tempOrder.goodsList
-            state.tempOrder.real_total = 0
-            state.tempOrder.total = 0
-            state.tempOrder.num = 0
+            let real_total = 0
+            let total = 0
+            let num = 0
             goodsList.forEach((item) => {
-                state.tempOrder.real_total += item.real_price * item.num
-                state.tempOrder.total += item.price * item.num
-                state.tempOrder.num += item.num
+                real_total += item.real_price * item.num
+                total += item.price * item.num
+                num += item.num
             })
+
             let coupon_discount = 0
             state.tempOrder.coupons.forEach((c) => {
                 coupon_discount += c.amount
             })
 
-            state.tempOrder.total = state.tempOrder.total.toFixed(2)
-            state.tempOrder.real_total =  (state.tempOrder.real_total - coupon_discount).toFixed(2)
-            state.tempOrder.discount = (state.tempOrder.total - state.tempOrder.real_total).toFixed(2)
+            state.tempOrder.real_total = parseFloat(real_total.toFixed(2))
+            state.tempOrder.total = parseFloat((total - coupon_discount).toFixed(2))
+            state.tempOrder.num = num
+            state.tempOrder.discount = parseFloat((total - real_total).toFixed(2))
         },
     },
     actions: {
@@ -103,7 +106,7 @@ const orderMoudle = {
         //     //await dispatch('preOrder', state.tempOrder)
         // },
         async placePreOrder({state, commit}, params) {
-            //console.log('preOrder ->', state.tempOrder, params)
+            console.log('preOrder ->', state.tempOrder, params)
             if (state.tempOrder.goods_type == 'goods') {
                 if (state.tempAddress.id) {
                     state.tempOrder.address_id = state.tempAddress.id
@@ -117,12 +120,7 @@ const orderMoudle = {
                 state.tempOrder.inviter_id = params.inviter_id
             }
 
-            var tempOrder = Object.assign({} ,state.tempOrder)
-            tempOrder.total = parseFloat(state.tempOrder.total)
-            tempOrder.real_total = parseFloat(state.tempOrder.real_total)
-            tempOrder.discount = parseFloat(state.tempOrder.discount)
-
-            let res = await preOrder(tempOrder)
+            let res = await preOrder(state.tempOrder)
             if (res.code == 200) {
                 //uni.showToast({title: "下单成功:"})
                 commit('setPayData', res.data)

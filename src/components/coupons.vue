@@ -71,13 +71,12 @@
         },
         methods: {
             async getCouponsByOrder() {
-                console.log(this.order)
-                let res = await this.$api.activity.getCouponsByOrder(this.order)
-                console.log(res)
-                if (res.code == 200 && res.data) {
-                    this.couponList = res.data.user
-                    console.log(this.couponList)
-                }
+             
+              let res = await this.$api.activity.getCouponsByOrder(this.order)
+              if (res.code == 200 && res.data) {
+                 this.couponList = res.data.user
+                 console.log('getCouponsByOrder', this.couponList)
+              }
             },
             //显示优惠券面板
             toggleMask(type) {
