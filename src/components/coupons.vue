@@ -12,8 +12,8 @@
                         </text>
                     </view>
                     <view class="right">
-                        <text class="price">{{item.amount}}</text>
-                        <text>满{{item.min_consume}}元可以使用</text>
+                        <text class="price" v-yuan="item.amount"></text>
+                      <text>满 <text v-yuan="item.amount"></text>元可以使用</text>
                     </view>
 
                     <view class="circle l"></view>

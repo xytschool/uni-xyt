@@ -65,10 +65,13 @@ const orderMoudle = {
                 coupon_discount += c.amount
             })
 
-            state.tempOrder.real_total = parseFloat(real_total.toFixed(2))
-            state.tempOrder.total = parseFloat((total - coupon_discount).toFixed(2))
             state.tempOrder.num = num
-            state.tempOrder.discount = parseFloat((total - real_total).toFixed(2))
+            state.tempOrder.real_total = real_total - coupon_discount
+            state.tempOrder.total = total
+            state.tempOrder.discount = total - state.tempOrder.real_total
+            if(state.tempOrder.real_total <=0){
+                uni.showToast({title:"订单异常请重新下单"})
+            }
         },
     },
     actions: {

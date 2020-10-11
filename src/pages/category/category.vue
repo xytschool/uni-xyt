@@ -16,7 +16,7 @@
 						<image class="cover" :src="titem.small_cover"></image>
                         <view class="desc">
 							<text class="name">{{titem.name}}</text>
-							<text class="price">${{titem.real_price}}</text>
+							<text class="price" v-yuan="titem.real_price">￥</text>
 						</view>
 					</view>
 				</view>

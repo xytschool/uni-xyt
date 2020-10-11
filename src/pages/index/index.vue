@@ -68,7 +68,7 @@
                     >
                         <image :src="item.small_cover" mode="aspectFill"></image>
                         <text class="title clamp">{{item.name}}</text>
-                        <text class="price">￥{{item.real_price}}</text>
+                        <text class="price" v-yuan="item.real_price">￥</text>
                     </view>
                 </view>
             </scroll-view>
@@ -96,7 +96,7 @@
                         <view class="t-box">
                             <text class="title clamp">{{item.name}}</text>
                             <view class="price-box">
-                                <text class="price">￥{{item.real_price}}</text>
+                                <text class="price" v-yuan="item.real_price">￥</text>
                                 <text class="m-price">￥188</text>
                             </view>
 
@@ -112,9 +112,9 @@
                     <view class="g-item right">
                         <image :src="goodsList[index+1].small_cover" mode="aspectFill"></image>
                         <view class="t-box">
-                            <text class="title clamp">{{goodsList[index+1].title}}</text>
+                            <text class="title clamp" >{{goodsList[index+1].title}}</text>
                             <view class="price-box">
-                                <text class="price">￥{{goodsList[index+1].price}}</text>
+                                <text class="price" v-yuan="goodsList[index+1].price">￥</text>
                                 <text class="m-price">￥188</text>
                             </view>
                             <view class="pro-box">
@@ -154,7 +154,7 @@
                     >
                         <image :src="item.small_cover" mode="aspectFill"></image>
                         <text class="title clamp">{{item.name}}</text>
-                        <text class="price">￥{{item.real_price}}</text>
+                        <text class="price" v-yuan="item.real_price">￥</text>
                     </view>
                     <view class="more">
                         <text>查看全部</text>
@@ -178,7 +178,7 @@
                     >
                         <image :src="item.small_cover" mode="aspectFill"></image>
                         <text class="title clamp">{{item.name}}</text>
-                        <text class="price">￥{{item.real_price}}</text>
+                        <text class="price" v-yuan="item.real_price">￥</text>
                     </view>
                     <view class="more">
                         <text>查看全部</text>
@@ -202,7 +202,7 @@
                     >
                         <image :src="item.small_cover" mode="aspectFill"></image>
                         <text class="title clamp">{{item.name}}</text>
-                        <text class="price">￥{{item.real_price}}</text>
+                        <text class="price" v-yuan="item.real_price">￥</text>
                     </view>
                     <view class="more">
                         <text>查看全部</text>
@@ -232,7 +232,7 @@
                     <image :src="item.small_cover" mode="aspectFill"></image>
                 </view>
                 <text class="title clamp">{{item.name}}</text>
-                <text class="price">￥{{item.real_price}}</text>
+                <text class="price" v-yuan="item.real_price">￥</text>
             </view>
         </view>
 

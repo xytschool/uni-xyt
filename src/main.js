@@ -43,8 +43,8 @@ const prePage = () => {
 }
 
 //#ifdef H5
-var VConsole = require('vconsole');
-var vConsole = new VConsole();
+//var VConsole = require('vconsole');
+//var vConsole = new VConsole();
 var clientType = "h5"
 
 var ua = navigator.userAgent.toLowerCase()
@@ -79,7 +79,7 @@ import {parseDate} from "./utils/date";
 {
     // 加载必要数据
     store.dispatch('company/getCompany')
-    //微信回调会在html中写入用户信息
+    // 微信回调会在html中写入用户信息
     if (window && window.userInfo && window.userInfo.id) {
         setUserInfo(window.userInfo)
     }
@@ -98,6 +98,46 @@ Vue.directive('datetime', {
         el.innerText = parseDate(binding.value)
     }
 })
+
+Vue.directive('yuan', {
+    bind: function (el, binding, vnode) {
+        if(binding.value == undefined){
+            return
+        }
+        var fen = binding.value.toString()
+        var a = 0, b = 0
+        if(binding.value < 100){
+            b = fen
+        }else{
+            a = fen.substring(0, fen.length-2)
+            b = fen.substring( fen.length-2,fen.length)
+        }
+        if(b.length == 1){
+            b = '0' + b
+        }
+        var text = el.innerText.replace(/[\d\.]+/,'')
+        el.innerText = text + a +'.' +b
+    },
+    update: function (el, binding, vnode) {
+        if(binding.value == undefined){
+            return
+        }
+        var fen = binding.value.toString()
+        var a = 0, b = 0
+        if(binding.value < 100){
+            b = fen
+        }else{
+            a = fen.substring(0, fen.length-2)
+            b = fen.substring( fen.length-2,fen.length)
+        }
+        if(b.length == 1){
+            b = '0' + b
+        }
+        var text = el.innerText.replace(/[\d\.]+/,'')
+        el.innerText = text+ a +'.' +b
+    }
+})
+
 
 const app = new Vue({
     ...App

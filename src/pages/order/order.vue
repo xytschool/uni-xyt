@@ -44,7 +44,7 @@
 							>
 								<image class="goods-img" :src="goodsItem.cover" mode="aspectFill"></image>
 								<text class="title clamp">{{goodsItem.name}}</text>
-								<text class="price">{{goodsItem.real_price}} x {{goodsItem.num}}</text>
+                <text class="price"><text v-yuan="goodsItem.real_price"></text> x {{goodsItem.num}}</text>
 							</view>
 						</scroll-view>
 						<view
@@ -56,7 +56,7 @@
 							<view class="right">
 								<text class="title clamp">{{goodsItem.name}}</text>
 								<text class="attr-box">{{goodsItem.attr}}  x {{goodsItem.num}}</text>
-								<text class="price">{{goodsItem.real_price}}</text>
+								<text class="price" v-yuan="goodsItem.real_price"></text>
 							</view>
 						</view>
 						
