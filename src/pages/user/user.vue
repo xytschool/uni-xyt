@@ -11,17 +11,20 @@
 					<text class="username">{{user.nickname || user.name}}</text>
 				</view>
 			</view>
+      
 			<view class="vip-card-box">
 				<image class="card-bg" src="http://data.xytschool.com/m/v1/static/vip-card-bg.png" mode=""></image>
-				<view class="b-btn">
-					立即开通
+				<view class="b-btn" v-if="user.vip_level <= 0"  @click="navTo('/pages/user/openVip')">
+					开通会员
 				</view>
-				<view class="tit">
+
+				<view class="tit" v-if="user.vip_level > 0">
 					<text class="yticon icon-iLinkapp-"></text>
 					黄金会员
 				</view>
+        
 				<text class="e-m">创意坊 xytschool</text>
-				<text class="e-b">总有人要成功为什么不能是我呢</text>
+				<text class="e-b">总有人要成功为什么不是我</text>
 			</view>
 		</view>
 		
@@ -82,10 +85,13 @@
 <!--					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105320890&di=c743386be51f2c4c0fd4b75754d14f3c&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fhb%2FMTQ1OTg4ODY0MDA3Ny05OTQ4ODY1NDQ%3D.jpg" mode="aspectFill"></image>-->
 				</scroll-view>
 
-				<list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></list-cell>
-				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理" @eventClick="navTo('/pages/address/address')"></list-cell>
-				<list-cell icon="icon-share" iconColor="#9789f7" title="分享" tips="邀请好友赢10万大礼"></list-cell>
-				<list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="晒单" tips="晒单抢红包"></list-cell>
+				<list-cell icon="icon-iconfontweixin" @eventClick="navTo('/pages/user/userAwards')"
+                   iconColor="#e07472" title="我的奖品" tips=""></list-cell>
+				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理"
+                   @eventClick="navTo('/pages/address/address')"></list-cell>
+				<list-cell icon="icon-share" iconColor="#9789f7" title="分享"
+                   tips="邀请好友赢10万大礼"></list-cell>
+<!--				<list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="晒单" tips="晒单抢红包"></list-cell>-->
 				<list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></list-cell>
 				<list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 			</view>

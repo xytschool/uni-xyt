@@ -1,4 +1,4 @@
-import {placeOrder, preOrder} from "../../api/order";
+import {placeOrder, preOrder, openVip} from "../../api/order";
 import userMoudle from "@/store/modules/user";
 
 const orderMoudle = {
@@ -101,13 +101,7 @@ const orderMoudle = {
         async preOrderByGoodsList({commit, dispatch, state}, goodsList) {
             commit('createTempOrderByGoodsList', goodsList)
             commit('buildOrder')
-            //await dispatch('preOrder', state.tempOrder)
         },
-        // async addCoupon({commit, dispatch, state}, coupon) {
-        //     commit('createTempOrderByGoodsList', goodsList)
-        //     commit('buildOrder')
-        //     //await dispatch('preOrder', state.tempOrder)
-        // },
         async placePreOrder({state, commit}, params) {
             console.log('preOrder ->', state.tempOrder, params)
             if (state.tempOrder.goods_type == 'goods') {
@@ -133,6 +127,22 @@ const orderMoudle = {
                 return false
             }
         },
+        async openVip({state, commit}, params) {
+            console.log('openVip ->', state.tempOrder, params)
+            state.tempOrder.goods_type = 'vip'
+            if(params.inviter_id){
+                state.tempOrder.inviter_id = params.inviter_id
+            }
+
+            let res = await openVip(state.tempOrder)
+            if (res.code == 200) {
+                return res.data
+            } else {
+                uni.showToast({title: "预下单失败:" + res.msg})
+                return false
+            }
+        },
+
         async placeOrder({state, commit}) {
             let res = await placeOrder(state.tempOrder)
             if (res.code == 200) {

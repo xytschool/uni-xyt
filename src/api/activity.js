@@ -36,5 +36,11 @@ module.exports = {
     },
     async getActivityByGoodsId(params) {
         return get(host + '/getActivityByGoodsId', params)
-    }
+    },
+    async getUserAwards(last_id) {
+        return get(host + '/getUserAwards',{last_id} )
+    },
+    async getUserAwardHistories(last_id) {
+        return get(host + '/getUserAwardHistories', {last_id})
+    },
 }

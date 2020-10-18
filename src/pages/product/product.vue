@@ -204,7 +204,6 @@ import share from '@/components/share'
 import {isCollect} from "../../api/userapi"
 import coupons from "@/components/coupons"
 import {mapState} from "vuex"
-import {updateShareMenu} from "../../utils/share"
 import {deepEqual} from "../../utils/utils"
 
 //#ifdef H5
@@ -479,8 +478,8 @@ export default {
         goods_id: parseInt(this.goods.id),
         sku_id: this.currentSku.id,
         name: this.goods.name,
-        price: parseFloat(this.goods.price),
-        real_price: parseFloat(this.goods.real_price),
+        price: parseInt(this.goods.price),
+        real_price: parseInt(this.goods.real_price),
         cover: this.goods.small_cover,
         num: 1
       }

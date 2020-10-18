@@ -1,5 +1,5 @@
 ## version
-VERSION=v1.1.8
+VERSION=v1.1.9
 ## 线上访问(使用CDN 速度快 但是需要上传)
 PUBLIC_PATH_PROD=http://data.xytschool.com/m/$(VERSION)
 

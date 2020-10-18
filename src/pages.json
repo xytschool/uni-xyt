@@ -61,6 +61,18 @@
       }
     },
     {
+      "path": "pages/user/openVip",
+      "style": {
+        "navigationBarTitleText": "开通会员"
+      }
+    },
+    {
+      "path": "pages/user/userAwards",
+      "style": {
+        "navigationBarTitleText": "我的奖品"
+      }
+    },
+    {
       "path": "pages/userinfo/userinfo",
       "style": {
         "navigationBarTitleText": "修改资料"
@@ -256,6 +268,13 @@
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/activity/detail",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "活动详情"
       }
     }
   ],

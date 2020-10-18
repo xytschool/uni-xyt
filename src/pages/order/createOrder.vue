@@ -142,7 +142,7 @@
 <script>
     import {mapState} from "vuex";
     import coupons from "@/components/coupons";
-    import {jsPay, miniPay} from "../../utils/payment";
+    import {jsPay} from "../../utils/payment";
 
     export default {
         components: {coupons},
@@ -237,7 +237,7 @@
                              if( res.code == 200 && res.data.pay_status === "paid" ){
                                 uni.showToast({title:"支付成功"})
                                setTimeout(function (){
-                                 uni.redirectTo({url:"/pages/order/order?state=2"})
+
                                },1000)
                              }
                            }).catch( ()=>{

@@ -43,8 +43,8 @@ const prePage = () => {
 }
 
 //#ifdef H5
-//var VConsole = require('vconsole');
-//var vConsole = new VConsole();
+var VConsole = require('vconsole');
+var vConsole = new VConsole();
 var clientType = "h5"
 
 var ua = navigator.userAgent.toLowerCase()
