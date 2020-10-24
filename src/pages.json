@@ -85,6 +85,12 @@
       }
     },
     {
+      "path": "pages/video/video",
+      "style": {
+        "navigationBarTitleText": "视频直播"
+      }
+    },
+    {
       "path": "pages/public/login",
       "style": {
         "navigationBarTitleText": "",

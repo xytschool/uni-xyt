@@ -61,7 +61,10 @@ module.exports = {
     async getUserHistoryList() {
         return get(host + '/getUserHistoryList')
     },
-    checkVerifyCode(params) {
-        return post(host + '/getUserCollectionList')
+    async updateUserCode(){
+       return get(host + '/updateUserCode')
+    },
+    async getUserByCode(params) {
+        return post(host + '/getUserByCode')
     }
 }

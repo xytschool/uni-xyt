@@ -11,8 +11,6 @@ import uView from "uview-ui";
 Vue.use(uView);
 App.mpType = 'app'
 
-//console.log(process)
-
 const msg = (title, duration = 1500, mask = false, icon = 'none') => {
     //统一提示方便全局修改
     if (Boolean(title) === false) {

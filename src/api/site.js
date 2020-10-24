@@ -44,5 +44,11 @@ module.exports = {
     },
     async getCompany(){
         return get(host + '/getCompany')
-    }
+    },
+    async getVideoList(){
+        return get(host + '/getVideoList')
+    },
+    async getVideoDetail(){
+        return get(host + '/getVideoDetail')
+    },
 }

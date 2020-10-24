@@ -49,30 +49,49 @@
 <!--            </script>-->
 <!--        </wx-open-launch-weapp>-->
 
-        <!-- 秒杀楼层 -->
-        <view class="seckill-section m-t">
+      <!-- 在线直播 -->
+      <view class="seckill-section m-t" v-if="videoList&&videoList.length">
             <view class="s-header">
-                <image class="s-img" src="http://data.xytschool.com/m/v1/static/temp/secskill-img.jpg" mode="widthFix"></image>
-                <text class="tip">8点场</text>
-                <text class="hour timer">07</text>
-                <text class="minute timer">13</text>
-                <text class="second timer">55</text>
-                <text class="yticon icon-you"></text>
+                <text style="font-size: 22px;font-weight: 500;color: #ceae51;">在线直播</text>
             </view>
             <scroll-view class="floor-list" scroll-x>
                 <view class="scoll-wrapper">
                     <view
-                            v-for="(item, index) in recommendGoodsList" :key="index"
+                            v-for="(item, index) in videoList" :key="index"
                             class="floor-item"
-                            @click="navToDetailPage(item)"
+                            @click="navToVideo(item)"
                     >
                         <image :src="item.small_cover" mode="aspectFill"></image>
                         <text class="title clamp">{{item.name}}</text>
-                        <text class="price" v-yuan="item.real_price">￥</text>
                     </view>
                 </view>
             </scroll-view>
+      </view>
+
+      <!-- 秒杀楼层 -->
+      <view class="seckill-section m-t">
+        <view class="s-header">
+          <image class="s-img" src="http://data.xytschool.com/m/v1/static/temp/secskill-img.jpg" mode="widthFix"></image>
+          <text class="tip">8点场</text>
+          <text class="hour timer">07</text>
+          <text class="minute timer">13</text>
+          <text class="second timer">55</text>
+          <text class="yticon icon-you"></text>
         </view>
+        <scroll-view class="floor-list" scroll-x>
+          <view class="scoll-wrapper">
+            <view
+                v-for="(item, index) in recommendGoodsList" :key="index"
+                class="floor-item"
+                @click="navToDetailPage(item)"
+            >
+              <image :src="item.small_cover" mode="aspectFill"></image>
+              <text class="title clamp">{{item.name}}</text>
+              <text class="price" v-yuan="item.real_price">￥</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
 
         <!-- 团购楼层 -->
         <view class="f-header m-t">
@@ -236,14 +255,11 @@
             </view>
         </view>
 
-
     </view>
 </template>
 
 <script>
-
     export default {
-
         data() {
             return {
                 titleNViewBackground: '',
@@ -254,6 +270,7 @@
                 recommendGoodsList: [],
                 navList: [],
                 keyword: '',
+                videoList: []
             };
         },
 
@@ -275,6 +292,11 @@
                 if (navListRes.code = 200) {
                     console.log('navListRes::', navListRes.code ,navListRes.data)
                     this.navList = navListRes.data
+                }
+                
+                let videoRes = await this.$api.site.getVideoList()
+                if (videoRes.code == 200) {
+                 this.videoList = videoRes.data || [];
                 }
 
                 //let goodsList = await this.$api.json('goodsList');
@@ -299,7 +321,6 @@
             },
             //详情页
             navToDetailPage(item) {
-                //测试数据没有写id，用title代替
                 let id = item.id;
                 if (item.href) {
                     uni.navigateTo({url: item.href})
@@ -309,6 +330,13 @@
                     })
                 }
             },
+           //详情页
+           navToVideo(item) {
+             let id = item.id;
+             uni.navigateTo({
+               url: `/pages/video/video?id=${id}`
+             })
+           },
             //详情页
             gotoNav(item) {
                 if (!item.href) {

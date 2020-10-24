@@ -18,9 +18,10 @@
 					开通会员
 				</view>
 
-				<view class="tit" v-if="user.vip_level > 0">
+				<view class="tit" v-if="user.vip_level > 0" @click="showUserCode">
 					<text class="yticon icon-iLinkapp-"></text>
 					黄金会员
+          <u-icon name="scan" color="#89f23a" size="28" style="margin-left: 10px"></u-icon>
 				</view>
         
 				<text class="e-m">创意坊 xytschool</text>
@@ -28,7 +29,7 @@
 			</view>
 		</view>
 		
-		<view 
+		 <view
 			class="cover-container"
 			:style="[{
 				transform: coverTransform,
@@ -96,13 +97,17 @@
 				<list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 			</view>
 		</view>
+     <u-modal v-model="isShowUserCode" :title="'会员码'" width="70%" :title-style="{fontSize:'20px'}">
+        <view style="text-align: center;padding: 10px">
+          <img :src="'https://help.xytschool.com/getQrcode?code='+ userCode" style="width: 200px"/>
+          <u-count-down ref="uCountDown"  :timestamp="leftTime" separator="colon"  @end="updateUserCode"></u-count-down>
+        </view>
+     </u-modal>
     </view>
 </template>  
-<script>  
+<script>
 	import listCell from '@/components/mix-list-cell';
-    import {  
-        mapState 
-    } from 'vuex';  
+  import { mapState } from 'vuex';
 	let startY = 0, moveY = 0, pageAtTop = true;
     export default {
 		components: {
@@ -114,12 +119,16 @@
 				coverTransform: 'translateY(0px)',
 				coverTransition: '0s',
 				moving: false,
-        historyList: []
+        historyList: [],
+        isShowUserCode: false,
+        leftTime: 0,
+        userCode: ''
 			}
 		},
 		onLoad(params){
 		  this.com_id = params.com_id
 			this.$store.dispatch('user/checkLogin', this.com_id)
+      this.$store.dispatch('user/updateUserInfo')
       this.$api.user.getUserHistoryList().then((list) => {
         var dateRange = list.data
         for(var date in dateRange){
@@ -152,13 +161,27 @@
 			}
 		},
 		// #endif
-      computed: {
+    computed: {
 			...mapState({
 				user: state => state.user.user,
 				hasLogin: state => state.user.hasLogin,
 			})
 		},
-        methods: {
+    methods: {
+		  showUserCode(){
+         this.isShowUserCode = true
+		     this.updateUserCode()
+      },
+      updateUserCode(){
+        this.$api.user.updateUserCode().then( res => {
+          //console.log('updateUserCode', res)
+          if(res.code == 200){
+            this.userCode = res.data.code
+            this.leftTime = 30
+            this.$refs.uCountDown.start();
+          }
+        })
+      },
 			/**
 			 * 统一跳转接口,拦截未登录路由
 			 * navigator标签现在默认没有转场动画，所以用view
