@@ -73,7 +73,7 @@
         "usingComponents" : true
     },
     "h5" : {
-        "publicPath" : "http://m.xytschool.com/dev/public",
+        "publicPath" : "{publicPath}",
         "router" : {},
         "devServer" : {}
     }

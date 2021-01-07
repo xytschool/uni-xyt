@@ -15,6 +15,9 @@ module.exports = {
     async  getBannerList(){
         return get(host + '/getBannerList')
     },
+    async  getIndexPageBanners(){
+        return get(host + '/getIndexPageBanners')
+    },
     /**
      *   [{icon: '' , title: '' , link: ''}]
      * */
@@ -33,10 +36,22 @@ module.exports = {
     async  getActivityDetail(params){
         return get(host + '/getActivityDetail',params)
     },
-    async applyPartTimer(){
+    async applyPartTimer(params){
         return get(host + '/getNotifyDetail',params)
     },
-    async message(){
+    async message(params){
         return get(host + '/getNotifyDetail',params)
+    },
+    async getWxConfig(params){
+        return get(host + '/getWxConfig', params)
+    },
+    async getCompany(){
+        return get(host + '/getCompany')
+    },
+    async getVideoList(){
+        return get(host + '/getVideoList')
+    },
+    async getVideoDetail(){
+        return get(host + '/getVideoDetail')
     },
 }

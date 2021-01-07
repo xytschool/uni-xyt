@@ -125,7 +125,7 @@
     export default {
         data() {
             return {
-                mobile: '17150014402',
+                mobile: '',
                 password: '',
                 loginMethod: 'password',
                 //com_id: 0

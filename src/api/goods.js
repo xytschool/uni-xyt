@@ -45,6 +45,9 @@ module.exports = {
     async getGoodsDetail(params) {
         return get(host + '/getGoodsDetail', params)
     },
+    async getVipInfo() {
+        return get(host + '/getVipInfo')
+    },
     async getCartGoodsList() {
         return get(host + '/getCartGoodsList')
     },

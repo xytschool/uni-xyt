@@ -1,19 +1,19 @@
-# uni-test
+# uni-xyt
 
-## Project setup
-```
-npm install
-```
+## 因为uniapp打包的局限性，使用make编译文件 做的文件版本和cdn统一
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### 编译线上版本
+make prod
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### 编译测试版本
+make watch
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 注意index.css  文件名可能需要手动修改 echoapp的index模板文件
+
+## 注意线上版本需要修改 config.js 的baseUrl版本
+
+./src/config.js 
+- API_BASE_URL  指定url请求的根路径
+
+./src/manifest.json
+- publicPath 指定静态资源加载的根路径

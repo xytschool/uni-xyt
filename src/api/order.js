@@ -16,15 +16,17 @@ module.exports = {
      *  goodsList 商品列表
      *  position  下单位置  product|cart
      * */
-
     async preOrder(data) {
         return post(host + '/preOrder', data)
+    },
+    async openVip(data) {
+        return post(host + '/openVip', data)
     },
     /**
      *   [{icon: '' , title: '' , link: ''}]
      * */
     async placeOrder(data) {
-        return post(host + '/createOrder', data)
+        return get('http://shop.laravelschool.xyt/jspay?com_id=14&openid=oNrV6w92st6gWbXxySDiohmC2KtM&order_no=123123123199&total=100')
     },
     /**
      *   [{icon: '' , title: '' , link: ''}]
@@ -44,4 +46,7 @@ module.exports = {
     async refund(data) {
         return post(host + '/refund', data)
     },
+    async queryOrder(orderNo) {
+        return post(host + '/queryOrder', {order_no: orderNo})
+    }
 }

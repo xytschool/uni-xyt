@@ -2,7 +2,7 @@
     <view class="container">  
 		
 		<view class="user-section">
-			<image class="bg" src="/static/user-bg.jpg"></image>
+			<image class="bg" src="http://data.xytschool.com/m/v1/static/user-bg.jpg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box">
 					<image class="portrait" :src="user.avatar || '/static/missing-face.png'"></image>
@@ -11,21 +11,25 @@
 					<text class="username">{{user.nickname || user.name}}</text>
 				</view>
 			</view>
+      
 			<view class="vip-card-box">
-				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
-				<view class="b-btn">
-					立即开通
+				<image class="card-bg" src="http://data.xytschool.com/m/v1/static/vip-card-bg.png" mode=""></image>
+				<view class="b-btn" v-if="user.vip_level <= 0"  @click="navTo('/pages/user/openVip')">
+					开通会员
 				</view>
-				<view class="tit">
+
+				<view class="tit" v-if="user.vip_level > 0" @click="showUserCode">
 					<text class="yticon icon-iLinkapp-"></text>
 					黄金会员
+          <u-icon name="scan" color="#89f23a" size="28" style="margin-left: 10px"></u-icon>
 				</view>
+        
 				<text class="e-m">创意坊 xytschool</text>
-				<text class="e-b">总有人要成功为什么不能是我呢</text>
+				<text class="e-b">总有人要成功为什么不是我</text>
 			</view>
 		</view>
 		
-		<view 
+		 <view
 			class="cover-container"
 			:style="[{
 				transform: coverTransform,
@@ -35,7 +39,7 @@
 			@touchmove="coverTouchmove"
 			@touchend="coverTouchend"
 		>
-			<image class="arc" src="/static/arc.png"></image>
+			<image class="arc" src="http://data.xytschool.com/m/v1/static/arc.png"></image>
 			
 			<view class="tj-sction">
 				<view class="tj-item">
@@ -47,7 +51,7 @@
 					<text>优惠券</text>
 				</view>
 				<view class="tj-item">
-					<text class="num">{{user.score}}</text>
+					<text class="num">{{user.score||0}}</text>
 					<text>积分</text>
 				</view>
 			</view>
@@ -72,33 +76,38 @@
 			</view>
 			<!-- 浏览历史 -->
 			<view class="history-section icon">
-				<view class="sec-header">
+				<view class="sec-header" >
 					<text class="yticon icon-lishijilu"></text>
 					<text>浏览历史</text>
 				</view>
-				<scroll-view scroll-x class="h-list">
-					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105186633&di=c121a29beece4e14269948d990f9e720&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm8%2FM04%2FDE%2FDE%2FwKhQplZ-QteEBvsbAAAAADUkobU751.jpg" mode="aspectFill"></image>
-					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105231218&di=09534b9833b5243296630e6d5b728eff&imgtype=0&src=http%3A%2F%2Fimg002.hc360.cn%2Fm1%2FM05%2FD1%2FAC%2FwKhQcFQ3iN2EQTo8AAAAAHQU6_8355.jpg" mode="aspectFill"></image>
-					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105320890&di=c743386be51f2c4c0fd4b75754d14f3c&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fhb%2FMTQ1OTg4ODY0MDA3Ny05OTQ4ODY1NDQ%3D.jpg" mode="aspectFill"></image>
-					<image @click="navTo('/pages/product/product')" src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2691146630,2165926318&fm=26&gp=0.jpg" mode="aspectFill"></image>
-					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105443324&di=8141bf13f3f208c61524d67f9bb83942&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01ac9a5548d29b0000019ae98e6d98.jpg" mode="aspectFill"></image>
-					<image @click="navTo('/pages/product/product')" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=191678693,2701202375&fm=26&gp=0.jpg" mode="aspectFill"></image>
+				<scroll-view scroll-x class="h-list" >
+					<image @click="navTo('/pages/product/product?id='+ item.id)" v-for="item in historyList" :src="item.cover" mode="aspectFill"></image>
+<!--					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105231218&di=09534b9833b5243296630e6d5b728eff&imgtype=0&src=http%3A%2F%2Fimg002.hc360.cn%2Fm1%2FM05%2FD1%2FAC%2FwKhQcFQ3iN2EQTo8AAAAAHQU6_8355.jpg" mode="aspectFill"></image>-->
+<!--					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105320890&di=c743386be51f2c4c0fd4b75754d14f3c&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fhb%2FMTQ1OTg4ODY0MDA3Ny05OTQ4ODY1NDQ%3D.jpg" mode="aspectFill"></image>-->
 				</scroll-view>
-				<list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></list-cell>
-				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理" @eventClick="navTo('/pages/address/address')"></list-cell>
-				<list-cell icon="icon-share" iconColor="#9789f7" title="分享" tips="邀请好友赢10万大礼"></list-cell>
-				<list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="晒单" tips="晒单抢红包"></list-cell>
+
+				<list-cell icon="icon-iconfontweixin" @eventClick="navTo('/pages/user/userAwards')"
+                   iconColor="#e07472" title="我的奖品" tips=""></list-cell>
+				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理"
+                   @eventClick="navTo('/pages/address/address')"></list-cell>
+				<list-cell icon="icon-share" iconColor="#9789f7" title="分享"
+                   tips="邀请好友赢10万大礼"></list-cell>
+<!--				<list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="晒单" tips="晒单抢红包"></list-cell>-->
 				<list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></list-cell>
 				<list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 			</view>
 		</view>
+     <u-modal v-model="isShowUserCode" :title="'会员码'" width="70%" :title-style="{fontSize:'20px'}">
+        <view style="text-align: center;padding: 10px">
+          <img :src="'https://help.xytschool.com/getQrcode?code='+ userCode" style="width: 200px"/>
+          <u-count-down ref="uCountDown"  :timestamp="leftTime" separator="colon"  @end="updateUserCode"></u-count-down>
+        </view>
+     </u-modal>
     </view>
 </template>  
-<script>  
+<script>
 	import listCell from '@/components/mix-list-cell';
-    import {  
-        mapState 
-    } from 'vuex';  
+  import { mapState } from 'vuex';
 	let startY = 0, moveY = 0, pageAtTop = true;
     export default {
 		components: {
@@ -110,11 +119,27 @@
 				coverTransform: 'translateY(0px)',
 				coverTransition: '0s',
 				moving: false,
+        historyList: [],
+        isShowUserCode: false,
+        leftTime: 0,
+        userCode: ''
 			}
 		},
 		onLoad(params){
-		    this.com_id = params.com_id
+		  this.com_id = params.com_id
 			this.$store.dispatch('user/checkLogin', this.com_id)
+      this.$store.dispatch('user/updateUserInfo')
+      this.$api.user.getUserHistoryList().then((list) => {
+        var dateRange = list.data
+        for(var date in dateRange){
+          var dateItems = dateRange[date]
+          for(var index in dateItems){
+            this.historyList.push(dateItems[index])
+          }
+        }
+        this.historyList = this.historyList.subarray(0,10)
+        console.log(this.historyList)
+      })
 		},
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {
@@ -136,13 +161,27 @@
 			}
 		},
 		// #endif
-        computed: {
+    computed: {
 			...mapState({
 				user: state => state.user.user,
 				hasLogin: state => state.user.hasLogin,
 			})
 		},
-        methods: {
+    methods: {
+		  showUserCode(){
+         this.isShowUserCode = true
+		     this.updateUserCode()
+      },
+      updateUserCode(){
+        this.$api.user.updateUserCode().then( res => {
+          //console.log('updateUserCode', res)
+          if(res.code == 200){
+            this.userCode = res.data.code
+            this.leftTime = 30
+            this.$refs.uCountDown.start();
+          }
+        })
+      },
 			/**
 			 * 统一跳转接口,拦截未登录路由
 			 * navigator标签现在默认没有转场动画，所以用view

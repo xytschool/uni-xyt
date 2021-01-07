@@ -1,4 +1,4 @@
-import {getUserAddressList, login} from "../../api/userapi";
+import {getUserAddressList, login, getUserInfo} from "../../api/userapi";
 
 const userMoudle = {
     namespaced: true,
@@ -20,6 +20,22 @@ const userMoudle = {
                 key: 'authToken',
                 data: user.jws_token
             })
+        },
+        updateUser(state, user) {
+            state.user.score = user.score
+            state.user.vip_level = user.vip_level
+            state.user.roles = user.roles
+            uni.setStorage({//缓存用户登陆状态
+                key: 'userInfo',
+                data: state.user
+            })
+
+            if(user.jws_token){
+                uni.setStorage({//缓存用户登陆状态
+                    key: 'authToken',
+                    data: user.jws_token
+                })
+            }
         },
         logout(state) {
             state.hasLogin = false;
@@ -85,10 +101,14 @@ const userMoudle = {
         logout({commit, dispatch, state}) {
             commit('logout')
         },
+        async updateUserInfo({commit, dispatch, state}) {
+           let userInfoRes = await getUserInfo()
+            console.log('userInfo res ', userInfoRes)
+           if(userInfoRes.code = 200){
+               commit('updateUser', userInfoRes.data)
+           }
+        },
         async getUserAddressList({commit, dispatch, state}) {
-            // if (state.addressList.length >= 0) {
-            //     return
-            // }
             let userAddressListRes = await getUserAddressList()
             if (userAddressListRes.code = 200) {
                 let list = userAddressListRes.data
@@ -112,8 +132,6 @@ const userMoudle = {
                 return true
             }
             return false
-            //commit('buildOrder')
-            //await dispatch('preOrder', state.tempOrder)
         },
 
     },

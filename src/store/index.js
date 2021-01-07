@@ -3,20 +3,17 @@ import Vuex from 'vuex'
 import order from './modules/order'
 import user from './modules/user'
 import goods from './modules/goods'
+import company from './modules/company'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-    state: {
-        company: {},
-        comId: 0,
-        source: '小程序',
-        pay_method: '微信',
-    },
+    state: {},
     modules: {
         order,
         user,
-        goods
+        goods,
+        company
     },
     mutations: {
     },

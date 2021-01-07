@@ -35,37 +35,68 @@
         </view>
 
         <view class="ad-1">
-            <image src="/static/temp/ad1.jpg" mode="scaleToFill"></image>
+<!--          <image src="http://data.xytschool.com/m/v1/static/temp/ad1.jpg" mode="scaleToFill"></image>-->
+          <image :src="ad_banners[0].cover" mode="scaleToFill"></image>
         </view>
 
-        <!-- 秒杀楼层 -->
-        <view class="seckill-section m-t">
+<!--        <wx-open-launch-weapp-->
+<!--                id="launch-btn"-->
+<!--                username="gh_df82fb548290"-->
+<!--                path="pages/index/index"-->
+<!--        >-->
+<!--            <script type="text/wxtag-template">-->
+<!--                <style>.btn { padding: 12px }</style>-->
+<!--                <button class="btn" >打开小程序</button>-->
+<!--            </script>-->
+<!--        </wx-open-launch-weapp>-->
+
+      <!-- 在线直播 -->
+      <view class="seckill-section m-t" v-if="videoList&&videoList.length">
             <view class="s-header">
-                <image class="s-img" src="/static/temp/secskill-img.jpg" mode="widthFix"></image>
-                <text class="tip">8点场</text>
-                <text class="hour timer">07</text>
-                <text class="minute timer">13</text>
-                <text class="second timer">55</text>
-                <text class="yticon icon-you"></text>
+                <text style="font-size: 22px;font-weight: 500;color: #ceae51;">在线直播</text>
             </view>
             <scroll-view class="floor-list" scroll-x>
                 <view class="scoll-wrapper">
                     <view
-                            v-for="(item, index) in recommendGoodsList" :key="index"
+                            v-for="(item, index) in videoList" :key="index"
                             class="floor-item"
-                            @click="navToDetailPage(item)"
+                            @click="navToVideo(item)"
                     >
                         <image :src="item.small_cover" mode="aspectFill"></image>
                         <text class="title clamp">{{item.name}}</text>
-                        <text class="price">￥{{item.real_price}}</text>
                     </view>
                 </view>
             </scroll-view>
+      </view>
+
+      <!-- 秒杀楼层 -->
+      <view class="seckill-section m-t">
+        <view class="s-header">
+          <image class="s-img" src="http://data.xytschool.com/m/v1/static/temp/secskill-img.jpg" mode="widthFix"></image>
+          <text class="tip">8点场</text>
+          <text class="hour timer">07</text>
+          <text class="minute timer">13</text>
+          <text class="second timer">55</text>
+          <text class="yticon icon-you"></text>
         </view>
+        <scroll-view class="floor-list" scroll-x>
+          <view class="scoll-wrapper">
+            <view
+                v-for="(item, index) in recommendGoodsList" :key="index"
+                class="floor-item"
+                @click="navToDetailPage(item)"
+            >
+              <image :src="item.small_cover" mode="aspectFill"></image>
+              <text class="title clamp">{{item.name}}</text>
+              <text class="price" v-yuan="item.real_price">￥</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
 
         <!-- 团购楼层 -->
         <view class="f-header m-t">
-            <image src="/static/temp/h1.png"></image>
+            <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
             <view class="tit-box">
                 <text class="tit">精品团购</text>
                 <text class="tit2">Boutique Group Buying</text>
@@ -85,7 +116,7 @@
                         <view class="t-box">
                             <text class="title clamp">{{item.name}}</text>
                             <view class="price-box">
-                                <text class="price">￥{{item.real_price}}</text>
+                                <text class="price" v-yuan="item.real_price">￥</text>
                                 <text class="m-price">￥188</text>
                             </view>
 
@@ -101,9 +132,9 @@
                     <view class="g-item right">
                         <image :src="goodsList[index+1].small_cover" mode="aspectFill"></image>
                         <view class="t-box">
-                            <text class="title clamp">{{goodsList[index+1].title}}</text>
+                            <text class="title clamp" >{{goodsList[index+1].title}}</text>
                             <view class="price-box">
-                                <text class="price">￥{{goodsList[index+1].price}}</text>
+                                <text class="price" v-yuan="goodsList[index+1].price">￥</text>
                                 <text class="m-price">￥188</text>
                             </view>
                             <view class="pro-box">
@@ -121,8 +152,8 @@
 
         <!-- 分类推荐楼层 -->
         <view class="f-header m-t">
-            <image src="/static/temp/h1.png"></image>
-            <view class="tit-box">
+          <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
+          <view class="tit-box">
                 <text class="tit">分类精选</text>
                 <text class="tit2">Competitive Products For You</text>
             </view>
@@ -130,9 +161,11 @@
         </view>
         <view class="hot-floor">
             <view class="floor-img-box">
-                <image class="floor-img"
-                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409398864&di=4a12763adccf229133fb85193b7cc08f&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201703%2F19%2F20170319150032_MNwmn.jpeg"
-                       mode="scaleToFill"></image>
+<!--                <image class="floor-img"-->
+<!--                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409398864&di=4a12763adccf229133fb85193b7cc08f&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201703%2F19%2F20170319150032_MNwmn.jpeg"-->
+<!--                       mode="scaleToFill"></image>-->
+
+              <image :src="cate_banners[1].cover" mode="scaleToFill"></image>
             </view>
             <scroll-view class="floor-list" scroll-x>
                 <view class="scoll-wrapper">
@@ -143,7 +176,7 @@
                     >
                         <image :src="item.small_cover" mode="aspectFill"></image>
                         <text class="title clamp">{{item.name}}</text>
-                        <text class="price">￥{{item.real_price}}</text>
+                        <text class="price" v-yuan="item.real_price">￥</text>
                     </view>
                     <view class="more">
                         <text>查看全部</text>
@@ -154,9 +187,10 @@
         </view>
         <view class="hot-floor">
             <view class="floor-img-box">
-                <image class="floor-img"
-                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409984228&di=dee176242038c2d545b7690b303d65ea&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F5ef4da9f17faaf4612f0d5046f4161e556e9bbcfdb5b-rHjf00_fw658"
-                       mode="scaleToFill"></image>
+<!--                <image class="floor-img"-->
+<!--                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409984228&di=dee176242038c2d545b7690b303d65ea&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F5ef4da9f17faaf4612f0d5046f4161e556e9bbcfdb5b-rHjf00_fw658"-->
+<!--                       mode="scaleToFill"></image>-->
+              <image :src="cate_banners[2].cover" mode="scaleToFill"></image>
             </view>
             <scroll-view class="floor-list" scroll-x>
                 <view class="scoll-wrapper">
@@ -167,7 +201,7 @@
                     >
                         <image :src="item.small_cover" mode="aspectFill"></image>
                         <text class="title clamp">{{item.name}}</text>
-                        <text class="price">￥{{item.real_price}}</text>
+                        <text class="price" v-yuan="item.real_price">￥</text>
                     </view>
                     <view class="more">
                         <text>查看全部</text>
@@ -178,9 +212,10 @@
         </view>
         <view class="hot-floor">
             <view class="floor-img-box">
-                <image class="floor-img"
-                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409794730&di=12b840ec4f5748ef06880b85ff63e34e&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01dc03589ed568a8012060c82ac03c.jpg%40900w_1l_2o_100sh.jpg"
-                       mode="scaleToFill"></image>
+<!--                <image class="floor-img"-->
+<!--                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409794730&di=12b840ec4f5748ef06880b85ff63e34e&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01dc03589ed568a8012060c82ac03c.jpg%40900w_1l_2o_100sh.jpg"-->
+<!--                       mode="scaleToFill"></image>-->
+              <image :src="cate_banners[3].cover" mode="scaleToFill"></image>
             </view>
             <scroll-view class="floor-list" scroll-x>
                 <view class="scoll-wrapper">
@@ -191,7 +226,7 @@
                     >
                         <image :src="item.small_cover" mode="aspectFill"></image>
                         <text class="title clamp">{{item.name}}</text>
-                        <text class="price">￥{{item.real_price}}</text>
+                        <text class="price" v-yuan="item.real_price">￥</text>
                     </view>
                     <view class="more">
                         <text>查看全部</text>
@@ -203,7 +238,7 @@
 
         <!-- 猜你喜欢 -->
         <view class="f-header m-t">
-            <image src="/static/temp/h1.png"></image>
+            <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
             <view class="tit-box">
                 <text class="tit">猜你喜欢</text>
                 <text class="tit2">Guess You Like It</text>
@@ -221,18 +256,15 @@
                     <image :src="item.small_cover" mode="aspectFill"></image>
                 </view>
                 <text class="title clamp">{{item.name}}</text>
-                <text class="price">￥{{item.real_price}}</text>
+                <text class="price" v-yuan="item.real_price">￥</text>
             </view>
         </view>
-
 
     </view>
 </template>
 
 <script>
-
     export default {
-
         data() {
             return {
                 titleNViewBackground: '',
@@ -243,6 +275,9 @@
                 recommendGoodsList: [],
                 navList: [],
                 keyword: '',
+                videoList: [],
+                ad_banners:[],
+                cate_banners: []
             };
         },
 
@@ -250,23 +285,27 @@
             this.loadData();
         },
         methods: {
-            /**
-             * 请求静态数据只是为了代码不那么乱
-             * 分次请求未作整合
-             */
             async loadData() {
-                //let carouselList = await this.$api.json('carouselList');
-                let res = await this.$api.site.getBannerList()
-                if (res.code == 200) {
-                    let carouselList = res.data
+                let res = await this.$api.site.getIndexPageBanners()
+                console.log('indexPageBanner', res)
+                if (res.code == 200 && res.data) {
+                    let carouselList = res.data.scroll_1  
                     this.titleNViewBackground = carouselList[0].background;
                     this.swiperLength = carouselList.length;
                     this.carouselList = carouselList;
+
+                    this.ad_banners = res.data.ads
+                    this.cate_banners = res.data.categories
                 }
                 let navListRes = await this.$api.site.getNavList()
                 if (navListRes.code = 200) {
-                    //console.log(navListRes)
+                    console.log('navListRes::', navListRes.code ,navListRes.data)
                     this.navList = navListRes.data
+                }
+                
+                let videoRes = await this.$api.site.getVideoList()
+                if (videoRes.code == 200) {
+                 this.videoList = videoRes.data || [];
                 }
 
                 //let goodsList = await this.$api.json('goodsList');
@@ -291,27 +330,38 @@
             },
             //详情页
             navToDetailPage(item) {
-                //测试数据没有写id，用title代替
                 let id = item.id;
-                console.log(item.href)
-                if(item.href){
-                    uni.navigateTo({ url: item.href})
-                }else {
+                if (item.href) {
+                    uni.navigateTo({url: item.href})
+                } else {
                     uni.navigateTo({
                         url: `/pages/product/product?id=${id}`
                     })
                 }
             },
+           //详情页
+           navToVideo(item) {
+             let id = item.id;
+             uni.navigateTo({
+               url: `/pages/video/video?id=${id}`
+             })
+           },
             //详情页
             gotoNav(item) {
-                if (!item.link) {
+                if (!item.href) {
                     uni.showToast({title: "请配置跳转地址"})
                     return
                 }
                 //console.log(item.link)
-                uni.navigateTo({
-                    url: item.link
-                })
+                if(item.href.indexOf("/pages/category/category") >= 0){
+                    uni.switchTab({
+                        url: item.href
+                    })
+                }else {
+                    uni.navigateTo({
+                      url: item.href
+                    })
+                }
             },
         },
         // #ifndef MP
@@ -324,7 +374,6 @@
         },
         onNavigationBarSearchInputConfirmed(e) {
             console.log('onNavigationBarSearchInputConfirmed', e.text)
-            // #endif
             uni.navigateTo({
                 url: '/pages/product/search?keyword=' + e.text
             })

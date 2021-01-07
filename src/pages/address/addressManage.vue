@@ -12,15 +12,15 @@
         </view>
         <view class="row b-b">
             <text class="tit">地址</text>
-            <text @click="chooseLocation" class="input">
-                {{addressData.addressName}}
-            </text>
+<!--            <text @click="chooseLocation" class="input">-->
+             <text class="input" @click="showAddressPicker = true">{{addressData.addressPrefix||'点击选择'}}</text>
+             <city-select v-model="showAddressPicker" @city-change="cityChange"></city-select>
             <text class="yticon icon-shouhuodizhi"></text>
         </view>
+        <u-picker mode="region" ref="uPicker" v-model="show" />
         <view class="row b-b">
             <text class="tit">门牌号</text>
-            <input class="input" type="text" v-model="addressData.area" placeholder="楼号、门牌"
-                   placeholder-class="placeholder"/>
+            <input class="input" type="text" v-model="addressData.area" placeholder="楼号、门牌" placeholder-class="placeholder"/>
         </view>
 
         <view class="row default-row">
@@ -32,16 +32,24 @@
 </template>
 
 <script>
+    import citySelect from './u-city-select.vue';
     export default {
+        components:{
+          citySelect
+        },
         data() {
             return {
+                showAddressPicker: false,
                 addressData: {
-                    username: 'gw',
-                    mobile: '18611112222',
-                    addressName: '在地图选择',
-                    address: '北京',
+                    username: '',
+                    mobile: '',
+                    addressPrefix: '',
+                    address: '',
                     area: '北京',
-                    default: false
+                    default: false,
+                    province_id: 0,
+                    city_id: 0,
+                    district_id: 0
                 }
             }
         },
@@ -49,8 +57,10 @@
             let title = '新增收货地址';
             if (option.type === 'edit') {
                 title = '编辑收货地址'
-
                 this.addressData = JSON.parse(option.data)
+                var arr = this.addressData.address.split(' ')
+                this.addressData.addressPrefix = arr[0]
+                this.addressData.area = arr[1]
             }
             this.manageType = option.type;
             uni.setNavigationBarTitle({
@@ -59,14 +69,20 @@
         },
         methods: {
             switchChange(e) {
-                //console.log(e)
                 this.addressData.default = e.detail.value;
             },
-
-            //地图选择地址
+            cityChange(e) {
+             this.addressData.province_id =  parseInt(e.province.value)
+             this.addressData.city_id = parseInt(e.province.value)
+             this.addressData.district_id = parseInt(e.area.value)
+             this.addressData.addressPrefix = e.province.label + '-' + e.city.label + '-' + e.area.label;
+             console.log('cityChange' , e ,this.addressData)
+            },
+          //地图选择地址
             chooseLocation() {
                 uni.chooseLocation({
                     success: (data) => {
+                        console.log('chooseLocation', data)
                         this.addressData.addressName = data.name;
                         this.addressData.address = data.name;
                     }
@@ -75,6 +91,7 @@
 
             //提交
             confirm() {
+                this.addressData.address = this.addressData.addressPrefix + ' ' +this.addressData.area
                 let data = this.addressData;
                 if (!data.username) {
                     this.$api.msg('请填写收货人姓名');
@@ -85,7 +102,7 @@
                     return;
                 }
                 if (!data.address) {
-                    this.$api.msg('请在地图选择所在位置');
+                    this.$api.msg('请在选择所在位置');
                     return;
                 }
                 if (!data.area) {

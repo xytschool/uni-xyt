@@ -1,6 +1,3 @@
-//var host = "http://shop.laravelschool.xyt"
-import he from "@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist";
-
 var host = ""
 //var host = "https://mobile.xytschool.com"
 var baseUrl = ""
@@ -9,11 +6,8 @@ import {getAuthToken, getClientID, getComId} from "./utils"
 function request(method, url, query, is_raw) {
     var com_id = getComId()
     if (com_id) {
-        //query.com_id = com_id
-        //console.log('replace')
         url = url.replace('{$com_id}', com_id)
     }
-    //query.com_id = 9
     return new Promise((resolve, reject) => {
         var token = getAuthToken()
         var clientId = getClientID()
@@ -46,7 +40,8 @@ function request(method, url, query, is_raw) {
             method: method,
             header: header,
             success(res) {
-                if(res.statusCode == 200){
+                //console.log('request', res)
+                if (res.statusCode == 200) {
                     res = res.data
                     if (res.code === 200 || res.code === 700 || res.code === 0) {
                         resolve(res)
@@ -58,8 +53,36 @@ function request(method, url, query, is_raw) {
                         });
                         resolve(res)
                     }
-                }else {
-                    resolve(res)
+                } else if (res.statusCode == 401) {
+
+                    uni.showModal({
+                        title: '当前未登录',
+                        content: '授权登陆',
+                        success: function (res) {
+                            console.log('授权登陆',res)
+                            if (res.confirm) {
+                                //#ifdef H5
+                                console.log("/pages/login/index")
+                                uni.navigateTo({
+                                    url: `/pages/login/index`
+                                })
+                                //#endif
+
+                                //#ifndef H5
+                                uni.login({
+                                    provider: 'weixin',
+                                    success: function (loginRes) {
+                                        console.log(loginRes.authResult);
+                                    }
+                                });
+                                //#endif
+                            } else if (res.cancel) {
+                                console.log('用户点击取消');
+                            }
+                        }
+                    });
+                } else {
+                    reject(res)
                 }
             },
             fail(res) {

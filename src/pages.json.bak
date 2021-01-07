@@ -61,18 +61,6 @@
       }
     },
     {
-      "path": "pages/user/openVip",
-      "style": {
-        "navigationBarTitleText": "开通会员"
-      }
-    },
-    {
-      "path": "pages/user/userAwards",
-      "style": {
-        "navigationBarTitleText": "我的奖品"
-      }
-    },
-    {
       "path": "pages/userinfo/userinfo",
       "style": {
         "navigationBarTitleText": "修改资料"
@@ -82,12 +70,6 @@
       "path": "pages/cart/cart",
       "style": {
         "navigationBarTitleText": "购物车"
-      }
-    },
-    {
-      "path": "pages/video/video",
-      "style": {
-        "navigationBarTitleText": "视频直播"
       }
     },
     {
@@ -114,7 +96,7 @@
             "type": "transparent",
             "buttons": [
               {
-                "fontSrc": "http://data.xytschool.com/m/v1/static/yticon.ttf",
+                "fontSrc": "/static/yticon.ttf",
                 "text": "\ue60f",
                 "fontSize": "24",
                 "color": "#303133",
@@ -122,7 +104,7 @@
                 "background": "rgba(0,0,0,0)"
               },
               {
-                "fontSrc": "/http://data.xytschool.com/m/v1/static/yticon.ttf",
+                "fontSrc": "/static/yticon.ttf",
                 "text": "\ue744",
                 "fontSize": "28",
                 "color": "#303133",
@@ -263,10 +245,41 @@
       }
     },
     {
+      "path": "pages/activity/detail",
+      "style": {
+        "navigationBarTitleText": "活动详情"
+      }
+    },
+    {
+      "path": "pages/ticket/index",
+      "style": {
+        "navigationBarTitleText": "门票列表"
+      }
+    },
+    {
       "path": "pages/comment/index",
       "style": {
         "navigationBarTitleText": "评论列表",
         "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/comment/reply",
+      "style": {
+        "navigationBarTitleText": "评论回复"
+      }
+    },
+    {
+      "path": "pages/comment/comment",
+      "style": {
+        "navigationBarTitleText": "评论"
+      }
+    },
+    {
+      "path": "pages/apply/index",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "申请合作伙伴"
       }
     },
     {
@@ -276,11 +289,18 @@
         "navigationBarTitleText": "登录"
       }
     },
+//    {
+//      "path": "pages/login/index2",
+//      "style": {
+//        "navigationStyle": "custom",
+//        "navigationBarTitleText": "登录"
+//      }
+//    },
     {
-      "path": "pages/activity/detail",
+      "path": "pages/login/code",
       "style": {
         "navigationStyle": "custom",
-        "navigationBarTitleText": "活动详情"
+        "navigationBarTitleText": "发送短信"
       }
     }
   ],
@@ -303,7 +323,7 @@
     },
       {
         "pagePath": "pages/category/category",
-        "iconPath": "/static/tab-cate.png",
+        "iconPath": "static/tab-cate.png",
         "selectedIconPath": "static/tab-cate-current.png",
         "text": "分类"
       },
@@ -320,15 +340,5 @@
         "text": "我的"
       }
     ]
-  },
-	"condition" : { //模式配置，仅开发期间生效
-		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [
-			{
-				"name": "", //模式名称
-				"path": "", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
-			}
-		]
-	}
+  }
 }

@@ -1,0 +1,36 @@
+<head>
+<link href="https://cdn.bootcss.com/video.js/6.3.3/video-js.min.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/video.js/6.3.3/video.min.js"></script>
+<script src="https://cdn.bootcss.com/videojs-contrib-hls/5.11.0/videojs-contrib-hls.js"></script>
+<!–[if lt IE 9]>
+<script type="text/javascript" src="http://cdn.static.runoob.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+<![endif]–>
+</head>
+<body>
+<style>
+    body,html{ margin: 0px ;padding: 0px}
+    .video-js{
+        width: 100%;
+    }
+</style>
+
+<video  id="myVideo"  class="video-js vjs-default-skin vjs-big-play-centered"  width="400"
+    controls="controls" autoplay="autoplay"
+    x-webkit-airplay="true" x5-video-player-fullscreen="true"
+    preload="auto" playsinline="true" webkit-playsinline
+    x5-video-player-typ="h5">
+<source type="application/x-mpegURL" src="https://cmgw-vpc.lechange.com:8890/LCO/4E03D62PAJ04292/0/0/20201022T104250/dev_4E03D62PAJ04292_20201022T104250.m3u8?proto=https">
+</video>
+
+<script>
+    // videojs 简单使用
+    var myVideo = videojs('myVideo',{
+        bigPlayButton : true,
+        textTrackDisplay : false,
+        posterImage: false,
+        errorDisplay : false,
+    })
+    myVideo.play() // 视频播放
+    myVideo.pause() // 视频暂停
+</script>
+</body>

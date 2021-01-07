@@ -27,10 +27,12 @@
                 <image :src="goods.cover"></image>
                 <view class="right">
                     <text class="title clamp">{{goods.name}}</text>
-                    <text class="spec" v-if="goods.sku_name">{{goods.sku_name}}</text>
+                    <text class="spec" v-if="goods.label_combine" v-for="(value ,key) in goods.label_combine">
+                            {{key}}:&nbsp;{{value}}
+                    </text>
                     <view class="price-box">
-                        <text class="real_price">￥{{goods.real_price}}</text>
-                        <text class="price">￥{{goods.price}}</text>
+                        <text class="real_price" v-yuan="goods.real_price">￥</text>
+                        <text class="price" v-yuan="goods.price">￥</text>
                         <text class="number">x {{goods.num}}</text>
                     </view>
                 </view>
@@ -50,7 +52,7 @@
 
         <!-- 优惠明细 -->
         <view class="yt-list">
-            <view class="yt-list-cell b-b" @click="toggleMask('show')">
+            <view class="yt-list-cell b-b" @click="showCouponMask = 1">
                 <view class="cell-icon">
                     券
                 </view>
@@ -59,6 +61,15 @@
                     选择优惠券
                 </text>
                 <text class="cell-more wanjia wanjia-gengduo-d"></text>
+            </view>
+            <view>
+                <view class="yt-list-cell b-b" v-for="coupon in couponList">
+                    <text class="cell-tit clamp">&nbsp;{{coupon.name}}</text>
+                    <text class="cell-tip active">
+                      金额<text v-yuan="coupon.amount"></text>元
+                    </text>
+                    <text class="cell-more wanjia wanjia-gengduo-d"></text>
+                </view>
             </view>
             <view class="yt-list-cell b-b">
                 <view class="cell-icon hb">
@@ -72,11 +83,11 @@
         <view class="yt-list">
             <view class="yt-list-cell b-b">
                 <text class="cell-tit clamp">商品金额</text>
-                <text class="cell-tip">￥{{amount}}</text>
+                <text class="cell-tip" v-yuan="amount">￥</text>
             </view>
             <view class="yt-list-cell b-b">
                 <text class="cell-tit clamp">优惠金额</text>
-                <text class="cell-tip red">-￥{{discount}}</text>
+                <text class="cell-tip red" v-yuan="discount">-￥</text>
             </view>
             <view class="yt-list-cell b-b">
                 <text class="cell-tit clamp">运费</text>
@@ -94,70 +105,65 @@
             <view class="price-content">
                 <text>实付款</text>
                 <text class="price-tip">￥</text>
-                <text class="price">{{real_amount}}</text>
+                <text v-yuan="real_amount" class="price"></text>
             </view>
-            <text class="submit" @click="submit">提交订单</text>
+            <text class="submit" @click="submit" :disabled="canSubmit">提交订单</text>
         </view>
 
-        <!-- 优惠券面板 -->
-        <view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">
-            <view class="mask-content" @click.stop.prevent="stopPrevent">
-                <!-- 优惠券页面，仿mt -->
-                <view class="coupon-item" v-for="(item,index) in couponList" :key="index">
-                    <view class="con">
-                        <view class="left">
-                            <text class="title">{{item.title}}</text>
-                            <text class="time">有效期至2019-06-30</text>
-                        </view>
-                        <view class="right">
-                            <text class="price">{{item.price}}</text>
-                            <text>满30可用</text>
-                        </view>
+        <!--        &lt;!&ndash; 优惠券面板 &ndash;&gt;-->
+        <!--        <view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">-->
+        <!--            <view class="mask-content" @click.stop.prevent="stopPrevent">-->
+        <!--                &lt;!&ndash; 优惠券页面，仿mt &ndash;&gt;-->
+        <!--                <view class="coupon-item" v-for="(item,index) in couponList" :key="index">-->
+        <!--                    <view class="con">-->
+        <!--                        <view class="left">-->
+        <!--                            <text class="title">{{item.title}}</text>-->
+        <!--                            <text class="time">有效期至2019-06-30</text>-->
+        <!--                        </view>-->
+        <!--                        <view class="right">-->
+        <!--                            <text class="price">{{item.price}}</text>-->
+        <!--                            <text>满30可用</text>-->
+        <!--                        </view>-->
 
-                        <view class="circle l"></view>
-                        <view class="circle r"></view>
-                    </view>
-                    <text class="tips">限新用户使用</text>
-                </view>
-            </view>
-        </view>
+        <!--                        <view class="circle l"></view>-->
+        <!--                        <view class="circle r"></view>-->
+        <!--                    </view>-->
+        <!--                    <text class="tips">限新用户使用</text>-->
+        <!--                </view>-->
+        <!--            </view>-->
+        <!--        </view>-->
+        <coupons :order="order" :display.sync="showCouponMask"
+                 @update="updateChoosedCoupon"
+                 :position="'createOrder'"></coupons>
 
     </view>
 </template>
 
 <script>
     import {mapState} from "vuex";
+    import coupons from "@/components/coupons";
+    import {jsPay} from "../../utils/payment";
 
     export default {
+        components: {coupons},
         data() {
             return {
-                maskState: 0, //优惠券面板显示状态
+                showCouponMask: 0, //优惠券面板显示状态
                 desc: '', //备注
                 payType: 1, //1微信 2支付宝
-                couponList: [
-                    {
-                        title: '新用户专享优惠券',
-                        price: 5,
-                    },
-                    {
-                        title: '庆五一发一波优惠券',
-                        price: 10,
-                    },
-                    {
-                        title: '优惠券优惠券优惠券优惠券',
-                        price: 15,
-                    }
-                ],
+                couponList: [],
                 from: 'goods', //goods ,cart
                 addressData: {
-                    name: '许小星',
-                    mobile: '13853989563',
-                    addressName: '金九大道',
-                    address: '山东省济南市历城区',
-                    area: '149号',
+                    name: '',
+                    mobile: '',
+                    addressName: '',
+                    address: '',
+                    area: '',
                     default: false,
                 },
-                tempNote: ''
+                tempNote: '',
+                inviter_id: 0,
+                canSubmit: true
             }
         },
         computed: {
@@ -171,7 +177,8 @@
                 note: state => state.order.tempOrder.note,
                 defaultAddress: state => state.user.defaultAddress,
                 orderAddress: state => state.order.tempAddress,
-                goodsType : state => state.order.goods_type
+                goodsType: state => state.order.goods_type,
+                order: state => state.order.tempOrder
             })
         },
         watch: {
@@ -179,10 +186,18 @@
                 //console.log(newVal)
                 this.$store.commit('order/changeNote', newVal)
             },
+            couponList(list) {
+                console.log('couponList change', this.couponList)
+                this.$store.dispatch('order/updateCouponList', this.couponList)
+            }
         },
         onLoad(option) {
-            if(option.from) {
+            if (option.from) {
                 this.from = option.from
+            }
+
+            if(option.from_user) {
+              this.inviter_id = parseInt(option.from_user)
             }
 
             this.$store.dispatch('user/getUserAddressList').then(res => {
@@ -191,25 +206,10 @@
                 }
             })
 
-            //console.log('goodsList', this.goodsList)
-            //商品数据
-            //let data = JSON.parse(option.data);
-            //console.log(data);
-
-            // let addrRes = this.$api.user.getUserDefaultAddress()
-            // if(addrRes.code == 200){
-            //
-            // }
         },
         methods: {
-            //显示优惠券面板
-            toggleMask(type) {
-                let timer = type === 'show' ? 10 : 300;
-                let state = type === 'show' ? 1 : 0;
-                this.maskState = 2;
-                setTimeout(() => {
-                    this.maskState = state;
-                }, timer)
+            updateChoosedCoupon(coupons) {
+                this.couponList = coupons
             },
             numberChange(data) {
                 this.number = data.number;
@@ -218,12 +218,37 @@
                 this.payType = type;
             },
             submit() {
-                this.$store.dispatch('order/placePreOrder').then(res => {
-                    if (res == true) {
-                        uni.redirectTo({
-                            url: '/pages/money/pay'
+               console.log('submit ...')
+               if(!this.canSubmit){
+                 console.log('submit ... rep')
+                 uni.showToast({title:"支付中请勿重复点击"})
+                 return
+               }
+               this.canSubmit = false
+               let params = {
+                   inviter_id : this.inviter_id
+               }
+               this.$store.dispatch('order/placePreOrder', params).then(preParams => {
+                    if (preParams) {
+                        jsPay(preParams).then((res) => {
+                            //console.log('h5Pay:', res)
+                           this.$api.order.queryOrder(preParams.order_no).then((res)=>{
+                             this.canSubmit = true
+                             if( res.code == 200 && res.data.pay_status === "paid" ){
+                                uni.showToast({title:"支付成功"})
+                               setTimeout(function (){
+
+                               },1000)
+                             }
+                           }).catch( ()=>{
+                             this.canSubmit = true
+                           })
                         })
+                    }else {
+                      this.canSubmit = true
                     }
+                }).catch(()=>{
+                  this.canSubmit = true
                 })
             },
             stopPrevent() {
@@ -343,8 +368,9 @@
             }
 
             .spec {
-                font-size: 26upx;
-                color: $font-color-light;
+                font-size: 30upx;
+                color: #d55c5c;
+                padding-right: 30upx;
             }
 
             .price-box {
@@ -550,7 +576,6 @@
         }
     }
 
-    /* 优惠券面板 */
     .mask {
         display: flex;
         align-items: flex-end;
@@ -586,94 +611,5 @@
         }
     }
 
-    /* 优惠券列表 */
-    .coupon-item {
-        display: flex;
-        flex-direction: column;
-        margin: 20upx 24upx;
-        background: #fff;
-
-        .con {
-            display: flex;
-            align-items: center;
-            position: relative;
-            height: 120upx;
-            padding: 0 30upx;
-
-            &:after {
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                content: '';
-                width: 100%;
-                height: 0;
-                border-bottom: 1px dashed #f3f3f3;
-                transform: scaleY(50%);
-            }
-        }
-
-        .left {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            flex: 1;
-            overflow: hidden;
-            height: 100upx;
-        }
-
-        .title {
-            font-size: 32upx;
-            color: $font-color-dark;
-            margin-bottom: 10upx;
-        }
-
-        .time {
-            font-size: 24upx;
-            color: $font-color-light;
-        }
-
-        .right {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 26upx;
-            color: $font-color-base;
-            height: 100upx;
-        }
-
-        .price {
-            font-size: 44upx;
-            color: $base-color;
-
-            &:before {
-                content: '￥';
-                font-size: 34upx;
-            }
-        }
-
-        .tips {
-            font-size: 24upx;
-            color: $font-color-light;
-            line-height: 60upx;
-            padding-left: 30upx;
-        }
-
-        .circle {
-            position: absolute;
-            left: -6upx;
-            bottom: -10upx;
-            z-index: 10;
-            width: 20upx;
-            height: 20upx;
-            background: #f3f3f3;
-            border-radius: 100px;
-
-            &.r {
-                left: auto;
-                right: -6upx;
-            }
-        }
-    }
 
 </style>

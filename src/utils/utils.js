@@ -17,8 +17,9 @@ function getAuthToken() {
 }
 
 var user = null
+
 function getUserInfo() {
-    if(user){
+    if (user) {
         return user
     }
     user = uni.getStorageSync('userInfo')
@@ -27,7 +28,7 @@ function getUserInfo() {
 
 function setUserInfo(userInfo) {
     user = userInfo
-    uni.setStorageSync('userInfo', userInfo)
+    uni.setStorageSync('userInfo', JSON.stringify(userInfo))
     setAuthToken(user.jws_token)
 }
 
@@ -52,15 +53,17 @@ function getComId() {
     // if (!com_id)
     //     com_id = uni.getStorageSync('com_id');
 
+    //#ifdef H5
     var lo = window.location.pathname
     var arr = lo.split('/')
-    var com_id= arr.pop()
-    return com_id
-}
+    var com_id = arr[2]
+    com_id = parseInt(com_id)
+    //#endif
 
-function setComId(com_id_storge) {
-    uni.setStorageSync('com_id', com_id_storge);
-    return
+    //#ifndef H5
+    var com_id = 14
+    //#endif
+    return com_id
 }
 
 function getClientID() {
@@ -72,13 +75,42 @@ function getClientID() {
         let params = {
             r: rand,
             r2: rand2,
-            key: key + (rand2 + rand +20201314),
+            key: key + (rand2 + rand + 20201314),
         }
-        client_id = rand+"_" +rand2+"_"+ params.key
+        client_id = rand + "_" + rand2 + "_" + params.key
         uni.setStorageSync('client_id', client_id)
     }
     return client_id
 }
 
-module.exports = {getQueryParam, getAuthToken, setAuthToken,
-    getComId, setComId, setUserInfo, getUserInfo, getClientID}
+function deepEqual(x, y) {
+    //console.log(x ,y)
+    // 指向同一内存时
+    if (x === y) {
+        return true;
+    } else if ((typeof x == "object" && x != null) && (typeof y == "object" && y != null)) {
+        if (Object.keys(x).length != Object.keys(y).length){
+            return false;
+        }
+        for (var prop in x) {
+            if (y.hasOwnProperty(prop)) {
+                if (!deepEqual(x[prop], y[prop]))
+                {
+                    return false;
+                }
+            } else
+            {
+                return false;
+            }
+        }
+        return true;
+    } else
+    {
+        return false;
+    }
+}
+
+module.exports = {
+    getQueryParam, getAuthToken, setAuthToken,
+    getComId, setUserInfo, getUserInfo, getClientID, deepEqual
+}

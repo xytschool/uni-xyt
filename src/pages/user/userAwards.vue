@@ -26,53 +26,28 @@
 						v-for="(item,index) in tabItem.orderList" :key="index"
 						class="order-item"
 					>
-						<view class="i-top b-b">
-							<text class="time">{{item.order_no}}</text>
+						<view class="i-top b-b" v-if="tabItem.state == 'userAwardHistories'">
 							<text class="time">{{item.created_at}}</text>
-							<text class="state" :style="{color: item.stateTipColor}">{{item.state}}</text>
-							<text 
-								v-if="item.pay_status==='unpay'"
-								class="del-btn yticon icon-iconfontshanchu1"
-								@click="deleteOrder(index)"
-							></text>
 						</view>
-						
-						<scroll-view v-if="item.goodsList &&item.goodsList.length > 1" class="goods-box" scroll-x>
-							<view
-								v-for="(goodsItem, goodsIndex) in item.goodsList" :key="goodsIndex"
-								class="goods-item"
-							>
-								<image class="goods-img" :src="goodsItem.cover" mode="aspectFill"></image>
-								<text class="title clamp">{{goodsItem.name}}</text>
-                <text class="price"><text v-yuan="goodsItem.real_price"></text> x {{goodsItem.num}}</text>
-							</view>
-						</scroll-view>
-						<view
-							v-if="item.goodsList.length === 1"
-							class="goods-box-single"
-							v-for="(goodsItem, goodsIndex) in item.goodsList" :key="goodsIndex"
-						>
-							<image class="goods-img" :src="goodsItem.cover" mode="aspectFill"></image>
+
+						<view class="goods-box-single" >
+							<image class="goods-img" :src="item.goods.small_cover" mode="aspectFill"></image>
 							<view class="right">
-								<text class="title clamp">{{goodsItem.name}}</text>
-								<text class="attr-box">{{goodsItem.attr}}  x {{goodsItem.num}}</text>
-								<text class="price" v-yuan="goodsItem.real_price"></text>
+                <text class="title">{{item.goods.name}}</text>
+                <text class="num" v-if="tabItem.state == 'userAwardHistories'">
+                  通过
+                  <text class="method" @click="gotoDetail(item)">
+                    {{method2str(item.method)}}
+                  </text>
+                  {{item.num > 0 ? "获得" : "消耗" }}  {{item.num}} 件
+                </text>
+                <text class="num" v-if="tabItem.state == 'userAwards'">剩余数量:{{item.num}}</text>
 							</view>
 						</view>
-						
-						<view class="price-box">
-							共
-							<text class="num">{{item.total_num}}</text>
-							件商品 实付款
-							<text class="price">{{item.real_total}}</text>
+
+						<view class="action-box b-t" v-if="tabItem.state == 'userAwards'">
+							<button class="action-btn" @click="gotoReward(item)">去领奖</button>
 						</view>
-						<view class="action-box b-t" >
-							<button class="action-btn" v-if="item.pay_status == 'unpay'" @click="cancelOrder(item)">取消订单</button>
-							<button class="action-btn  recom" v-if="item.pay_status == 'unpay'">立即支付</button>
-							<button class="action-btn" v-if="item.status == 'signed'" @click="gotoComment(item)">去评价</button>
-							<button class="action-btn" v-if="item.pay_status == 'paid'" @click="gotoRefund(item)">退款</button>
-						</view>
-						
 					</view>
 					 
 					<uni-load-more :status="tabItem.loadingType"></uni-load-more>
@@ -86,8 +61,7 @@
 <script>
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 	import empty from "@/components/empty";
-	import Json from '@/Json';
-	import {getOrderList} from "../../api/order";
+  import {getUserAwardHistories, getUserAwards} from "@/api/activity";
 	export default {
 		components: {
 			uniLoadMore,
@@ -97,62 +71,30 @@
 			return {
 				tabCurrentIndex: 0,
 				navList: [{
-						state: 'all',
-						text: '全部',
+						state: 'userAwards',
+						text: '用户奖品',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
-						state: 'unpay',
-						text: '待付款',
+						state: 'userAwardHistories',
+						text: '历史记录',
 						loadingType: 'more',
 						orderList: []
-					},
-					{
-						state: 'shipping',
-						text: '待收货',
-						loadingType: 'more',
-						orderList: []
-					},
-					{
-						state: 'signed',
-						text: '待评价',
-						loadingType: 'more',
-						orderList: []
-					},
-					{
-						state: 'refund',
-						text: '退款',
-						loadingType: 'more',
-						orderList: []
-					}
-				],
+					}],
 			};
 		},
-		
+
 		onLoad(options){
-			/**
-			 * 修复app端点击除全部订单外的按钮进入时不加载数据的问题
-			 * 替换onLoad下代码即可
-			 */
-			this.tabCurrentIndex = +options.state;
-			// #ifndef MP
-			this.loadData()
-			// #endif
-			// #ifdef MP
-			if(options.state == 0){
-				this.loadData()
-			}
-			// #endif
-			
+			this.tabCurrentIndex = 0
+      this.loadData()
 		},
 		 
 		methods: {
 			//获取订单列表
 			async loadData(source){
 				//这里是将订单挂载到tab列表下
-				let index = this.tabCurrentIndex;
-				let navItem = this.navList[index];
+				let navItem = this.navList[this.tabCurrentIndex];
 				let state = navItem.state;
 				
 				if(source === 'tabChange' && navItem.loaded === true){
@@ -167,53 +109,44 @@
 				navItem.loadingType = 'loading';
 				let len = navItem.orderList.length
 				var last_id = len > 0 ? navItem.orderList[len - 1].id : 0
-			    let res = await getOrderList(state, last_id)
+        var res = null
+        console.log( 'state' ,state )
+        if(state == "userAwards"){
+           res = await getUserAwards(last_id)
+        }else if(state == "userAwardHistories"){
+           res = await getUserAwardHistories(last_id)
+        }
+
 				if(res.code == 200){
-				    let orderList = res.data
-                    if(orderList.length ==0 ){
-						navItem.loadingType = 'noMore';
-						return 
-					}
-                    orderList.forEach(item =>{
-						let  num = 0
-                        if(item.goodsList instanceof Array){
-							item.goodsList.forEach( goods =>{
-								num += goods.num
-							})
-						}
-						item.total_num = num
-						//console.log(item)
-                    	navItem.orderList.push(item)
-					})
+				    let list = res.data
+            if(list.length ==0 ) {
+              navItem.loadingType = 'noMore';
+              return
+            }
+            list.forEach(item =>{
+            navItem.orderList.push(item)
+					 })
 					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
 					this.$set(navItem, 'loaded', true);
-
 					//判断是否还有数据， 有改为 more， 没有改为noMore
 					navItem.loadingType = 'more';
 				}
-
-				// setTimeout(()=>{
-				// 	let orderList = Json.orderList.filter(item=>{
-				// 		//添加不同状态下订单的表现形式
-				// 		item = Object.assign(item, this.orderStateExp(item.state));
-				// 		//演示数据所以自己进行状态筛选
-				// 		if(state === 0){
-				// 			//0为全部订单
-				// 			return item;
-				// 		}
-				// 		return item.state === state
-				// 	});
-				// 	orderList.forEach(item=>{
-				// 		navItem.orderList.push(item);
-				// 	})
-				// 	//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
-				// 	this.$set(navItem, 'loaded', true);
-				//
-				// 	//判断是否还有数据， 有改为 more， 没有改为noMore
-				// 	navItem.loadingType = 'more';
-				// }, 600);	
-			}, 
-
+			},
+      gotoDetail(item) {
+			  if(item.method == 'activity'){
+          uni.navigateTo({
+            url: `/pages/activity/detail?id=` + item.activity_id
+          })
+        }
+      },
+      method2str(method){
+			  switch (method) {
+         case 'activity':
+            return '活动'
+         case '':
+            return ''
+        }
+      },
 			//swiper 切换
 			changeTab(e){
 				this.tabCurrentIndex = e.target.current;
@@ -223,76 +156,6 @@
 			tabClick(index){
 				this.tabCurrentIndex = index;
 			},
-			//删除订单
-			deleteOrder(index){
-				uni.showLoading({
-					title: '请稍后'
-				})
-				setTimeout(()=>{
-					this.navList[this.tabCurrentIndex].orderList.splice(index, 1);
-					uni.hideLoading();
-				}, 600)
-			},
-			//取消订单
-			cancelOrder(item){
-				uni.showLoading({
-					title: '请稍后'
-				})
-				this.$api.order.cancelOrder(item).then(res => {
-					uni.hideLoading();
-					if(res.code == 200){
-					    uni.showToast({title:'取消订单成功'})
-					}else {
-						uni.showToast({title:'取消订单失败'+ res.msg})
-					}
-				})
-				// setTimeout(()=>{
-				// 	let {stateTip, stateTipColor} = this.orderStateExp(9);
-				// 	item = Object.assign(item, {
-				// 		state: 9,
-				// 		stateTip,
-				// 		stateTipColor
-				// 	})
-				//
-				// 	//取消订单后删除待付款中该项
-				// 	let list = this.navList[1].orderList;
-				// 	let index = list.findIndex(val=>val.id === item.id);
-				// 	index !== -1 && list.splice(index, 1);
-				//
-				// 	uni.hideLoading();
-				// }, 600)
-			},
-			gotoComment(item){
-				console.log('item', item)
-				let goodsList = JSON.stringify(item.goodsList)
-                uni.navigateTo({
-					url:'/pages/comment/comment?type=order&order_no=' + item.order_no + '&goodsList=' + goodsList
-				})
-			},
-			gotoRefund(item){
-				uni.showToast({
-					title: '暂不支持线上退款',
-					duration: 2000
-				});
-			},
-			//订单状态文字和颜色
-			orderStateExp(state){
-				let stateTip = '',
-					stateTipColor = '#fa436a';
-				switch(+state){
-					case 1:
-						stateTip = '待付款'; break;
-					case 2:
-						stateTip = '待发货'; break;
-					case 9:
-						stateTip = '订单已关闭'; 
-						stateTipColor = '#909399';
-						break;
-						
-					//更多自定义
-				}
-				return {stateTip, stateTipColor};
-			}
 		},
 	}
 </script>
@@ -383,51 +246,6 @@
 				}
 			}
 		}
-		/* 多条商品 */
-		.goods-box{
-			height: 230upx;
-			padding: 20upx 0;
-			white-space: nowrap;
-			.goods-item{
-				width: 120upx;
-				height: 120upx;
-				display: inline-block;
-				margin-right: 24upx;
-			}
-			.goods-img{
-				display: block;
-				width: 100%;
-				height: 100%;
-			}
-			.title {
-				text-align: left;
-				font-size: $font-base + 0upx;
-				color: $font-color-dark;
-				//line-height: 1;
-			}
-			.price{
-                margin: 0px;
-                text-align: left;
-                display: block;
-				&:before{
-					content: '￥';
-					font-size: $font-sm;
-				}
-			}
-            .action-btn{
-				width: 160upx;
-				height: 60upx;
-				margin: 0;
-				padding: 0;
-				text-align: center;
-				line-height: 45upx;
-				font-size: $font-sm + 2upx;
-				color: $font-color-dark;
-				background: #fff;
-				border-radius: 100px;
-				border-color: #f7bcc8;
-			}
-		}
 		/* 单条商品 */
 		.goods-box-single{
 			display: flex;
@@ -453,14 +271,10 @@
 					color: $font-color-light;
 					padding: 10upx 12upx;
 				}
-				.price{
+				.method{
 					font-size: $font-base + 2upx;
+          font-weight: 500;
 					color: $font-color-dark;
-					&:before{
-						content: '￥';
-						font-size: $font-sm;
-						margin: 0 2upx 0 8upx;
-					}
 				}
 			}
 		}

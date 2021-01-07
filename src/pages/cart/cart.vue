@@ -2,7 +2,7 @@
     <view class="container">
         <!-- 空白页 -->
         <view v-if="!hasLogin || empty===true" class="empty">
-            <image src="/static/emptyCart.jpg" mode="aspectFit"></image>
+            <image src="http://data.xytschool.com/m/v1/static/emptyCart.jpg" mode="aspectFit"></image>
             <view v-if="hasLogin" class="empty-tips">
                 空空如也
                 <navigator class="navigator" v-if="hasLogin" url="../index/index" open-type="switchTab">随便逛逛>
@@ -37,8 +37,14 @@
                         </view>
                         <view class="item-right">
                             <text class="clamp title">{{item.name}}</text>
-                            <text class="attr">{{item.sku_name}}</text>
-                            <text class="price">¥{{item.real_price}}</text>
+                            <text class="attr">
+                                <text v-if="item.label_combine" style="padding-right: 15px"
+                                      v-for="(value ,key) in item.label_combine">
+                                {{key}}:&nbsp;{{value}}
+                                </text>
+                            </text>
+
+                            <text class="price">¥{{item.real_price}} <text class="origin_price">¥{{item.price}}</text></text>
                             <uni-number-box
                                     class="step"
                                     :min="1"
@@ -102,13 +108,11 @@
             }
         },
         onLoad(params) {
+            
            this.com_id = params.com_id
         },
         onShow(){
            this.$store.dispatch('user/checkLogin',this.com_id)
-           if(!this.hasLogin){
-               return
-           }
            this.loadData();
         },
         computed: {
@@ -126,23 +130,8 @@
             }
         },
         methods: {
-            //请求数据
             async loadData() {
                 let listRes = await this.$api.goods.getCartGoodsList()
-                if(listRes.statusCode == 401){
-                    uni.showModal({
-                        content: '您换还没有登录，去登录',
-                        success: (e) => {
-                            if (e.confirm) {
-                                uni.navigateTo({
-                                    url: '/pages/login/index'
-                                })
-                            }
-                        }
-                    })
-                    return
-                }
-
                 if(listRes.code == 200){
                     let list = listRes.data
                     let cartList = []
@@ -153,7 +142,7 @@
                         });
                     }
                     this.cartList = cartList;
-                    //console.log('cartList', cartList)
+                    console.log('cartList', cartList)
                     this.calcTotal();  //计算总价
                 }
             },
@@ -187,14 +176,18 @@
             //数量
             async numberChange(data) {
                 console.log('numberChange', data)
-                let goodsItem = this.cartList[data.index]
+                let goodsItem = Object.assign({},this.cartList[data.index])
                 if (data.num > 0) {
                     goodsItem.num = data.num
                     uni.showLoading()
                     this.$api.goods.updateCartGoods(goodsItem).then(res => {
+                        console.log(res)
                         uni.hideLoading()
-                        this.cartList[data.index].num = data.num
-                        this.calcTotal();
+                        if(res.code == 200){
+                            this.cartList[data.index].num = data.num
+                            this.calcTotal();
+                        }else {
+                        }
                     })
                 } else {
                     this.deleteCartItem(data.index)
@@ -243,8 +236,8 @@
                     this.empty = true;
                     return;
                 }
-                let real_total = 0;
-                let total = 0;
+              let real_total = 0;
+              let total = 0;
                 let checked = true;
                 list.forEach(item => {
                     if (item.checked === true) {
@@ -257,8 +250,8 @@
                 this.allChecked = checked;
                 this.real_total = Number(real_total.toFixed(2));
                 this.total = Number(total.toFixed(2));
-                this.total_discount = this.total - this.real_total
-                //console.log(this.real_total,this.total,this.total - this.real_total)
+                this.total_discount = (this.total - this.real_total).toFixed(2)
+                console.log('calcTotal' ,this.real_total,this.total,this.total - this.real_total)
             },
             //创建订单
             createOrder() {
@@ -272,6 +265,7 @@
                         })
                     }
                 })
+                this.$store.dispatch('order/reset')
                 this.$store.dispatch('order/preOrderByGoodsList', this.cartList)
 
                 uni.navigateTo({
@@ -364,6 +358,11 @@
                 color: $font-color-dark;
                 height: 40upx;
                 line-height: 40upx;
+                .origin_price{
+                    text-decoration:line-through;
+                    margin-left: 15px;
+                    color: $font-color-light;
+                }
             }
 
             .attr {

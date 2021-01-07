@@ -207,10 +207,9 @@ export default {
        ]
     };
   },
-  onLoad(options){
-    var code = getQueryParam('code')
-    console.log('code', code)
-    this.getDetail(code)
+  onLoad(option){
+    console.log('code', option.code)
+    this.getDetail(option.code)
   },
   methods: {
 		parseDate(date){
