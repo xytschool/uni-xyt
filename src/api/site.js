@@ -15,6 +15,9 @@ module.exports = {
     async  getBannerList(){
         return get(host + '/getBannerList')
     },
+    async  getIndexPageBanners(){
+        return get(host + '/getIndexPageBanners')
+    },
     /**
      *   [{icon: '' , title: '' , link: ''}]
      * */

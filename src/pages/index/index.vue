@@ -35,7 +35,8 @@
         </view>
 
         <view class="ad-1">
-            <image src="http://data.xytschool.com/m/v1/static/temp/ad1.jpg" mode="scaleToFill"></image>
+<!--          <image src="http://data.xytschool.com/m/v1/static/temp/ad1.jpg" mode="scaleToFill"></image>-->
+          <image :src="ad_banners[0].cover" mode="scaleToFill"></image>
         </view>
 
 <!--        <wx-open-launch-weapp-->
@@ -151,8 +152,8 @@
 
         <!-- 分类推荐楼层 -->
         <view class="f-header m-t">
-            <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
-            <view class="tit-box">
+          <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
+          <view class="tit-box">
                 <text class="tit">分类精选</text>
                 <text class="tit2">Competitive Products For You</text>
             </view>
@@ -160,9 +161,11 @@
         </view>
         <view class="hot-floor">
             <view class="floor-img-box">
-                <image class="floor-img"
-                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409398864&di=4a12763adccf229133fb85193b7cc08f&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201703%2F19%2F20170319150032_MNwmn.jpeg"
-                       mode="scaleToFill"></image>
+<!--                <image class="floor-img"-->
+<!--                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409398864&di=4a12763adccf229133fb85193b7cc08f&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201703%2F19%2F20170319150032_MNwmn.jpeg"-->
+<!--                       mode="scaleToFill"></image>-->
+
+              <image :src="cate_banners[1].cover" mode="scaleToFill"></image>
             </view>
             <scroll-view class="floor-list" scroll-x>
                 <view class="scoll-wrapper">
@@ -184,9 +187,10 @@
         </view>
         <view class="hot-floor">
             <view class="floor-img-box">
-                <image class="floor-img"
-                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409984228&di=dee176242038c2d545b7690b303d65ea&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F5ef4da9f17faaf4612f0d5046f4161e556e9bbcfdb5b-rHjf00_fw658"
-                       mode="scaleToFill"></image>
+<!--                <image class="floor-img"-->
+<!--                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409984228&di=dee176242038c2d545b7690b303d65ea&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F5ef4da9f17faaf4612f0d5046f4161e556e9bbcfdb5b-rHjf00_fw658"-->
+<!--                       mode="scaleToFill"></image>-->
+              <image :src="cate_banners[2].cover" mode="scaleToFill"></image>
             </view>
             <scroll-view class="floor-list" scroll-x>
                 <view class="scoll-wrapper">
@@ -208,9 +212,10 @@
         </view>
         <view class="hot-floor">
             <view class="floor-img-box">
-                <image class="floor-img"
-                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409794730&di=12b840ec4f5748ef06880b85ff63e34e&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01dc03589ed568a8012060c82ac03c.jpg%40900w_1l_2o_100sh.jpg"
-                       mode="scaleToFill"></image>
+<!--                <image class="floor-img"-->
+<!--                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409794730&di=12b840ec4f5748ef06880b85ff63e34e&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01dc03589ed568a8012060c82ac03c.jpg%40900w_1l_2o_100sh.jpg"-->
+<!--                       mode="scaleToFill"></image>-->
+              <image :src="cate_banners[3].cover" mode="scaleToFill"></image>
             </view>
             <scroll-view class="floor-list" scroll-x>
                 <view class="scoll-wrapper">
@@ -270,7 +275,9 @@
                 recommendGoodsList: [],
                 navList: [],
                 keyword: '',
-                videoList: []
+                videoList: [],
+                ad_banners:[],
+                cate_banners: []
             };
         },
 
@@ -279,14 +286,16 @@
         },
         methods: {
             async loadData() {
-                //let carouselList = await this.$api.json('carouselList');
-                //console.log('bannerList', this.carouselList)
-                let res = await this.$api.site.getBannerList()
-                if (res.code == 200 && res.data.length>0) {
-                    let carouselList = res.data
+                let res = await this.$api.site.getIndexPageBanners()
+                console.log('indexPageBanner', res)
+                if (res.code == 200 && res.data) {
+                    let carouselList = res.data.scroll_1  
                     this.titleNViewBackground = carouselList[0].background;
                     this.swiperLength = carouselList.length;
                     this.carouselList = carouselList;
+
+                    this.ad_banners = res.data.ads
+                    this.cate_banners = res.data.categories
                 }
                 let navListRes = await this.$api.site.getNavList()
                 if (navListRes.code = 200) {
