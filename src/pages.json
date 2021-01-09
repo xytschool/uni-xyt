@@ -282,6 +282,20 @@
         "navigationStyle": "custom",
         "navigationBarTitleText": "活动详情"
       }
+    },
+    {
+      "path": "pages/appointment/index",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "填写预约信息"
+      }
+    },
+    {
+      "path": "pages/appointment/platform",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "预约门票"
+      }
     }
   ],
   "globalStyle": {

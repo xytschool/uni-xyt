@@ -48,5 +48,14 @@ module.exports = {
     },
     async queryOrder(orderNo) {
         return post(host + '/queryOrder', {order_no: orderNo})
+    },
+    async appointment(params) {
+        return post(host + '/appointment',  params)
+    },
+    async getAppointmentList() {
+        return get(host + '/getAppointmentList',  {})
+    },
+    async getAppointmentDetail(id) {
+        return get(host + '/getAppointmentDetail',  {id})
     }
 }
