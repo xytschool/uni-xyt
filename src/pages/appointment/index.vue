@@ -41,7 +41,13 @@
         <u-input v-model="form.phone" placeholder="请填写您的电话号码" />
       </u-form-item>
       <u-form-item label="预约时间" :label-width="160" prop="startAt">
-        <u-picker mode="time" v-model="show" :params="pickerParam" @confirm="form.startAt"></u-picker>
+
+        <view class="row b-b">
+          <text class="input" @click="show = true">{{
+            pickerParam.text || "点击选择"
+          }}</text>
+               <u-picker mode="time" v-model="show" :params="pickerParam" @confirm="time"></u-picker>
+        </view>
       </u-form-item>
       <u-form-item label="现在住址" :label-width="160">
         <view class="row b-b">
@@ -86,6 +92,7 @@ export default {
   },
   data() {
     return {
+       show: false,
       rules: {
         name: [
           {
@@ -156,8 +163,9 @@ export default {
       },
       goods_id: 0,
       form: {
+        time:"",
         id_card: "",
-        id_card_type: "",
+        id_card_type: "id",
         phone: "",
         name: "",
         goods_id: 0,
@@ -165,7 +173,15 @@ export default {
         detailedAddress: "", //详情地址
         addressData: ''
       },
-      pickerParam: []
+      pickerParam: {
+					year: true,
+					month: true,
+					day: true,
+					hour: true,
+					minute: false,
+          second: false,
+          text:""
+				}
     };
   },
 
@@ -179,12 +195,12 @@ export default {
         e.province.label + "-" + e.city.label + "-" + e.area.label;
       console.log("cityChange", e, this.addressData);
     },
-    confirm(e){
-      console.log('confirm', e)
+    time(e){
+      this.pickerParam.text=e.year+"-"+e.month+"-"+e.day+"-"+e.hour+"-00-00"
+     
     },
     methodChange(value) {
       //证件类型
-      console.log("value", value);
       this.form.id_card = "";
     },
     submit() {
@@ -195,7 +211,6 @@ export default {
           console.log("验证失败");
           return
         }
-        
         this.form.addressData = this.addressData
         this.$api.order.appointment(this.form).then(()=>{
           uni.showToast({title:"提交成功"})
