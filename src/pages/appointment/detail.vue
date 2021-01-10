@@ -32,7 +32,7 @@
       <u-col span="3">
         <view class="bg-purple">证件类型</view>
       </u-col>
-      <u-col span="4">
+      <u-col span="9">
         <view class="bg-purple-light">{{appointment.id_card_type}}</view>
       </u-col>
    </u-row>
@@ -41,7 +41,7 @@
       <u-col span="3">
         <view class="bg-purple">证件号</view>
       </u-col>
-      <u-col span="4">
+      <u-col span="9">
         <view class="bg-purple-light">{{appointment.id_card}}</view>
       </u-col>
     </u-row>
@@ -51,7 +51,7 @@
       <u-col span="3">
         <view class="bg-purple">电话号码</view>
       </u-col>
-      <u-col span="4">
+      <u-col span="9">
         <view class="bg-purple-light">{{appointment.phone}}</view>
       </u-col>
     </u-row>
@@ -60,7 +60,7 @@
       <u-col span="3">
         <view class="bg-purple">预约时间</view>
       </u-col>
-      <u-col span="4">
+      <u-col span="9">
         <view class="bg-purple-light">{{appointment.startAt}}</view>
       </u-col>
     </u-row>
@@ -69,7 +69,7 @@
       <u-col span="3">
         <view class="bg-purple">详细地址</view>
       </u-col>
-      <u-col span="4">
+      <u-col span="9">
         <view class="bg-purple-light">{{appointment.detailedAddress}}</view>
       </u-col>
     </u-row>
@@ -91,7 +91,27 @@ export default {
   data() {
     return {
       appointment_id: 0 ,
-      appointment: {"id_card":"140223199208222773","id_card_type":"id","phone":"18618184632","name":"高位","goods_id":156,"startAt":"","detailedAddress":"永旺家园5区6楼201","addressData":{"username":"","mobile":"","addressPrefix":"北京市-市辖区-海淀区","address":"","area":"北京","default":false,"province_id":11,"city_id":11,"district_id":110108}
+      appointment: {
+        "id_card": "140223199208222773",
+        "id_card_type": "id",
+        "phone": "18618184632",
+        "name": "高位",
+        "goods_id": 156,
+        "startAt": "",
+        "detailedAddress": "永旺家园5区6楼201",
+        "addressData": {
+          "username": "",
+          "mobile": "",
+          "addressPrefix": "北京市-市辖区-海淀区",
+          "address": "",
+          "area": "北京",
+          "default": false,
+          "province_id": 11,
+          "city_id": 11,
+          "district_id": 110108
+        }
+      }
+    }
   },
   methods: {
     getDetail() {
@@ -102,5 +122,5 @@ export default {
       })
     },
   },
-};
+}
 </script>
