@@ -196,7 +196,7 @@ export default {
       console.log("cityChange", e, this.addressData);
     },
     time(e){
-      this.pickerParam.text=e.year+"-"+e.month+"-"+e.day+"-"+e.hour+"-00-00"
+      this.pickerParam.text=e.year+"-"+e.month+"-"+e.day+" "+e.hour+":00:00"
      
     },
     methodChange(value) {
