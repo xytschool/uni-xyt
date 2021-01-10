@@ -296,6 +296,13 @@
         "navigationStyle": "custom",
         "navigationBarTitleText": "预约门票"
       }
+    },
+    {
+      "path": "pages/appointment/detail",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "预约详情"
+      }
     }
   ],
   "globalStyle": {
