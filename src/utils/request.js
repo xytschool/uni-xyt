@@ -45,7 +45,7 @@ function request(method, url, query, is_raw) {
                     res = res.data
                     if (res.code === 200 || res.code === 700 || res.code === 0) {
                         resolve(res)
-                    } else {
+                    } else if(res.msg){
                         uni.showToast({
                             icon: "none",
                             title: res.msg,
@@ -86,11 +86,12 @@ function request(method, url, query, is_raw) {
                 }
             },
             fail(res) {
-                uni.showToast({
-                    icon: "none",
-                    title: '请求异常',
-                    duration: 3000
-                });
+                // uni.showToast({
+                //     icon: "none",
+                //     title: '请求异常',
+                //     duration: 3000
+                // });
+                console.log('请求异常', res)
                 resolve(res)
             }
         })

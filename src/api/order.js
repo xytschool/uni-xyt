@@ -52,10 +52,18 @@ module.exports = {
     async appointment(params) {
         return post(host + '/appointment',  params)
     },
+    // 未授权预约接口
+    async getAppointmentCode(params) {
+        return post(host + '/getAppointmentCode',  params)
+    },
     async getAppointmentList() {
         return get(host + '/getAppointmentList',  {})
     },
     async getAppointmentDetail(id) {
         return get(host + '/getAppointmentDetail',  {id})
+    },
+    async getAppointmentByCode(id) {
+        console.log('code', id)
+        return get(host + '/getAppointmentByCode',  {code : id})
     }
 }

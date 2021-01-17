@@ -20,9 +20,10 @@
       <span class="tourist">游客信息</span>
     </div>
     <u-form ref="uForm" :model="form">
-      <u-form-item label="姓名" :label-width="160" prop="name" >
-        <u-input v-model="form.name" placeholder="请输入您的姓名" />
+      <u-form-item label="姓名" :label-width="160" prop="username" >
+        <u-input v-model="form.username" placeholder="请输入您的姓名" />
       </u-form-item>
+
       <u-form-item label="证件类型" :label-width="160">
         <u-radio-group v-model="form.id_card_type" @change="methodChange">
           <u-radio
@@ -34,21 +35,35 @@
           </u-radio>
         </u-radio-group>
       </u-form-item>
+      
       <u-form-item label="证件号" :label-width="160" prop="id_card">
         <u-input v-model="form.id_card" placeholder="请填写您的证件号码" />
       </u-form-item>
       <u-form-item label="电话号码" :label-width="160" prop="phone">
         <u-input v-model="form.phone" placeholder="请填写您的电话号码" />
       </u-form-item>
-      <u-form-item label="预约时间" :label-width="160" prop="startAt">
 
+      <u-form-item label="预约日期" :label-width="160" prop="start_at">
         <view class="row b-b">
           <text class="input" @click="show = true">{{
-            pickerParam.text || "点击选择"
-          }}</text>
-               <u-picker mode="time" v-model="show" :params="pickerParam" @confirm="time"></u-picker>
+              pickerParam.text || "点击选择"
+            }}</text>
+          <u-picker mode="time" v-model="show" :params="pickerParam" @confirm="timeChange"></u-picker>
         </view>
       </u-form-item>
+
+      <u-form-item label="预约时间段" :label-width="160">
+        <u-radio-group  @change="timeRangeChange">
+          <u-radio
+              v-for="(item, index) in timeRanges"
+              :key="index"
+              :name="item"
+          >
+            {{ item }}
+          </u-radio>
+        </u-radio-group>
+      </u-form-item>
+
       <u-form-item label="现在住址" :label-width="160">
         <view class="row b-b">
           <text class="input" @click="showAddressPicker = true">{{
@@ -61,8 +76,8 @@
           <text class="yticon icon-shouhuodizhi"></text>
         </view>
       </u-form-item>
-      <u-form-item :label-width="0" prop="detailedAddress">
-        <u-input v-model="form.detailedAddress" placeholder="请输入详细地址" />
+      <u-form-item :label-width="0" prop="tmpDetailedAddress">
+        <u-input v-model="form.tmpDetailedAddress" placeholder="请输入详细地址" />
       </u-form-item>
       <u-button
         size="medium"
@@ -78,7 +93,7 @@
 
 <script>
 import citySelect from "../address/u-city-select";
-
+import { getUserInfo} from "../../utils/utils";
 export default {
   components: {
     citySelect,
@@ -94,7 +109,7 @@ export default {
     return {
        show: false,
       rules: {
-        name: [
+        username: [
           {
             required: true,
             message: "请输入姓名",
@@ -122,7 +137,7 @@ export default {
             trigger: "change",
           },
         ],
-        detailedAddress: [
+        tmpDetailedAddress: [
           {
             required: true,
             message: "请输入详细地址",
@@ -149,6 +164,12 @@ export default {
           value: "军官证",
         },
       ],
+      timeRanges: [
+        "08:00-10:00",
+        "10:00-12:00",
+        "12:00-14:00",
+        "14:00-16:00",
+      ],
       showAddressPicker: false,
       addressData: {
         username: "",
@@ -167,17 +188,20 @@ export default {
         id_card: "",
         id_card_type: "id",
         phone: "",
-        name: "",
+        username: "",
         goods_id: 0,
-        startAt: "",
-        detailedAddress: "", //详情地址
-        addressData: ''
+        start_at: "",
+        end_at: "",
+        detail_address: "", //详情地址
+        addressData: '',
+        tmpDetailedAddress: ''
       },
+      timeRange: '',
       pickerParam: {
 					year: true,
 					month: true,
 					day: true,
-					hour: true,
+					hour: false,
 					minute: false,
           second: false,
           text:""
@@ -195,9 +219,23 @@ export default {
         e.province.label + "-" + e.city.label + "-" + e.area.label;
       console.log("cityChange", e, this.addressData);
     },
-    time(e){
-      this.pickerParam.text=e.year+"-"+e.month+"-"+e.day+" "+e.hour+":00:00"
-     
+    timeChange(e){
+      //this.pickerParam.text=e.year+"-"+e.month+"-"+e.day+" "+e.hour+":00:00"
+      this.pickerParam.text = e.year+"/"+e.month+"/"+e.day
+      this.onTimechange()
+    },
+    timeRangeChange(timeRange){
+      this.timeRange = timeRange
+      this.onTimechange()
+    },
+    onTimechange(){
+      var times = this.timeRange.split("-")
+      if(this.pickerParam.text){
+        var start_at = this.pickerParam.text +" " + times[0]+":00"
+        this.form.start_at = new Date(start_at)
+        var end_at = this.pickerParam.text +" " + times[1]+"00"
+        this.form.end_at= new Date(end_at)
+      }
     },
     methodChange(value) {
       //证件类型
@@ -211,10 +249,35 @@ export default {
           console.log("验证失败");
           return
         }
+        
         this.form.addressData = this.addressData
-        this.$api.order.appointment(this.form).then(()=>{
-          uni.showToast({title:"提交成功"})
-        })
+        this.form.detail_address = this.addressData.addressPrefix + " " +this.form.tmpDetailedAddress
+
+        var user = getUserInfo()
+        if(user){
+          this.$api.order.appointment(this.form).then((response)=>{
+            if (response.code == 200){
+              uni.showToast({title:"提交成功"})
+              this.$u.route({
+                url: 'pages/appointment/detail?&id=' + response.data.id,
+              })
+            }else {
+              uni.showToast({title: response.msg, icon:"none" })
+            }
+          })
+        }else {
+         console.log('getAppointmentCode')
+          this.$api.order.getAppointmentCode(this.form).then((response)=>{
+            if (response.code == 200){
+              uni.showToast({title:"提交成功"})
+              this.$u.route({
+                url: 'pages/appointment/detail?&code=' + response.data.code,
+              })
+            }else {
+              uni.showToast({title: response.msg, icon:"none" })
+            }
+          })
+        }
       });
     },
   },

@@ -39,7 +39,7 @@
         <view class="bg-purple">姓名:</view>
       </u-col>
       <u-col span="4">
-        <view class="bg-purple-light Highlight">{{ appointment.name }}</view>
+        <view class="bg-purple-light Highlight">{{ appointment.username }}</view>
       </u-col>
     </u-row>
 
@@ -77,7 +77,8 @@
         <view class="bg-purple">预约时间:</view>
       </u-col>
       <u-col span="9">
-        <view class="bg-purple-light Highlight">{{ appointment.startAt }}</view>
+        <view class="bg-purple-light Highlight">{{ parseDate(appointment.start_at) }}
+          <span style="vertical-align: middle; display: inline-block; width: 20px; text-align: center; font-weight: 500">-</span> {{ parseDate(appointment.end_at) }}</view>
       </u-col>
     </u-row>
 
@@ -86,21 +87,24 @@
         <view class="bg-purple">详细地址:</view>
       </u-col>
       <u-col span="9">
-        <view class="bg-purple-light Highlight">{{ appointment.detailedAddress }}</view>
+        <view class="bg-purple-light Highlight">{{ appointment.detail_address }}</view>
       </u-col>
     </u-row>
   </div>
 </template>
 
 <script>
+import {parseDate} from "@/utils/date";
+
 export default {
   onLoad(params) {
+    console.log('params', params)
     this.appointment_id = parseInt(params.id);
     if (this.appointment_id > 0) {
-      //uni.showToast({title:"获取信息失败"})
-      this.getDetail(this.appointment_id);
+      this.getDetail('id' ,this.appointment_id);
+    }else {
+      this.getDetail('code', params.code)
     }
-    console.log(this.appointment);
   },
   data() {
     return {
@@ -112,7 +116,7 @@ export default {
         name: "高位",
         goods_id: 156,
         startAt: "",
-        detailedAddress: "永旺家园5区6楼201",
+        detail_address: "",
         addressData: {
           username: "",
           mobile: "",
@@ -128,10 +132,11 @@ export default {
     };
   },
   methods: {
+    parseDate(str){
+      return parseDate(str)
+    },
     parseIdCardTypeTitle(type) {
-      
       if ((type = "id")) {
-     
        return  "身份证";
       } else if ((type = "passport")) {
         return "护照";
@@ -139,10 +144,17 @@ export default {
         return "军官证";
       }
     },
-    getDetail() {
-      this.$api.order.getAppointmentDetail(this.appointment_id).then((data) => {
-        this.appointment = data;
-      });
+    getDetail(type ,id) {
+      if(type == "code"){
+        console.log('type ,id', type, id)
+        this.$api.order.getAppointmentByCode(id).then((res) => {
+          this.appointment = res.data;
+        });
+      }else {
+        this.$api.order.getAppointmentDetail(id).then((res) => {
+          this.appointment = res.data;
+        });
+      }
     },
     back() {
       this.$router.back(); //返回

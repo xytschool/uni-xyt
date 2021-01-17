@@ -1,9 +1,8 @@
 ﻿import Vue from 'vue'
 import App from './App'
-import Json from './Json' //测试用数据
+//import Json from './Json' //测试用数据
 import store from './store'
 import {getComId, getUserInfo, setUserInfo} from "./utils/utils";
-
 
 Vue.config.productionTip = false
 import uView from "uview-ui";
@@ -23,14 +22,7 @@ const msg = (title, duration = 1500, mask = false, icon = 'none') => {
         icon
     });
 }
-const json = type => {
-    //模拟异步请求数据
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(Json[type]);
-        }, 500)
-    })
-}
+
 const prePage = () => {
     let pages = getCurrentPages();
     let prePage = pages[pages.length - 2];
@@ -41,8 +33,8 @@ const prePage = () => {
 }
 
 //#ifdef H5
-var VConsole = require('vconsole');
-var vConsole = new VConsole();
+//var VConsole = require('vconsole');
+//var vConsole = new VConsole();
 var clientType = "h5"
 
 var ua = navigator.userAgent.toLowerCase()
@@ -89,7 +81,7 @@ import {parseDate} from "./utils/date";
 }
 
 Vue.prototype.clientType = clientType
-Vue.prototype.$api = {msg, json, prePage, activity, message, site, user, order, goods, comment};
+Vue.prototype.$api = {msg,  prePage, activity, message, site, user, order, goods, comment};
 
 Vue.directive('datetime', {
     bind: function (el, binding, vnode) {
