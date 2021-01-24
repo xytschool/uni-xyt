@@ -73,7 +73,7 @@
         "usingComponents" : true
     },
     "h5" : {
-        "publicPath" : "http://data.xytschool.com/m/v1.3.4",
+        "publicPath" : "http://data.xytschool.com/m/v1.5.6",
         "router" : {},
         "devServer" : {}
     }

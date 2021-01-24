@@ -1,7 +1,7 @@
 ## version
-VERSION=v1.3.4
-API_BASE_ROOT_URL=http://m.qyshan.com
-#API_BASE_ROOT_URL=http://m.xytschool.com
+VERSION=v1.5.6
+#API_BASE_ROOT_URL=http://m.qyshan.com
+API_BASE_ROOT_URL=http://m.xytschool.com
 REMOTE_USER=ubuntu
 REMOTE_HOST=qys
 REMOTE_ROOT=/data/apps/echoapp/resources/public/m
