@@ -17,3 +17,6 @@ make watch
 
 ./src/manifest.json
 - publicPath 指定静态资源加载的根路径
+
+## v1.6.1 
+- 1 添加用户核销奖品功能和老板查看核销历史记录

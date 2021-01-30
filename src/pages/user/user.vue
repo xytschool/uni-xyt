@@ -252,7 +252,14 @@
                 console.log("sacn res" ,res)
                 this.$api.activity.checkAwardCode(res.resultStr).then((res) => {
                   if(res.code == 200){
-                    this.showToast("核销成功")
+                    uni.showToast({
+                      title: "核销成功",
+                      icon:"success"
+                    })
+                  }else {
+                    uni.showToast({
+                      title: "核销失败," + res.msg
+                    })
                   }
                 })
               }
