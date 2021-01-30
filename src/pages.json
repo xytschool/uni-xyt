@@ -73,6 +73,12 @@
       }
     },
     {
+      "path": "pages/user/staffCheckedAwards",
+      "style": {
+        "navigationBarTitleText": "核销历史记录"
+      }
+    },
+    {
       "path": "pages/userinfo/userinfo",
       "style": {
         "navigationBarTitleText": "修改资料"

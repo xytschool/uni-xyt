@@ -26,7 +26,7 @@
 						v-for="(item,index) in tabItem.orderList" :key="index"
 						class="order-item"
 					>
-						<view class="i-top b-b" v-if="tabItem.state == 'userAwardHistories'">
+						<view class="i-top b-b">
 							<text class="time" v-datetime="item.created_at"></text>
 						</view>
 
@@ -34,34 +34,20 @@
 							<image class="goods-img" :src="item.goods.small_cover" mode="aspectFill"></image>
 							<view class="right">
                 <text class="title">{{item.goods.name}}</text>
-                <text class="num" v-if="tabItem.state == 'userAwardHistories'">
+                <text class="num">
                   通过
                   <text class="method" @click="gotoDetail(item)">
                     {{method2str(item.method)}}
                   </text>
-                  {{item.num > 0 ? "获得" : "" }}  {{item.num}} 件
+                  {{item.num}} 件
                 </text>
-                <text class="num" v-if="tabItem.state == 'userAwards'">剩余数量:{{item.num}}</text>
 							</view>
 						</view>
-
-						<view class="action-box b-t" v-if="tabItem.state == 'userAwards'">
-							<button class="action-btn" @click="gotoReward(item)">核销码</button>
-						</view>
 					</view>
-					 
 					<uni-load-more :status="tabItem.loadingType"></uni-load-more>
-					
 				</scroll-view>
 			</swiper-item>
 		</swiper>
-
-    <u-modal v-model="isShowCode" :title="'核销码'" width="70%" :title-style="{fontSize:'20px'}">
-      <view style="text-align: center;padding: 10px">
-        <img :src="'https://help.xytschool.com/getQrcode?code='+ code" style="width: 200px"/>
-        <u-count-down ref="uCountDown"  :timestamp="leftTime" separator="colon"  @end="updateCode"></u-count-down>
-      </view>
-    </u-modal>
 
 	</view>
 </template> 
@@ -69,7 +55,6 @@
 <script>
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 	import empty from "@/components/empty";
-  import {getUserAwardHistories, getUserAwards} from "@/api/activity";
 	export default {
 		components: {
 			uniLoadMore,
@@ -82,18 +67,14 @@
 				tabCurrentIndex: 0,
         leftTime: 0,
         currentItem: null,
-				navList: [{
-						state: 'userAwards',
-						text: '用户奖品',
-						loadingType: 'more',
-						orderList: []
-					},
+				navList: [
 					{
-						state: 'userAwardHistories',
-						text: '历史记录',
+						state: 'staffCheckedAwards',
+						text: '核销历史记录',
 						loadingType: 'more',
 						orderList: []
-					}],
+					}
+        ],
 			};
 		},
 
@@ -123,13 +104,8 @@
 				var last_id = len > 0 ? navItem.orderList[len - 1].id : 0
         var res = null
         console.log( 'state' ,state )
-        if(state == "userAwards"){
-           res = await getUserAwards(last_id)
-        }else if(state == "userAwardHistories"){
-           res = await getUserAwardHistories(last_id)
-        }
-
-				if(res.code == 200){
+        res = await this.$api.activity.staffCheckedAwards(last_id)
+        if(res.code == 200){
 				    let list = res.data
             if(list.length ==0 ) {
               navItem.loadingType = 'noMore';
@@ -168,23 +144,6 @@
 			tabClick(index){
 				this.tabCurrentIndex = index;
 			},
-      gotoReward(item){
-			  this.currentItem = item
-			  this.updateCode()
-      },
-      updateCode(){
-        console.log("gotoReward", this.currentItem)
-        this.$api.activity.getUserAwardCode(this.currentItem.id ,1).then((res)=>{
-          if(res.code == 200){
-            console.log('res', res)
-            this.isShowCode = true
-            this.code = res.data.code
-            this.leftTime = 30
-            this.$refs.uCountDown.start();
-          }
-        })
-      }
-      
 		},
 	}
 </script>

@@ -90,7 +90,10 @@
                    iconColor="#e07472" title="我的奖品" tips=""></list-cell>
         
         <list-cell icon="icon-iconfontweixin" @eventClick="scanCode"
-                   iconColor="#e07472" title="核销用户奖品" tips=""></list-cell>
+                   iconColor="#e07472" title="扫码核销奖品" tips=""></list-cell>
+        
+        <list-cell icon="icon-iconfontweixin" @eventClick="navTo('/pages/user/staffCheckedAwards')"
+                   iconColor="#e07472" title="扫码核销奖品记录" tips=""></list-cell>
 
 				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理"
                    @eventClick="navTo('/pages/address/address')"></list-cell>

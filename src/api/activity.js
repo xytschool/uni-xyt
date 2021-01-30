@@ -49,4 +49,7 @@ module.exports = {
     async checkAwardCode(code) {
         return get(host + '/checkAwardByCode', {code})
     },
+    async staffCheckedAwards(last_id) {
+        return get(host + '/getStaffCheckedAwards', {last_id})
+    },
 }
