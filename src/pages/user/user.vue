@@ -88,6 +88,10 @@
 
 				<list-cell icon="icon-iconfontweixin" @eventClick="navTo('/pages/user/userAwards')"
                    iconColor="#e07472" title="我的奖品" tips=""></list-cell>
+        
+        <list-cell icon="icon-iconfontweixin" @eventClick="scanCode"
+                   iconColor="#e07472" title="核销用户奖品" tips=""></list-cell>
+
 				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理"
                    @eventClick="navTo('/pages/address/address')"></list-cell>
 				<list-cell icon="icon-share" iconColor="#9789f7" title="分享"
@@ -108,6 +112,7 @@
 <script>
 	import listCell from '@/components/mix-list-cell';
   import { mapState } from 'vuex';
+  import wx from "weixin-js-sdk";
 	let startY = 0, moveY = 0, pageAtTop = true;
     export default {
 		components: {
@@ -129,6 +134,7 @@
 		  this.com_id = params.com_id
 			this.$store.dispatch('user/checkLogin', this.com_id)
       this.$store.dispatch('user/updateUserInfo')
+      this.initWx()
       this.$api.user.getUserHistoryList().then((list) => {
         var dateRange = list.data
         for(var date in dateRange){
@@ -169,13 +175,13 @@
 		},
     methods: {
 		  showUserCode(){
-         this.isShowUserCode = true
 		     this.updateUserCode()
       },
       updateUserCode(){
         this.$api.user.updateUserCode().then( res => {
           //console.log('updateUserCode', res)
           if(res.code == 200){
+            this.isShowUserCode = true
             this.userCode = res.data.code
             this.leftTime = 30
             this.$refs.uCountDown.start();
@@ -232,9 +238,50 @@
 				this.moving = false;
 				this.coverTransition = 'transform 0.3s cubic-bezier(.21,1.93,.53,.64)';
 				this.coverTransform = 'translateY(0px)';
-			}
-        }  
-    }  
+			},
+      scanCode(){
+			  console.log('scancode')
+        wx.scanQRCode(
+            {
+              needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+              scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+              success:  (res) =>{
+                console.log("sacn res" ,res)
+                this.$api.activity.checkAwardCode(res.resultStr).then((res) => {
+                  if(res.code == 200){
+                    this.showToast("核销成功")
+                  }
+                })
+              }
+            }
+        )
+      },
+      async initWx() {
+        var configRes = await this.$api.site.getWxConfig({url: window.location.href})
+        if (configRes.code != 200) {
+          return
+        }
+        var config = configRes.data
+        // console.log('set share info config',config)
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: config.app_id,
+          timestamp: config.timestamp, // 生成签名的时间戳
+          nonceStr: config.nonce_str, // 生成签名的随机串
+          signature: config.signature, // 签名
+          jsApiList: ['scanQRCode'] // 需要使用的JS接口列表，所有JS接口列表见附录2
+        })
+
+        wx.ready(() => {
+          console.log("wx ready")
+        })
+
+        wx.error(function (err) {
+          console.log('err', err)
+        })
+      },
+    }
+    }
 </script>  
 <style lang='scss'>
 	%flex-center {

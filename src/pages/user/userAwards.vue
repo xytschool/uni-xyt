@@ -46,7 +46,7 @@
 						</view>
 
 						<view class="action-box b-t" v-if="tabItem.state == 'userAwards'">
-							<button class="action-btn" @click="gotoReward(item)">去领奖</button>
+							<button class="action-btn" @click="gotoReward(item)">核销码</button>
 						</view>
 					</view>
 					 
@@ -55,6 +55,14 @@
 				</scroll-view>
 			</swiper-item>
 		</swiper>
+
+    <u-modal v-model="isShowCode" :title="'核销码'" width="70%" :title-style="{fontSize:'20px'}">
+      <view style="text-align: center;padding: 10px">
+        <img :src="'https://help.xytschool.com/getQrcode?code='+ code" style="width: 200px"/>
+        <u-count-down ref="uCountDown"  :timestamp="leftTime" separator="colon"  @end="updateCode"></u-count-down>
+      </view>
+    </u-modal>
+
 	</view>
 </template> 
 
@@ -69,7 +77,11 @@
 		},
 		data() {
 			return {
+			  code : 0 ,
+        isShowCode: false,
 				tabCurrentIndex: 0,
+        leftTime: 0,
+        currentItem: null,
 				navList: [{
 						state: 'userAwards',
 						text: '用户奖品',
@@ -156,6 +168,23 @@
 			tabClick(index){
 				this.tabCurrentIndex = index;
 			},
+      gotoReward(item){
+			  this.currentItem = item
+			  this.updateCode()
+      },
+      updateCode(){
+        console.log("gotoReward", this.currentItem)
+        this.$api.activity.getUserAwardCode(this.currentItem.id ,1).then((res)=>{
+          if(res.code == 200){
+            console.log('res', res)
+            this.isShowCode = true
+            this.code = res.data.code
+            this.leftTime = 30
+            this.$refs.uCountDown.start();
+          }
+        })
+      }
+      
 		},
 	}
 </script>

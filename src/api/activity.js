@@ -43,4 +43,10 @@ module.exports = {
     async getUserAwardHistories(last_id) {
         return get(host + '/getUserAwardHistories', {last_id})
     },
+    async getUserAwardCode(id,num) {
+        return get(host + '/getUserAwardCode', {id, num})
+    },
+    async checkAwardCode(code) {
+        return get(host + '/checkAwardByCode', {code})
+    },
 }
