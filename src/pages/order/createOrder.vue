@@ -231,14 +231,24 @@
                this.$store.dispatch('order/placePreOrder', params).then(preParams => {
                     if (preParams) {
                         jsPay(preParams).then((res) => {
-                            //console.log('h5Pay:', res)
-                           this.$api.order.queryOrder(preParams.order_no).then((res)=>{
+                           console.log('h5Pay:', res)
+                           if(res.err_msg != "get_brand_wcpay_request:ok"){
+                              console.log('h5Pay: err', res.errMsg)
+                              uni.showToast({title: res.errMsg})
+                              this.canSubmit = true
+                             return
+                           }
+
+                          console.log('toQuery order state')
+                          this.$api.order.queryOrder(preParams.order_no).then((res)=>{
                              this.canSubmit = true
                              if( res.code == 200 && res.data.pay_status === "paid" ){
                                 uni.showToast({title:"支付成功"})
-                               setTimeout(function (){
-
-                               },1000)
+                                setTimeout(function (){
+                                  uni.redirectTo({url:"/pages/order/order?state=2"})
+                                },2000)
+                             }else {
+                                //uni.showToast({title:"支付成功"})
                              }
                            }).catch( ()=>{
                              this.canSubmit = true

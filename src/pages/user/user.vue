@@ -24,8 +24,8 @@
           <u-icon name="scan" color="#89f23a" size="28" style="margin-left: 10px"></u-icon>
 				</view>
         
-				<text class="e-m">创意坊 xytschool</text>
-				<text class="e-b">总有人要成功为什么不是我</text>
+				<text class="e-m"></text>
+				<text class="e-b">愿你的今天明天开心快乐</text>
 			</view>
 		</view>
 		
@@ -81,26 +81,26 @@
 					<text>浏览历史</text>
 				</view>
 				<scroll-view scroll-x class="h-list" >
-					<image @click="navTo('/pages/product/product?id='+ item.id)" v-for="item in historyList" :src="item.cover" mode="aspectFill"></image>
+					<image @click="navTo('/pages/product/product?id='+ item.goods_id)" v-for="item in historyList" :src="item.cover" mode="aspectFill"></image>
 <!--					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105231218&di=09534b9833b5243296630e6d5b728eff&imgtype=0&src=http%3A%2F%2Fimg002.hc360.cn%2Fm1%2FM05%2FD1%2FAC%2FwKhQcFQ3iN2EQTo8AAAAAHQU6_8355.jpg" mode="aspectFill"></image>-->
 <!--					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105320890&di=c743386be51f2c4c0fd4b75754d14f3c&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fhb%2FMTQ1OTg4ODY0MDA3Ny05OTQ4ODY1NDQ%3D.jpg" mode="aspectFill"></image>-->
 				</scroll-view>
 
-				<list-cell icon="icon-iconfontweixin" @eventClick="navTo('/pages/user/userAwards')"
+				<list-cell icon="icon-shoucang_xuanzhongzhuangtai" @eventClick="navTo('/pages/user/userAwards')"
                    iconColor="#e07472" title="我的奖品" tips=""></list-cell>
         
         <list-cell icon="icon-iconfontweixin" @eventClick="scanCode"
                    iconColor="#e07472" title="扫码核销奖品" tips=""></list-cell>
         
-        <list-cell icon="icon-iconfontweixin" @eventClick="navTo('/pages/user/staffCheckedAwards')"
+        <list-cell icon="icon-pinglun-copy" @eventClick="navTo('/pages/user/staffCheckedAwards')"
                    iconColor="#e07472" title="扫码核销奖品记录" tips=""></list-cell>
 
 				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理"
                    @eventClick="navTo('/pages/address/address')"></list-cell>
-				<list-cell icon="icon-share" iconColor="#9789f7" title="分享"
-                   tips="邀请好友赢10万大礼"></list-cell>
+<!--				<list-cell icon="icon-share" iconColor="#9789f7" title="分享"-->
+<!--                   tips="邀请好友赢10万大礼"></list-cell>-->
 <!--				<list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="晒单" tips="晒单抢红包"></list-cell>-->
-				<list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></list-cell>
+<!--				<list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></list-cell>-->
 				<list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 			</view>
 		</view>
@@ -139,15 +139,9 @@
       this.$store.dispatch('user/updateUserInfo')
       this.initWx()
       this.$api.user.getUserHistoryList().then((list) => {
-        var dateRange = list.data
-        for(var date in dateRange){
-          var dateItems = dateRange[date]
-          for(var index in dateItems){
-            this.historyList.push(dateItems[index])
-          }
-        }
-        this.historyList = this.historyList.subarray(0,10)
-        console.log(this.historyList)
+        console.log(list)
+        this.historyList = list.data
+        //this.historyList = this.historyList.subarray(0,10)
       })
 		},
 		// #ifndef MP
@@ -243,13 +237,13 @@
 				this.coverTransform = 'translateY(0px)';
 			},
       scanCode(){
-			  console.log('scancode')
+			  //console.log('scancode')
         wx.scanQRCode(
             {
               needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
               scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
               success:  (res) =>{
-                console.log("sacn res" ,res)
+                //console.log("sacn res" ,res)
                 this.$api.activity.checkAwardCode(res.resultStr).then((res) => {
                   if(res.code == 200){
                     uni.showToast({
