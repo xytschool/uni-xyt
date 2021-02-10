@@ -160,7 +160,8 @@
         <view class="a-t">
           <image :src="currentSku.cover"></image>
           <view class="right">
-            <text class="price">¥ <text v-yuan="currentSku.real_price"></text> {{ currentSku.sku_name }}</text>
+            <text class="price">¥ <text v-yuan="currentSku.real_price"></text> <text style="margin-left: 12px">{{ currentSku.sku_name }}</text></text>
+            
             <text class="stock">库存：{{ currentSku.num }}件</text>
             <view class="selected">
               已选：

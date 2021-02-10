@@ -22,13 +22,13 @@
                             :class="{'b-b': index!==cartList.length-1}"
                     >
                         <view class="image-wrapper">
-                            <image :src="item.cover"
+                            <img :src="item.cover"
                                    :class="[item.loaded]"
                                    mode="aspectFill"
                                    lazy-load
                                    @load="onImageLoad('cartList', index)"
                                    @error="onImageError('cartList', index)"
-                            ></image>
+                            />
                             <view
                                     class="yticon icon-xuanzhong2 checkbox"
                                     :class="{checked: item.checked}"
@@ -44,7 +44,7 @@
                                 </text>
                             </text>
 
-                            <text class="price">¥{{item.real_price}} <text class="origin_price">¥{{item.price}}</text></text>
+                            <text class="price" v-yuan="item.real_price">¥</text>
                             <uni-number-box
                                     class="step"
                                     :min="1"
@@ -73,10 +73,10 @@
                     </view>
                 </view>
                 <view class="total-box">
-                    <text class="price">¥{{real_total}}</text>
+                    <text class="price" v-yuan="real_total">¥</text>
                     <text class="coupon">
                         已优惠
-                        <text>{{total_discount}}</text>
+                        <text v-yuan="total_discount">¥</text>
                         元
                     </text>
                 </view>
@@ -236,8 +236,8 @@
                     this.empty = true;
                     return;
                 }
-              let real_total = 0;
-              let total = 0;
+                let real_total = 0;
+                let total = 0;
                 let checked = true;
                 list.forEach(item => {
                     if (item.checked === true) {
@@ -247,10 +247,10 @@
                         checked = false;
                     }
                 })
-                this.allChecked = checked;
-                this.real_total = Number(real_total.toFixed(2));
-                this.total = Number(total.toFixed(2));
-                this.total_discount = (this.total - this.real_total).toFixed(2)
+                this.allChecked = checked
+                this.real_total = real_total
+                this.total = total
+                this.total_discount = this.total - this.real_total
                 console.log('calcTotal' ,this.real_total,this.total,this.total - this.real_total)
             },
             //创建订单
