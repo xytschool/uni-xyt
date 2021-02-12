@@ -290,14 +290,17 @@
                 let res = await this.$api.site.getIndexPageBanners()
                 console.log('indexPageBanner', res)
                 if (res.code == 200 && res.data) {
-                    let carouselList = res.data.scroll_1  
-                    this.titleNViewBackground = carouselList[0].background;
-                    this.swiperLength = carouselList.length;
-                    this.carouselList = carouselList;
+                    let carouselList = res.data.scroll_1
+                    if(carouselList && carouselList.length>0){
+                      this.titleNViewBackground = carouselList[0].background;
+                      this.swiperLength = carouselList.length;
+                      this.carouselList = carouselList;
+                    }
 
                     this.ad_banners = res.data.ads
                     this.cate_banners = res.data.categories
                 }
+                
                 let navListRes = await this.$api.site.getNavList()
                 if (navListRes.code = 200) {
                     console.log('navListRes::', navListRes.code ,navListRes.data)
