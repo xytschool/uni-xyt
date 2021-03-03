@@ -17,8 +17,8 @@ const actions = {
 
         let res = await getCompany()
         if (res.code == 200) {
+            document.title = res.data.name;
             commit('setCompany', res.data)
-
         }
     }
 }

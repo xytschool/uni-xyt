@@ -45,16 +45,22 @@
                             </text>
 
                             <text class="price" v-yuan="item.real_price">¥</text>
-                            <uni-number-box
-                                    class="step"
-                                    :min="1"
-                                    :max="item.stock"
-                                    :value="item.num>item.stock?item.stock:item.num"
-                                    :isMax="item.num>=item.stock?true:false"
-                                    :isMin="item.num===1"
-                                    :index="index"
-                                    @eventChange="numberChange"
-                            ></uni-number-box>
+<!--                            <uni-number-box-->
+<!--                                    class="step"-->
+<!--                                    :min="1"-->
+<!--                                    :max="item.stock"-->
+<!--                                    :value="item.num>item.stock?item.stock:item.num"-->
+<!--                                    :isMax="item.num>=item.stock?true:false"-->
+<!--                                    :isMin="item.num===1"-->
+<!--                                    :index="index"-->
+<!--                                    @eventChange="numberChange"-->
+<!--                            ></uni-number-box>-->
+                          <u-number-box v-model="item.num"
+                                        :min="1"
+                                        :max="10"
+                                        @plus="numberChange"
+                                        @minus="numberChange"
+                                        :index="index"></u-number-box>
                         </view>
                         <text class="del-btn yticon icon-fork" @click="deleteCartItem(index)"></text>
                     </view>
@@ -108,11 +114,11 @@
             }
         },
         onLoad(params) {
-            
            this.com_id = params.com_id
         },
         onShow(){
            this.$store.dispatch('user/checkLogin',this.com_id)
+           console.log("onShow")
            this.loadData();
         },
         computed: {
@@ -133,17 +139,17 @@
             async loadData() {
                 let listRes = await this.$api.goods.getCartGoodsList()
                 if(listRes.code == 200){
-                    let list = listRes.data
-                    let cartList = []
-                    if(list instanceof Array){
-                        cartList = list.map(item => {
-                            item.checked = true;
-                            return item;
-                        });
-                    }
-                    this.cartList = cartList;
-                    console.log('cartList', cartList)
-                    this.calcTotal();  //计算总价
+                  let list = listRes.data
+                  let cartList = []
+                  if(list instanceof Array){
+                     cartList = list.map(item => {
+                          item.checked = true;
+                          return item;
+                     });
+                  }
+                  this.cartList = cartList
+                  console.log('cartList3', cartList)
+                  this.calcTotal();  //计算总价
                 }
             },
             //监听image加载完成
@@ -175,9 +181,11 @@
             },
             //数量
             async numberChange(data) {
-                console.log('numberChange', data)
-                let goodsItem = Object.assign({},this.cartList[data.index])
-                if (data.num > 0) {
+              data.num = data.value
+              console.log('numberChange', data)
+              let goodsItem = Object.assign({},this.cartList[data.index])
+              
+              if (data.num > 0) {
                     goodsItem.num = data.num
                     uni.showLoading()
                     this.$api.goods.updateCartGoods(goodsItem).then(res => {
@@ -186,7 +194,10 @@
                         if(res.code == 200){
                             this.cartList[data.index].num = data.num
                             this.calcTotal();
-                        }else {
+                        }else if(res.code == 502) {
+                          //this.cartList.splice(data.index,1)
+                          this.deleteCartItem(data.index)
+                          this.calcTotal();
                         }
                     })
                 } else {
@@ -241,8 +252,12 @@
                 let checked = true;
                 list.forEach(item => {
                     if (item.checked === true) {
-                        real_total += item.real_price * item.num;
-                        total += item.price * item.num;
+                       if(item.real_price > item.price){
+                          item.price = item.real_price
+                       }
+
+                      real_total += parseInt(item.real_price) * parseInt(item.num);
+                      total += parseInt(item.price )* parseInt(item.num);
                     } else if (checked === true) {
                         checked = false;
                     }
@@ -250,8 +265,8 @@
                 this.allChecked = checked
                 this.real_total = real_total
                 this.total = total
-                this.total_discount = this.total - this.real_total
-                console.log('calcTotal' ,this.real_total,this.total,this.total - this.real_total)
+                this.total_discount = parseInt(this.total) - parseInt(this.real_total)
+                console.log('calcTotal' ,this.total_discount , this.real_total,this.total,this.total - this.real_total)
             },
             //创建订单
             createOrder() {

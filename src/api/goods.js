@@ -51,6 +51,9 @@ module.exports = {
     async getCartGoodsList() {
         return get(host + '/getCartGoodsList')
     },
+    async getCartGoodsNum() {
+        return get(host + '/getCartGoodsNum')
+    },
     async addCartGoods(data) {
         return post(host + '/addCartGoods', data)
     },

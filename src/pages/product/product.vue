@@ -143,7 +143,7 @@
 
       <view class="action-btn-group">
         <button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
-        <button type="primary" class=" action-btn no-border add-cart-btn" @click="addCartGoods">加入购物车</button>
+        <button type="primary" class=" action-btn no-border add-cart-btn" @click="addCartGoods">加入购物车<span style="font-size: 12px">{{cartGoodsNum}}</span></button>
       </view>
     </view>
 
@@ -235,7 +235,8 @@ export default {
       goodCommentNum: 0,
       goods: {},
       activity: null,
-      from_user_id: 0
+      from_user_id: 0,
+      cartGoodsNum: 0,
     };
   },
   computed: {
@@ -313,7 +314,11 @@ export default {
       this.commentNum = commentNumRes.data.num
       this.goodCommentNum = commentNumRes.data.good_num
     }
-    
+    // 购物车商品数量
+    let cartGoodsNumRes = await this.$api.goods.getCartGoodsNum()
+    if (cartGoodsNumRes.code == 200){
+      this.cartGoodsNum = cartGoodsNumRes.data.num
+    }
     //this.shareList = await this.$api.json('shareList');
   },
   methods: {
@@ -432,6 +437,13 @@ export default {
       if (res.code == 200) {
         uni.showToast({title: "添加成功"})
         //uni.navigateTo({url: "/pages/cart/cart"})
+        
+        // 购物车商品数量
+        let cartGoodsNumRes = await this.$api.goods.getCartGoodsNum()
+        if (cartGoodsNumRes.code == 200){
+          this.cartGoodsNum = cartGoodsNumRes.data.num
+        }
+      
       } else {
         uni.showToast({title: "添加购物车失败" + res.msg})
       }
