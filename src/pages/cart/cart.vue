@@ -383,13 +383,13 @@
             .attr {
                 font-size: $font-sm + 2upx;
                 color: $font-color-light;
-                height: 50upx;
-                line-height: 50upx;
+                height:100upx;
+                line-height: 33upx;
             }
 
             .price {
-                height: 50upx;
-                line-height: 50upx;
+                height: 45upx;
+                line-height: 45upx;
             }
         }
 

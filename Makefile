@@ -1,5 +1,5 @@
 ## version
-VERSION=v1.8.9
+VERSION=v1.9.2
 #API_BASE_ROOT_URL=http://m.qyshan.com
 API_BASE_ROOT_URL=http://m.xytschool.com
 REMOTE_USER=ubuntu

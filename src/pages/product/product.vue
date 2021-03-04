@@ -143,7 +143,7 @@
 
       <view class="action-btn-group">
         <button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
-        <button type="primary" class=" action-btn no-border add-cart-btn" @click="addCartGoods">加入购物车<span style="font-size: 12px">{{cartGoodsNum}}</span></button>
+        <button type="primary" class="action-btn no-border add-cart-btn" @click="addCartGoods">加入购物车{{cartGoodsNum}}</button>
       </view>
     </view>
 
