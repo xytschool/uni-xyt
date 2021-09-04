@@ -1,11 +1,18 @@
 ## version
-VERSION=v1.9.2
+VERSION=dev
+#VERSION=v1.9.20
+
 #API_BASE_ROOT_URL=http://m.qyshan.com
-API_BASE_ROOT_URL=http://m.xytschool.com
+#API_BASE_ROOT_URL=http://m.xytschool.com
+API_BASE_ROOT_URL=http://m.dev.xytschool.com
 REMOTE_USER=ubuntu
 REMOTE_HOST=qys
-REMOTE_ROOT=/data/apps/echoapp/resources/public/m
 
+REMOTE_USER=gw123
+REMOTE_HOST=dev
+
+
+REMOTE_ROOT=/data/apps/echoapp/resources/public/m
 API_BASE_URL_PROD=$(API_BASE_ROOT_URL)/$(VERSION)
 API_BASE_URL_DEV=$(API_BASE_ROOT_URL)/dev
 
@@ -13,7 +20,8 @@ API_BASE_URL_DEV=$(API_BASE_ROOT_URL)/dev
 PUBLIC_PATH_PROD=http://data.xytschool.com/m/$(VERSION)
 
 ## 线上测试环境访问(未使用CDN 速度慢)
-PUBLIC_PATH_DEV=http://m.xytschool.com/dev/public
+#PUBLIC_PATH_DEV=$(API_BASE_ROOT_URL)/dev/public
+PUBLIC_PATH_DEV=$(API_BASE_ROOT_URL)
 
 ## 只能本机电脑访问(资源都在本地速递最快)
 PUBLIC_PATH_LOCAL=/dev/public
@@ -36,15 +44,30 @@ prod:
 	sed 's@{API_BASE_URL}@$(API_BASE_URL_PROD)@' ./src/config_tpl.js > ./src/config.js &&\
 	export UNI_OUTPUT_DIR=$(UNI_OUTPUT_DIR_PROD) && npm run build:h5\
 
+dev:
+	sed 's@{publicPath}@$(PUBLIC_PATH_DEV)@' ./src/manifest_tpl.json > ./src/manifest.json &&\
+	sed 's@{API_BASE_URL}@$(API_BASE_URL_DEV)@' ./src/config_tpl.js > ./src/config.js &&\
+	export UNI_OUTPUT_DIR=$(UNI_OUTPUT_DIR_DEV) && npm run build:h5\
+
 watch:
 	sed 's@{publicPath}@$(PUBLIC_PATH_DEV)@' ./src/manifest_tpl.json > ./src/manifest.json &&\
 	sed 's@{API_BASE_URL}@$(API_BASE_URL_DEV)@' ./src/config_tpl.js > ./src/config.js &&\
 	export  UNI_OUTPUT_DIR=$(UNI_OUTPUT_DIR_DEV) && npm run watch
 
+serve:
+	sed 's@{publicPath}@$(PUBLIC_PATH_DEV)@' ./src/manifest_tpl.json > ./src/manifest.json &&\
+	sed 's@{API_BASE_URL}@$(API_BASE_URL_DEV)@' ./src/config_tpl.js > ./src/config.js &&\
+	export  UNI_OUTPUT_DIR=$(UNI_OUTPUT_DIR_DEV) && npm run serve
+
 upload:
 	scp -r $(UNI_OUTPUT_DIR_PROD) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_ROOT)
+
+upload-dev:
+	scp -r $(UNI_OUTPUT_DIR_DEV) $(REMOTE_USER)@$(REMOTE_HOST):$(REMOTE_ROOT)
 
 upload-qiniu:
 	 qshell qupload qiniu.conf
 
 all: prod upload upload-qiniu
+
+all-dev: dev upload-dev upload-qiniu

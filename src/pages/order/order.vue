@@ -265,7 +265,7 @@
 			gotoComment(item){
 				console.log('item', item)
 				let goodsList = JSON.stringify(item.goodsList)
-                uni.navigateTo({
+        uni.navigateTo({
 					url:'/pages/comment/comment?type=order&order_no=' + item.order_no + '&goodsList=' + goodsList
 				})
 			},

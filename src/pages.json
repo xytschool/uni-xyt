@@ -276,6 +276,20 @@
       }
     },
     {
+      "path": "pages/comment/comment",
+      "style": {
+        "navigationBarTitleText": "评论",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/comment/reply",
+      "style": {
+        "navigationBarTitleText": "回复",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
       "path": "pages/login/index",
       "style": {
         "navigationStyle": "custom",

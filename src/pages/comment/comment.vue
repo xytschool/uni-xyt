@@ -58,7 +58,7 @@
                     <view style="margin-left:15px">环境评分</view>
                 </u-col>
                 <u-col span="8">
-                    <u-rate :current="5" @change="changeHealth" active-icon="heart-fill" inactive-icon="heart"></u-rate>
+                    <u-rate :current="7" :count="'7'" @change="changeHealth" active-icon="heart-fill" inactive-icon="heart"></u-rate>
                 </u-col>
             </u-row>
             <u-gap height="15"></u-gap>
@@ -68,7 +68,7 @@
                     <view style="margin-left:15px">服务评分</view>
                 </u-col>
                 <u-col span="8">
-                    <u-rate :current="5" @change="changeStaff" active-icon="heart-fill" inactive-icon="heart"></u-rate>
+                    <u-rate :current="7"  :count="'7'" @change="changeStaff" active-icon="heart-fill" inactive-icon="heart"></u-rate>
                 </u-col>
             </u-row>
 
@@ -78,7 +78,7 @@
                     <view style="margin-left:15px">商品评分</view>
                 </u-col>
                 <u-col span="8">
-                    <u-rate :current="5" @change="changeGoods" active-icon="heart-fill" inactive-icon="heart"></u-rate>
+                    <u-rate :current="7" :count="'7'" @change="changeGoods" active-icon="heart-fill" inactive-icon="heart"></u-rate>
                 </u-col>
             </u-row>
 

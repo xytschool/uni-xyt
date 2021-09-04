@@ -203,9 +203,11 @@
 			flex-direction: column;
             padding-left: 15px;
 			.name{
-                font-weight: 500;
+        height: 67px;
+        overflow: hidden;
+        font-weight: 500;
 				font-size: 16px;
-                display: flex;
+        display: flex;
 				flex: 1;
 			}
 			.price{
