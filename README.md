@@ -8,6 +8,12 @@ make prod
 ### 编译测试版本
 make watch
 
+## 本地开启serve调试
+make serve 
+前端代码入口 /index-dev/14#/
+http://localhost:8081/index-dev/14#/
+http://localhost:8080/index-dev/14#/
+
 ## 注意index.css  文件名可能需要手动修改 echoapp的index模板文件
 
 ## 注意线上版本需要修改 config.js 的baseUrl版本
