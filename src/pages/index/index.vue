@@ -35,7 +35,6 @@
         </view>
 
         <view class="ad-1">
-<!--          <image src="http://data.xytschool.com/m/v1/static/temp/ad1.jpg" mode="scaleToFill"></image>-->
           <image :src="ad_banners[0].cover" mode="scaleToFill"></image>
         </view>
 

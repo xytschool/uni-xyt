@@ -85,7 +85,8 @@
 <!--					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105231218&di=09534b9833b5243296630e6d5b728eff&imgtype=0&src=http%3A%2F%2Fimg002.hc360.cn%2Fm1%2FM05%2FD1%2FAC%2FwKhQcFQ3iN2EQTo8AAAAAHQU6_8355.jpg" mode="aspectFill"></image>-->
 <!--					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105320890&di=c743386be51f2c4c0fd4b75754d14f3c&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fhb%2FMTQ1OTg4ODY0MDA3Ny05OTQ4ODY1NDQ%3D.jpg" mode="aspectFill"></image>-->
 				</scroll-view>
-
+				<list-cell icon="icon-shoucang" @eventClick="scancode()"
+                   iconColor="#e07472" title="扫码验票" tips=""></list-cell>
 				<list-cell icon="icon-iconfontweixin" @eventClick="navTo('/pages/user/userAwards')"
                    iconColor="#e07472" title="我的奖品" tips=""></list-cell>
 				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理"
@@ -187,13 +188,31 @@
 			 * navigator标签现在默认没有转场动画，所以用view
 			 */
 			navTo(url){
-				if(!this.hasLogin){
-					url = '/pages/login/index';
-				}
+				// if(!this.hasLogin){
+				// 	url = '/pages/login/index';
+				// }
 				uni.navigateTo({  
 					url
 				})  
-			}, 
+      }, 
+      scancode () {
+        console.log('scanCode');
+        uni.scanCode({
+	scanType: ['barCode'],
+	success: function (res) {
+		console.log('条码类型：' + res.scanType);
+		console.log('条码内容：' + res.result);
+	}
+});
+        
+        // uni.scanCode({
+        //   onlyFromCamera: true,
+        //   success: (res) => {
+        //     console.log('条码类型：' + res.scanType);
+        //     console.log('条码内容：' + res.result);
+        //   }
+        // });
+      },
 	
 			/**
 			 *  会员卡下拉和回弹

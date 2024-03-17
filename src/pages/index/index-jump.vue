@@ -34,9 +34,9 @@
             </view>
         </view>
 
-        <view class="ad-1">
+        <!-- <view class="ad-1">
             <image src="http://data.xytschool.com/m/v1/static/temp/ad1.jpg" mode="scaleToFill"></image>
-        </view>
+        </view> -->
 
         <!-- 秒杀楼层 -->
         <view class="seckill-section m-t">
