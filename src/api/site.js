@@ -5,7 +5,7 @@ import {baseUrl} from '../config'
 //const host = "/v1/site"
 //const host = "http://site.ideatest.top:8889/v1/site"
 //const host = "http://localhost:8889/v1/site"
-const host = baseUrl + "/site/{$com_id}"
+const host = baseUrl + "/site"
 //var ws = new WebSocket();
 
 module.exports = {

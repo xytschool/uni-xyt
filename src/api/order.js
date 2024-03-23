@@ -4,7 +4,7 @@ import {baseUrl} from '../config'
 //const host = "/v1/order"
 //const host = "http://site.ideatest.top:8889/v1/site"
 //const host = "http://localhost:8889/v1/site"
-const host = baseUrl + "/order/{$com_id}"
+const host = baseUrl + "/order"
 module.exports = {
     /**
      *   [{icon: '' , title: '' , link: ''}]
