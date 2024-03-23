@@ -1,45 +1,47 @@
 <template>
-<!-- <view>
-  扫码功能
-
-  <image
-  class="test"  
-  src="/static/test.png" @longpress="longPressImage"></image>
-
-</view> -->
+<u-popup
+ 
+    v-model="value" 
+    :maskCloseAble="maskCloseAble"
+    @close="close"
+    mode="center"
+>
+    <view class="popup">
+      <view class="title">扫码</view>
+      <image src="/static/test.png"></image>
+    </view>
+  </u-popup>
 </template>
 <script >
 
 export default {
+  props: {
+			// 通过双向绑定控制组件的弹出与收起
+			value: {
+				type: Boolean,
+				default: false
+			},
+			// 是否允许通过点击遮罩关闭Picker
+			maskCloseAble: {
+				type: Boolean,
+				default: true
+			},
+		
+		},
+  onload() {
+
+  },
   methods: {
-    longPressImage() {
-      console.log('longpress')
-      uni.saveImageToPhotosAlbum({
-        filePath: '/static/test.png',
-        success: () => {
-          uni.scanCode({
-            success: (res) => {
-              console.log(res.result); // 打印扫描结果
-              // 这里可以根据扫描结果进行相应的操作
-            },
-            fail: (err) => {
-              console.log(err);
-            }
-          });
-        },
-        fail: (err) => {
-          console.log(err);
-        }
-      });
-    }
+     open(reasonDesc) {
+      this.props.value=true
+    },
+		close() {
+				this.$emit('input', false);
+			},
   }
 }
 </script>
 <style lang='scss'>
-.test{
-width: 600rpx;
 
-
-}
 </style>
 

@@ -285,6 +285,9 @@
     },
     {
       "path": "pages/scanCode/index"
+    },
+    {
+      "path": "pages/MyVerification/index"
     }
   ],
   "globalStyle": {
