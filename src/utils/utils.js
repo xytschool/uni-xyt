@@ -56,7 +56,9 @@ function getComId() {
     //#ifdef H5
     var lo = window.location.pathname
     var arr = lo.split('/')
-    var com_id = arr[2]
+  // var com_id = arr[2]
+  var com_id = 1
+  
     com_id = parseInt(com_id)
     //#endif
 
