@@ -57,7 +57,7 @@
     methods: {
 		  async loadData(){
         let goodsRes = await this.$api.goods.getGoodsList();
-        if (goodsRes.code == 200) {
+        if (goodsRes.code == 'success') {
           this.goodsList = goodsRes.data || [];
         }
       },

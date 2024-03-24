@@ -106,7 +106,7 @@
 
                 let goodsList = []
                 let goodsListRes = await this.$api.goods.getGoodsList({keyword: this.keyword});
-                if (goodsListRes.code == 200) {
+                if (goodsListRes.code == 'success') {
                     goodsList = goodsListRes.data
                     if (goodsList.length > 0) {
                         this.lastId = goodsList[goodsList.length - 1].id

@@ -133,7 +133,7 @@
                 this.favorite = collectRes.data
             }
             let recommendRes = await this.$api.goods.getRecommendGoodsList()
-            if(recommendRes.code == 200){
+            if(recommendRes.code == 'success'){
                 this.data.guessList = recommendRes.data
             }
         },

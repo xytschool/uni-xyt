@@ -28,6 +28,7 @@
           class="carousel-item"
           @click="navToDetailPage(item)"
         >
+          <!-- {{ item.cover }} -->
           <image :src="item.cover" />
         </swiper-item>
       </swiper>
@@ -67,7 +68,7 @@
     <!--        </wx-open-launch-weapp>-->
 
     <!-- 在线直播 -->
-    <view class="seckill-section m-t" v-if="videoList && videoList.length">
+    <!-- <view class="seckill-section m-t" v-if="videoList && videoList.length">
       <view class="s-header">
         <text style="font-size: 22px;font-weight: 500;color: #ceae51;"
           >在线直播</text
@@ -86,7 +87,7 @@
           </view>
         </view>
       </scroll-view>
-    </view>
+    </view> -->
 
     <!-- 秒杀楼层 -->
     <view class="seckill-section m-t">
@@ -127,6 +128,7 @@
       </view>
       <text class="yticon icon-you"></text>
     </view>
+
     <view class="group-section">
       <swiper class="g-swiper" :duration="500">
         <swiper-item
@@ -160,13 +162,21 @@
           </view>
           <view class="g-item right">
             <image
-              :src="goodsList[index + 1].small_cover"
+              :src="
+                goodsList[index + 1] ? goodsList[index + 1].small_cover : ''
+              "
               mode="aspectFill"
             ></image>
             <view class="t-box">
-              <text class="title clamp">{{ goodsList[index + 1].title }}</text>
+              <text class="title clamp">{{
+                goodsList[index + 1] ? goodsList[index + 1].title : ''
+              }}</text>
               <view class="price-box">
-                <text class="price" v-yuan="goodsList[index + 1].price"
+                <text
+                  class="price"
+                  v-yuan="
+                    goodsList[index + 1] ? goodsList[index + 1].price : ''
+                  "
                   >￥</text
                 >
                 <text class="m-price">￥188</text>
@@ -187,7 +197,6 @@
         </swiper-item>
       </swiper>
     </view>
-
     <!-- 分类推荐楼层 -->
     <view class="f-header m-t">
       <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
@@ -329,8 +338,8 @@ export default {
     async loadData() {
       let res = await this.$api.site.getIndexPageBanners()
       console.log('indexPageBanner', res)
-      if (res.code == 200 && res.data) {
-        let carouselList = res.data.scroll_1
+      if (res.code == 'success') {
+        let carouselList = res.data.scroll
         this.titleNViewBackground = carouselList[0].background
         this.swiperLength = carouselList.length
         this.carouselList = carouselList
@@ -338,25 +347,27 @@ export default {
         this.cate_banners = res.data.categories
       }
       let navListRes = await this.$api.site.getNavList()
-      if ((navListRes.code = 200)) {
+      if ((navListRes.code = 'success')) {
         console.log('navListRes::', navListRes.code, navListRes.data)
         this.navList = navListRes.data
       }
-
-      let videoRes = await this.$api.site.getVideoList()
-      if (videoRes.code == 200) {
-        this.videoList = videoRes.data || []
-      }
+      //暂时隐藏
+      // let videoRes = await this.$api.site.getVideoList()
+      // if (videoRes.code == 200) {
+      //   this.videoList = videoRes.data || []
+      // }
 
       //let goodsList = await this.$api.json('goodsList');
       let recommendGoodsRes = await this.$api.goods.getRecommendGoodsList()
-      if (recommendGoodsRes.code == 200) {
+      if (recommendGoodsRes.code == 'success') {
         this.recommendGoodsList = recommendGoodsRes.data || []
       }
 
       let goodsRes = await this.$api.goods.getGoodsList()
-      if (goodsRes.code == 200) {
+      if (goodsRes.code == 'success') {
+        console.log(goodsRes.data, 'goodsRes.data')
         this.goodsList = goodsRes.data || []
+        console.log(this.goodsList, '  this.goodsList')
       }
     },
     changeKeyword() {

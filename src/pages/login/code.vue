@@ -63,7 +63,7 @@
                         mobile: this.mobile,
                     }
                     this.$api.user.sendLoginMessage(params).then(res => {
-                        if (res.code == 200) {
+                        if (res.code ==  "success") {
                             uni.navigateTo({url: '/pages/login/code?mobile=' + this.mobile +'&com_id=' + this.com_id})
                         } else {
                             uni.showToast({

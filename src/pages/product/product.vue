@@ -1,14 +1,14 @@
 <template>
   <view class="container">
     <view class="carousel">
-      <swiper indicator-dots circular=true duration="400">
-        <swiper-item class="swiper-item" v-for="(item,index) in goods.covers" :key="index">
+      <swiper indicator-dots circular="true" duration="400">
+        <swiper-item
+          class="swiper-item"
+          v-for="(item, index) in goods.covers"
+          :key="index"
+        >
           <view class="image-wrapper">
-            <image
-                :src="item"
-                class="loaded"
-                mode="aspectFill"
-            ></image>
+            <image :src="item" class="loaded" mode="aspectFill"></image>
           </view>
         </swiper-item>
       </swiper>
@@ -41,14 +41,21 @@
         立即分享
         <text class="yticon icon-you"></text>
       </view>
-
     </view>
 
     <view class="c-list">
-      <view class="c-row b-b" @click="toggleSpec" v-show="goods.sku_labels && goods.sku_labels.length != 0">
+      <view
+        class="c-row b-b"
+        @click="toggleSpec"
+        v-show="goods.sku_labels && goods.sku_labels.length != 0"
+      >
         <text class="tit">购买类型</text>
         <view class="con">
-          <text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
+          <text
+            class="selected-text"
+            v-for="(sItem, sIndex) in specSelected"
+            :key="sIndex"
+          >
             {{ sItem }}
           </text>
         </view>
@@ -82,19 +89,27 @@
       <view class="e-header">
         <text class="tit">评价</text>
         <text>({{ commentNum }})</text>
-        <text class="tip">好评率 {{ (100 * goodCommentNum / commentNum).toFixed(1) }}%</text>
+        <text class="tip"
+          >好评率 {{ ((100 * goodCommentNum) / commentNum).toFixed(1) }}%</text
+        >
         <text class="yticon icon-you" @click="gotoCommentList"></text>
       </view>
 
-      <view class="eva-box" v-for="(item,index) in commentList">
+      <view class="eva-box" v-for="(item, index) in commentList">
         <image class="portrait" :src="item.avatar" mode="aspectFill"></image>
         <view class="right">
-          <text class="name">{{ item.nickname ? item.nickname : '匿名用户' }}</text>
+          <text class="name">{{
+            item.nickname ? item.nickname : '匿名用户'
+          }}</text>
           <text class="con">{{ item.content }}</text>
           <view class="content">
-            <img v-for="(cover ,index) in item.covers"
-                 style="width:48%;margin-right:2%"
-                 :key="index" :src="cover" mode="aspectFit"/>
+            <img
+              v-for="(cover, index) in item.covers"
+              style="width:48%;margin-right:2%"
+              :key="index"
+              :src="cover"
+              mode="aspectFit"
+            />
           </view>
           <view class="bot">
             <text class="attr">购买类型：默认类型</text>
@@ -104,11 +119,16 @@
       </view>
 
       <view class="eva-box" v-if="false">
-        <image class="portrait" src="http://img3.imgtn.bdimg.com/it/u=1150341365,1327279810&fm=26&gp=0.jpg"
-               mode="aspectFill"></image>
+        <image
+          class="portrait"
+          src="http://img3.imgtn.bdimg.com/it/u=1150341365,1327279810&fm=26&gp=0.jpg"
+          mode="aspectFill"
+        ></image>
         <view class="right">
           <text class="name">Leo yo</text>
-          <text class="con">商品收到了，79元两件，质量不错，试了一下有点瘦，但是加个外罩很漂亮，我很喜欢</text>
+          <text class="con"
+            >商品收到了，79元两件，质量不错，试了一下有点瘦，但是加个外罩很漂亮，我很喜欢</text
+          >
           <view class="bot">
             <text class="attr">购买类型：XL 红色</text>
             <text class="time">2019-04-01 19:21</text>
@@ -136,23 +156,35 @@
         <text class="yticon icon-gouwuche"></text>
         <text>购物车</text>
       </navigator>
-      <view class="p-b-btn" :class="{active: favorite}" @click="toFavorite">
+      <view class="p-b-btn" :class="{ active: favorite }" @click="toFavorite">
         <text class="yticon icon-shoucang"></text>
         <text>收藏</text>
       </view>
 
       <view class="action-btn-group">
-        <button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
-        <button type="primary" class=" action-btn no-border add-cart-btn" @click="addCartGoods">加入购物车</button>
+        <button
+          type="primary"
+          class=" action-btn no-border buy-now-btn"
+          @click="buy"
+        >
+          立即购买
+        </button>
+        <button
+          type="primary"
+          class=" action-btn no-border add-cart-btn"
+          @click="addCartGoods"
+        >
+          加入购物车
+        </button>
       </view>
     </view>
 
     <!-- 规格-模态层弹窗 -->
     <view
-        class="popup spec"
-        :class="specClass"
-        @touchmove.stop.prevent="stopPrevent"
-        @click="toggleSpec"
+      class="popup spec"
+      :class="specClass"
+      @touchmove.stop.prevent="stopPrevent"
+      @click="toggleSpec"
     >
       <!-- 遮罩层 -->
       <view class="mask"></view>
@@ -160,25 +192,37 @@
         <view class="a-t">
           <image :src="currentSku.cover"></image>
           <view class="right">
-            <text class="price">¥ <text v-yuan="currentSku.real_price"></text> {{ currentSku.sku_name }}</text>
+            <text class="price"
+              >¥ <text v-yuan="currentSku.real_price"></text>
+              {{ currentSku.sku_name }}</text
+            >
             <text class="stock">库存：{{ currentSku.num }}件</text>
             <view class="selected">
               已选：
-              <text class="selected-text" v-for="(val, label) in specSelected" :key="sIndex">
+              <text
+                class="selected-text"
+                v-for="(val, label) in specSelected"
+                :key="sIndex"
+              >
                 {{ val }}
               </text>
             </view>
           </view>
         </view>
 
-        <view v-for="(item,index) in goods.sku_labels" :key="index" class="attr-list">
+        <view
+          v-for="(item, index) in goods.sku_labels"
+          :key="index"
+          class="attr-list"
+        >
           <text>{{ item.label }}</text>
           <view class="item-list">
             <text
-                v-for="(childItem, childIndex) in item.options"
-                :key="childIndex" class="tit"
-                :class="{selected: item.selected == childItem}"
-                @click="selectSpec(childItem, item)"
+              v-for="(childItem, childIndex) in item.options"
+              :key="childIndex"
+              class="tit"
+              :class="{ selected: item.selected == childItem }"
+              @click="selectSpec(childItem, item)"
             >
               {{ childItem }}
             </text>
@@ -186,25 +230,24 @@
         </view>
         <button class="btn" @click="toggleSpec">完成</button>
       </view>
-
     </view>
 
     <!-- 分享 -->
-    <share
-        ref="share"
-        :contentHeight="580"
-        :shareList="shareList"
-    ></share>
-    <coupons v-if="goods.id" :goods_id="goods.id" :display.sync="showCouponMask"></coupons>
+    <share ref="share" :contentHeight="580" :shareList="shareList"></share>
+    <coupons
+      v-if="goods.id"
+      :goods_id="goods.id"
+      :display.sync="showCouponMask"
+    ></coupons>
   </view>
 </template>
 
 <script>
 import share from '@/components/share'
-import {isCollect} from "../../api/userapi"
-import coupons from "@/components/coupons"
-import {mapState} from "vuex"
-import {deepEqual} from "../../utils/utils"
+import { isCollect } from '../../api/userapi'
+import coupons from '@/components/coupons'
+import { mapState } from 'vuex'
+import { deepEqual } from '../../utils/utils'
 
 //#ifdef H5
 import wx from 'weixin-js-sdk'
@@ -213,7 +256,7 @@ import wx from 'weixin-js-sdk'
 export default {
   components: {
     coupons,
-    share,
+    share
   },
   data() {
     return {
@@ -225,7 +268,7 @@ export default {
         price: '',
         cover: '',
         num: 0,
-        id: 0,
+        id: 0
       },
       favorite: false,
       shareList: [],
@@ -235,20 +278,20 @@ export default {
       goods: {},
       activity: null,
       from_user_id: 0
-    };
+    }
   },
   computed: {
     ...mapState({
-      user: state => state.user.user,
-      hasLogin: state => state.user.hasLogin,
-      company: state => state.company.company
+      user: (state) => state.user.user,
+      hasLogin: (state) => state.user.hasLogin,
+      company: (state) => state.company.company
     })
   },
   async onLoad(options) {
     //接收传值,id里面放的是标题，因为测试数据并没写id
-    let id = options.id;
-    let goodsRes = await this.$api.goods.getGoodsDetail({id})
-    if (goodsRes.code == 200) {
+    let id = options.id
+    let goodsRes = await this.$api.goods.getGoodsDetail({ id })
+    if (goodsRes.code == 'success') {
       var goods = goodsRes.data
       if (!goods.sku_labels) {
         goods.sku_labels = []
@@ -257,17 +300,17 @@ export default {
         goods.skus = []
       }
       this.goods = Object.assign({}, goods)
-      uni.setNavigationBarTitle({title: goods.name + '-详情'})
+      uni.setNavigationBarTitle({ title: goods.name + '-详情' })
     } else {
-      uni.showToast({title: goodsRes.msg})
+      uni.showToast({ title: goodsRes.msg })
       return
     }
 
     let from_user_id = parseInt(options.from_user)
     let nickname = options.nickname
-    if(from_user_id&&nickname) {
+    if (from_user_id && nickname) {
       this.from_user_id = from_user_id
-      uni.showToast({'title' : '来自用户' + nickname +'分享'})
+      uni.showToast({ title: '来自用户' + nickname + '分享' })
     }
 
     //规格 默认选中第一条(如果有规格)
@@ -284,7 +327,7 @@ export default {
       goods_id: this.goods.id,
       com_id: this.goods.com_id
     })
-    if (activityRes.code == 200) {
+    if (activityRes.code == "success") {
       this.activity = activityRes.data
     }
 
@@ -296,31 +339,37 @@ export default {
 
     if (this.hasLogin) {
       let collectRes = await isCollect('goods', this.goods.id)
-      if (collectRes.code == 200) {
+      if (collectRes.code == "success") {
         this.favorite = collectRes.data
       }
-      this.$api.user.addUserHistory({type: 'goods', target_id: this.goods.id})
+      this.$api.user.addUserHistory({ type: 'goods', target_id: this.goods.id })
     }
 
-    let commentListRes = await this.$api.comment.getCommentList({goods_id: this.goods.id, limit: 5})
-    if (commentListRes.code == 200) {
+    let commentListRes = await this.$api.comment.getCommentList({
+      goods_id: this.goods.id,
+      limit: 5
+    })
+    if (commentListRes.code == "success") {
       this.commentList = commentListRes.data
     }
 
-    let commentNumRes = await this.$api.comment.getGoodsCommentNum({goods_id: this.goods.id})
-    if (commentNumRes.code == 200) {
+    let commentNumRes = await this.$api.comment.getGoodsCommentNum({
+      goods_id: this.goods.id
+    })
+    if (commentNumRes.code == "success") {
       this.commentNum = commentNumRes.data.num
       this.goodCommentNum = commentNumRes.data.good_num
     }
-    
+
     //this.shareList = await this.$api.json('shareList');
   },
   methods: {
-
-//#ifdef H5
+    //#ifdef H5
     async setShareInfo() {
-      var configRes = await this.$api.site.getWxConfig({url: window.location.href})
-      if (configRes.code != 200) {
+      var configRes = await this.$api.site.getWxConfig({
+        url: window.location.href
+      })
+      if (configRes.code != "success") {
         return
       }
       var config = configRes.data
@@ -331,39 +380,56 @@ export default {
         timestamp: config.timestamp, // 生成签名的时间戳
         nonceStr: config.nonce_str, // 生成签名的随机串
         signature: config.signature, // 签名
-        jsApiList: ['updateTimelineShareData', 'updateAppMessageShareData', 'onMenuShareAppMessage', 'onMenuShareTimeline'] // 需要使用的JS接口列表，所有JS接口列表见附录2
+        jsApiList: [
+          'updateTimelineShareData',
+          'updateAppMessageShareData',
+          'onMenuShareAppMessage',
+          'onMenuShareTimeline'
+        ] // 需要使用的JS接口列表，所有JS接口列表见附录2
       })
 
       wx.ready(() => {
-        var shareUrl = '/pages/product/product?id=' + this.goods.id + "&from_user=" + this.user.id + '&nickname=' + this.user.nickname
+        var shareUrl =
+          '/pages/product/product?id=' +
+          this.goods.id +
+          '&from_user=' +
+          this.user.id +
+          '&nickname=' +
+          this.user.nickname
         if (window) {
           var location = window.location
-          shareUrl = location.protocol + '//' + location.host + location.pathname + '#' + shareUrl
+          shareUrl =
+            location.protocol +
+            '//' +
+            location.host +
+            location.pathname +
+            '#' +
+            shareUrl
         }
         //updateShareMenu(this.goods.name, this.goods.desc, shareUrl, this.goods.small_cover)
         var title = this.goods.name
-        if(this.company.name){
+        if (this.company.name) {
           title = this.company.name + '-' + this.goods.name
         }
         wx.updateAppMessageShareData({
           title: title, // 分享标题
           desc: this.goods.desc, // 分享描述
           link: shareUrl, // 分享链接，该链接域名必须与当前企业的可信域名一致
-          imgUrl: this.goods.small_cover, // 分享图标
+          imgUrl: this.goods.small_cover // 分享图标
         })
 
         wx.updateTimelineShareData({
           title: title, // 分享标题
           link: shareUrl, // 分享链接，该链接域名必须与当前企业的可信域名一致
-          imgUrl: this.goods.small_cover, // 分享图
+          imgUrl: this.goods.small_cover // 分享图
         })
       })
 
-      wx.error(function (err) {
+      wx.error(function(err) {
         console.log('err', err)
       })
     },
-//#endif
+    //#endif
 
     //规格弹窗开关
     toggleSpec() {
@@ -371,12 +437,12 @@ export default {
         return
       }
       if (this.specClass === 'show') {
-        this.specClass = 'hide';
+        this.specClass = 'hide'
         setTimeout(() => {
-          this.specClass = 'none';
-        }, 250);
+          this.specClass = 'none'
+        }, 250)
       } else if (this.specClass === 'none') {
-        this.specClass = 'show';
+        this.specClass = 'show'
       }
     },
     gotoCommentList() {
@@ -395,7 +461,7 @@ export default {
        */
       this.specSelected[labelItem.label] = option
       var currentSku = null
-      this.goods.skus.forEach(sku => {
+      this.goods.skus.forEach((sku) => {
         if (deepEqual(this.specSelected, sku.label_combine)) {
           currentSku = sku
         }
@@ -406,14 +472,14 @@ export default {
           sku_name: '缺货中',
           num: 0,
           price: 9999999,
-          real_price: 9999999,
+          real_price: 9999999
         }
       }
       this.currentSku = currentSku
     },
     //分享
     share() {
-      this.$api.msg(`分享给请点击右上方的功能按钮,选择分享`);
+      this.$api.msg(`分享给请点击右上方的功能按钮,选择分享`)
       //this.$refs.share.toggleMask();
     },
     async addCartGoods() {
@@ -425,14 +491,14 @@ export default {
       this.$store.dispatch('order/reset')
       var cartGoodsItem = this.buildCartGoods()
       if (!cartGoodsItem) {
-        return;
+        return
       }
       let res = await this.$api.goods.addCartGoods(cartGoodsItem)
-      if (res.code == 200) {
-        uni.showToast({title: "添加成功"})
+      if (res.code == 'success') {
+        uni.showToast({ title: '添加成功' })
         //uni.navigateTo({url: "/pages/cart/cart"})
       } else {
-        uni.showToast({title: "添加购物车失败" + res.msg})
+        uni.showToast({ title: '添加购物车失败' + res.msg })
       }
     },
     //收藏
@@ -442,16 +508,16 @@ export default {
         return
       }
 
-      let flag = !this.favorite;
+      let flag = !this.favorite
       if (flag) {
-        this.$api.user.addUserCollection('goods', this.goods.id).then(res => {
-          if (res.code == 200) {
+        this.$api.user.addUserCollection('goods', this.goods.id).then((res) => {
+          if (res.code == 'success') {
             this.favorite = flag
           }
         })
       } else {
-        this.$api.user.delUserCollection('goods', this.goods.id).then(res => {
-          if (res.code == 200) {
+        this.$api.user.delUserCollection('goods', this.goods.id).then((res) => {
+          if (res.code == 'success') {
             this.favorite = flag
           }
         })
@@ -466,7 +532,7 @@ export default {
       this.$store.dispatch('order/reset')
       var cartGoodsItem = this.buildCartGoods()
       if (!cartGoodsItem) {
-        return;
+        return
       }
       this.$store.dispatch('order/preOrderByGoodsList', [cartGoodsItem])
       uni.navigateTo({
@@ -486,7 +552,7 @@ export default {
       if (this.goods.sku_labels && this.goods.sku_labels.length > 0) {
         //有sku的商品
         if (this.currentSku.num == 0) {
-          uni.showToast({title: "该型号商品缺货中请选择其他型号"})
+          uni.showToast({ title: '该型号商品缺货中请选择其他型号' })
           return false
         }
         cartGoodsItem.sku_name = this.currentSku.sku_name
@@ -497,13 +563,12 @@ export default {
       }
       return cartGoodsItem
     },
-    stopPrevent() {
-    }
+    stopPrevent() {}
   }
 }
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 page {
   background: $page-color-base;
   padding-bottom: 160upx;
@@ -539,7 +604,6 @@ page {
       height: 100%;
     }
   }
-
 }
 
 /* 标题简介 */
@@ -692,7 +756,7 @@ page {
 
   .bz-list {
     height: 40upx;
-    font-size: $font-sm+2upx;
+    font-size: $font-sm + 2upx;
     color: $font-color-dark;
 
     text {
@@ -815,9 +879,7 @@ page {
   }
 
   .detail-desc-text {
-
   }
-
 }
 
 /* 规格选择弹窗 */
@@ -832,7 +894,7 @@ page {
       height: 170upx;
       flex-shrink: 0;
       margin-top: -40upx;
-      border-radius: 8upx;;
+      border-radius: 8upx;
     }
 
     .right {
@@ -1000,8 +1062,8 @@ page {
   align-items: center;
   width: 690upx;
   height: 100upx;
-  background: rgba(255, 255, 255, .9);
-  box-shadow: 0 0 20upx 0 rgba(0, 0, 0, .5);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 20upx 0 rgba(0, 0, 0, 0.5);
   border-radius: 16upx;
 
   .p-b-btn {
@@ -1020,7 +1082,8 @@ page {
       color: $font-color-light;
     }
 
-    &.active, &.active .yticon {
+    &.active,
+    &.active .yticon {
       color: $uni-color-primary;
     }
 
@@ -1041,7 +1104,7 @@ page {
     overflow: hidden;
     box-shadow: 0 20upx 40upx -16upx #fa436a;
     box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
-    background: linear-gradient(to right, #ffac30, #fa436a, #F56C6C);
+    background: linear-gradient(to right, #ffac30, #fa436a, #f56c6c);
     margin-left: 20upx;
     position: relative;
 
@@ -1053,7 +1116,7 @@ page {
       transform: translateY(-50%);
       height: 28upx;
       width: 0;
-      border-right: 1px solid rgba(255, 255, 255, .5);
+      border-right: 1px solid rgba(255, 255, 255, 0.5);
     }
 
     .action-btn {
@@ -1069,5 +1132,4 @@ page {
     }
   }
 }
-
 </style>

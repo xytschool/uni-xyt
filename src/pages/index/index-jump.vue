@@ -264,19 +264,19 @@
                     this.carouselList = carouselList;
                 }
                 let navListRes = await this.$api.site.getNavList()
-                if (navListRes.code = 200) {
+                if (navListRes.code = 'success') {
                     //console.log(navListRes)
                     this.navList = navListRes.data
                 }
 
                 //let goodsList = await this.$api.json('goodsList');
                 let recommendGoodsRes = await this.$api.goods.getRecommendGoodsList();
-                if (recommendGoodsRes.code == 200) {
+                if (recommendGoodsRes.code == 'success') {
                     this.recommendGoodsList = recommendGoodsRes.data || [];
                 }
 
                 let goodsRes = await this.$api.goods.getGoodsList();
-                if (goodsRes.code == 200) {
+                if (goodsRes.code == 'success') {
                     this.goodsList = goodsRes.data || [];
                 }
             },

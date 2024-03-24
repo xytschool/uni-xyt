@@ -15,19 +15,19 @@ const getters = {}
 const actions = {
     async getAllGoods({commit}) {
         let res = await getGoodsList({limit:100})
-        if (res.code == 200) {
+        if (res.code == 'success') {
             commit('setAllGoods', res.data)
         }
     },
     async getGoodsTags({commit,}) {
         let tagsRes = await getGoodsTags()
-        if (tagsRes.code == 200) {
+        if (tagsRes.code == 'success') {
             commit('setGoodsTags', tagsRes.data)
         }
     },
     async getGoodsByTagId({commit}, tagId) {
         let res = await this.getGoodsByTagId(tagId)
-        if (res.code == 200) {
+        if (res.code == 'success') {
 
         }
     }
