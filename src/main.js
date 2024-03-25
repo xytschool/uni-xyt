@@ -4,13 +4,14 @@ import Json from './Json' //测试用数据
 import store from './store'
 import {getComId, getUserInfo, setUserInfo} from "./utils/utils";
 
-
+import { numberToCurrencyNo } from '@/utils/numberToCurrency'
 Vue.config.productionTip = false
 import uView from "uview-ui";
 
 Vue.use(uView);
 App.mpType = 'app'
-
+// 配置全局过滤器，实现数字千分位格式
+Vue.filter('numberToCurrency', numberToCurrencyNo)
 const msg = (title, duration = 1500, mask = false, icon = 'none') => {
     //统一提示方便全局修改
     if (Boolean(title) === false) {

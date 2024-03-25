@@ -31,8 +31,8 @@
                             {{key}}:&nbsp;{{value}}
                     </text>
                     <view class="price-box">
-                        <text class="real_price" v-yuan="goods.real_price">￥</text>
-                        <text class="price" v-yuan="goods.price">￥</text>
+                        <text class="real_price" >￥ {{ item.real_price | numberToCurrency }}</text>
+                        <text class="price" >￥  {{ item.price | numberToCurrency }}</text>
                         <text class="number">x {{goods.num}}</text>
                     </view>
                 </view>
@@ -66,7 +66,7 @@
                 <view class="yt-list-cell b-b" v-for="coupon in couponList">
                     <text class="cell-tit clamp">&nbsp;{{coupon.name}}</text>
                     <text class="cell-tip active">
-                      金额<text v-yuan="coupon.amount"></text>元
+                      金额<text > {{ coupon.amount | numberToCurrency }}</text>元
                     </text>
                     <text class="cell-more wanjia wanjia-gengduo-d"></text>
                 </view>
@@ -83,11 +83,11 @@
         <view class="yt-list">
             <view class="yt-list-cell b-b">
                 <text class="cell-tit clamp">商品金额</text>
-                <text class="cell-tip" v-yuan="amount">￥</text>
+                <text class="cell-tip">￥ {{ amount | numberToCurrency }}</text>
             </view>
             <view class="yt-list-cell b-b">
                 <text class="cell-tit clamp">优惠金额</text>
-                <text class="cell-tip red" v-yuan="discount">-￥</text>
+                <text class="cell-tip red" >-￥{{ discount | numberToCurrency }} </text>
             </view>
             <view class="yt-list-cell b-b">
                 <text class="cell-tit clamp">运费</text>
@@ -105,7 +105,7 @@
             <view class="price-content">
                 <text>实付款</text>
                 <text class="price-tip">￥</text>
-                <text v-yuan="real_amount" class="price"></text>
+                <text  class="price">{{ real_amount | numberToCurrency }}</text>
             </view>
             <text class="submit" @click="submit" :disabled="canSubmit">提交订单</text>
         </view>

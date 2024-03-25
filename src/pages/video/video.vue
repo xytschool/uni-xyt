@@ -26,7 +26,7 @@
               <image :src="item.small_cover" mode="aspectFill"></image>
             </view>
             <text class="title clamp">{{item.name}}</text>
-            <text class="price" v-yuan="item.real_price">￥</text>
+            <text class="price" >￥ {{ item.real_price | numberToCurrency }}</text>
           </view>
         </view>
         

@@ -18,8 +18,8 @@
       <text class="title">{{ goods.name }}</text>
       <view class="price-box">
         <text class="price-tip">¥</text>
-        <text class="price" v-yuan="goods.real_price"></text>
-        <text class="m-price" v-yuan="goods.price">¥</text>
+        <text class="price"> {{ goods.real_price | numberToCurrency }}</text>
+        <text class="m-price">¥ {{ goods.price | numberToCurrency }}</text>
         <text class="coupon-tip">折扣</text>
       </view>
       <view class="bot-row">
@@ -193,7 +193,7 @@
           <image :src="currentSku.cover"></image>
           <view class="right">
             <text class="price"
-              >¥ <text v-yuan="currentSku.real_price"></text>
+              >¥ <text> {{ currentSku.real_price | numberToCurrency }}</text>
               {{ currentSku.sku_name }}</text
             >
             <text class="stock">库存：{{ currentSku.num }}件</text>
@@ -327,7 +327,7 @@ export default {
       goods_id: this.goods.id,
       com_id: this.goods.com_id
     })
-    if (activityRes.code == "success") {
+    if (activityRes.code == 'success') {
       this.activity = activityRes.data
     }
 
@@ -339,7 +339,7 @@ export default {
 
     if (this.hasLogin) {
       let collectRes = await isCollect('goods', this.goods.id)
-      if (collectRes.code == "success") {
+      if (collectRes.code == 'success') {
         this.favorite = collectRes.data
       }
       this.$api.user.addUserHistory({ type: 'goods', target_id: this.goods.id })
@@ -349,14 +349,14 @@ export default {
       goods_id: this.goods.id,
       limit: 5
     })
-    if (commentListRes.code == "success") {
+    if (commentListRes.code == 'success') {
       this.commentList = commentListRes.data
     }
 
     let commentNumRes = await this.$api.comment.getGoodsCommentNum({
       goods_id: this.goods.id
     })
-    if (commentNumRes.code == "success") {
+    if (commentNumRes.code == 'success') {
       this.commentNum = commentNumRes.data.num
       this.goodCommentNum = commentNumRes.data.good_num
     }
@@ -369,7 +369,7 @@ export default {
       var configRes = await this.$api.site.getWxConfig({
         url: window.location.href
       })
-      if (configRes.code != "success") {
+      if (configRes.code != 'success') {
         return
       }
       var config = configRes.data

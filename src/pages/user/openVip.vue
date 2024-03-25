@@ -2,7 +2,7 @@
 	<view class="page">
 		<view class="title">{{goods.name}}</view>
     <view class="price">
-       价格: <text v-yuan="goods.real_price"></text>
+       价格: <text > {{ goods.real_price | numberToCurrency }}</text>
     </view>
     <view class="desc">{{goods.desc}}</view>
     <text class="mix-btn" @click="confirm">确认支付</text>
