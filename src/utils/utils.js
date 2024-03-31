@@ -12,7 +12,8 @@ function setAuthToken(token) {
 }
 
 function getAuthToken() {
-    var token = uni.getStorageSync('authToken')
+  var token = wx.getStorageSync('token')
+  console.log(token, 'token')
     return token
 }
 

@@ -168,6 +168,12 @@
           @eventClick="navTo('/pages/address/address')"
         ></list-cell>
         <list-cell
+          icon="icon-tuandui"
+          iconColor="#649C4A"
+          title="使用人"
+          @eventClick="navTo('/pages/addpeople/addpeople')"
+        ></list-cell>
+        <list-cell
           icon="icon-share"
           iconColor="#9789f7"
           title="分享"
