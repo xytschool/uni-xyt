@@ -83,9 +83,8 @@ const userMoudle = {
       state.addpeopleList = list
       console.log(state.addpeopleList, 'state.addpeopleLis')
     },
-    addPeople (state, addpeople) {
+    addPeople(state, addpeople) {
       state.addpeopleList.push(addpeople)
-   
     },
     delPeople(state, addpeople) {
       state.addpeopleList.forEach((item, index) => {
@@ -95,7 +94,7 @@ const userMoudle = {
           state.addpeopleList.pop()
         }
       })
-      console.log(state.addpeopleList,"state.addpeopleList")
+      console.log(state.addpeopleList, 'state.addpeopleList')
     },
 
     setDefaultAddress(state, address) {
@@ -141,7 +140,7 @@ const userMoudle = {
                         key: 'token',
                         data: data.data.data.token
                       })
-                      console.log(wx.getStorageSync('token'), 'token')
+                      state.hasLogin = true
                     }
                   })
                 }
