@@ -152,15 +152,20 @@
         <text class="yticon icon-xiatubiao--copy"></text>
         <text>首页</text>
       </navigator>
-      <navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
+      <!-- <navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
         <text class="yticon icon-gouwuche"></text>
         <text>购物车</text>
-      </navigator>
-      <view class="p-b-btn" :class="{ active: favorite }" @click="toFavorite">
+      </navigator> -->
+      <!-- <view class="p-b-btn" :class="{ active: favorite }" @click="toFavorite">
         <text class="yticon icon-shoucang"></text>
         <text>收藏</text>
+      </view> -->
+      <view>
+        <text class="price">
+          折扣¥{{ goods.real_price | numberToCurrency }}
+        </text>
+        <text class="m-price">¥{{ goods.price | numberToCurrency }}</text>
       </view>
-
       <view class="action-btn-group">
         <button
           type="primary"
@@ -169,13 +174,13 @@
         >
           立即购买
         </button>
-        <button
-          type="primary"
-          class=" action-btn no-border add-cart-btn"
-          @click="addCartGoods"
-        >
-          加入购物车
-        </button>
+        <!-- <button
+        type="primary"
+        class=" action-btn no-border add-cart-btn"
+        @click="addCartGoods"
+      >
+        加入购物车
+      </button> -->
       </view>
     </view>
 
@@ -485,7 +490,6 @@ export default {
     async addCartGoods() {
       if (!this.hasLogin) {
         this.$store.dispatch('user/checkLogin', this.com_id)
-        
       }
 
       this.$store.dispatch('order/reset')
@@ -529,7 +533,7 @@ export default {
 
         return
       }
-
+      console.log(2345678)
       this.$store.dispatch('order/reset')
       var cartGoodsItem = this.buildCartGoods()
       if (!cartGoodsItem) {
@@ -628,16 +632,6 @@ page {
     color: $uni-color-primary;
   }
 
-  .price {
-    font-size: $font-lg + 2upx;
-  }
-
-  .m-price {
-    margin: 0 12upx;
-    color: $font-color-light;
-    text-decoration: line-through;
-  }
-
   .coupon-tip {
     align-items: center;
     padding: 4upx 10upx;
@@ -660,6 +654,18 @@ page {
       flex: 1;
     }
   }
+}
+
+.price {
+  font-size: $font-lg + 2upx;
+  color: $uni-color-primary;
+  margin-bottom: 10upx;
+}
+
+.m-price {
+  margin: 0 12upx;
+  color: $font-color-light;
+  text-decoration: line-through;
 }
 
 /* 分享 */
@@ -906,12 +912,6 @@ page {
       color: $font-color-base;
       line-height: 42upx;
 
-      .price {
-        font-size: $font-lg;
-        color: $uni-color-primary;
-        margin-bottom: 10upx;
-      }
-
       .selected-text {
         margin-right: 10upx;
       }
@@ -1054,12 +1054,13 @@ page {
 
 /* 底部操作菜单 */
 .page-bottom {
+  display: flex;
+  justify-content: space-between;
   position: fixed;
   left: 30upx;
   bottom: 30upx;
   z-index: 95;
-  display: flex;
-  justify-content: center;
+
   align-items: center;
   width: 690upx;
   height: 100upx;
@@ -1068,7 +1069,8 @@ page {
   border-radius: 16upx;
 
   .p-b-btn {
-    display: flex;
+ 
+    flex: 1;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -1076,9 +1078,10 @@ page {
     color: $font-color-base;
     width: 96upx;
     height: 80upx;
-
+    line-height: 80upx;
+    margin-left: 20upx; 
     .yticon {
-      font-size: 40upx;
+      font-size: 30upx;
       line-height: 48upx;
       color: $font-color-light;
     }
@@ -1099,7 +1102,7 @@ page {
   }
 
   .action-btn-group {
-    display: flex;
+    width: 200upx;
     height: 76upx;
     border-radius: 100px;
     overflow: hidden;
@@ -1108,6 +1111,7 @@ page {
     background: linear-gradient(to right, #ffac30, #fa436a, #f56c6c);
     margin-left: 20upx;
     position: relative;
+    margin-right: 10px;
 
     &:after {
       content: '';
