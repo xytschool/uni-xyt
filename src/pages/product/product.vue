@@ -485,7 +485,7 @@ export default {
     async addCartGoods() {
       if (!this.hasLogin) {
         this.$store.dispatch('user/checkLogin', this.com_id)
-        return
+        
       }
 
       this.$store.dispatch('order/reset')
@@ -526,6 +526,7 @@ export default {
     buy() {
       if (!this.hasLogin) {
         this.$store.dispatch('user/checkLogin', this.com_id)
+
         return
       }
 
