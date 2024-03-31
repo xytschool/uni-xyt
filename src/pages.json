@@ -180,10 +180,7 @@
       }
     },
     {
-      "path": "pages/address/addressManage",
-      "style": {
-        "navigationBarTitleText": ""
-      }
+      "path": "pages/address/addressManage"
     },
     {
       "path": "pages/money/pay",
@@ -288,6 +285,18 @@
     },
     {
       "path": "pages/MyVerification/index"
+    },
+    {
+      "path": "pages/addpeople/addpeople",
+      "style": {
+        "navigationBarTitleText": "常用使用人"
+      }
+    },
+    {
+      "path": "pages/addpeople/addManage",
+      "style": {
+        "navigationBarTitleText": "新增常用使用人"
+      }
     }
   ],
   "globalStyle": {
@@ -314,12 +323,13 @@
         "selectedIconPath": "static/tab-cate-current.png",
         "text": "分类"
       },
-      {
-        "pagePath": "pages/cart/cart",
-        "iconPath": "static/tab-cart.png",
-        "selectedIconPath": "static/tab-cart-current.png",
-        "text": "购物车"
-      },
+      // {
+      //   // "pagePath": "pages/order/order",
+      //   "pagePath": "pages/cart/cart",
+      //   "iconPath": "static/tab-cart.png",
+      //   "selectedIconPath": "static/tab-cart-current.png",
+      //   "text": "我的订单"
+      // },
       {
         "pagePath": "pages/user/user",
         "iconPath": "static/tab-my.png",
