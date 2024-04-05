@@ -147,13 +147,7 @@
           title="我的二维码"
           tips=""
         ></list-cell>
-        <list-cell
-          icon="icon-shoucang"
-          @eventClick="scancode()"
-          iconColor="#e07472"
-          title="扫码验票"
-          tips=""
-        ></list-cell>
+
         <list-cell
           icon="icon-iconfontweixin"
           @eventClick="navTo('/pages/user/userAwards')"
@@ -218,7 +212,6 @@
 </template>
 <script>
 import listCell from '@/components/mix-list-cell'
-import scanCode from '../../pages/scanCode/index.vue'
 
 import { mapState } from 'vuex'
 let startY = 0,
@@ -226,8 +219,7 @@ let startY = 0,
   pageAtTop = true
 export default {
   components: {
-    listCell,
-    scanCode
+    listCell
   },
   data() {
     return {
@@ -312,20 +304,9 @@ export default {
         url
       })
     },
-    scancode() {
-      console.log('scanCode')
-      uni.scanCode({
-        scanType: ['qrCode'],
-        success: function(res) {
-          console.log('条码类型：' + res.scanType)
-          console.log('条码内容：' + res.result)
-          //  把res.result结果 返回给后端，后端根据code查出用户信息，返回给，前端更新页面接口
-        }
-      })
-    },
+
     myCode() {
       this.showCodePicker = true
-
       console.log(this.showCodePicker)
     },
 
