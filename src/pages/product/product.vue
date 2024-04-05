@@ -30,7 +30,7 @@
     </view>
 
     <!--  分享 -->
-    <view class="share-section" @click="share">
+    <!-- <view class="share-section" @click="share">
       <view class="share-icon">
         <text class="yticon icon-xingxing"></text>
         返
@@ -41,7 +41,7 @@
         立即分享
         <text class="yticon icon-you"></text>
       </view>
-    </view>
+    </view> -->
 
     <view class="c-list">
       <view
@@ -61,31 +61,29 @@
         </view>
         <text class="yticon icon-you"></text>
       </view>
-      <view class="c-row b-b" @click="showCouponMask = 1">
+      <!-- <view class="c-row b-b" @click="showCouponMask = 1">
         <text class="tit">优惠券</text>
         <text class="con t-r red">领取优惠券</text>
         <text class="yticon icon-you"></text>
-      </view>
+      </view> -->
 
-      <view class="c-row b-b" v-if="activity">
+      <!-- <view class="c-row b-b" v-if="activity">
         <text class="tit">促销活动</text>
         <view class="con-list">
-          <!--                    <text>新人首单送20元无门槛代金券</text>
-                              <text>订单满100减10</text>
-                              <text>单笔购买满两件免邮费</text>-->
+   
           <rich-text :nodes="activity.body"></rich-text>
         </view>
-      </view>
-      <view class="c-row b-b">
+      </view> -->
+      <!-- <view class="c-row b-b">
         <text class="tit">服务</text>
         <view class="bz-list con">
           <text>{{ goods.service }}</text>
         </view>
-      </view>
+      </view> -->
     </view>
 
     <!-- 评价 -->
-    <view class="eva-section">
+    <!-- <view class="eva-section">
       <view class="e-header">
         <text class="tit">评价</text>
         <text>({{ commentNum }})</text>
@@ -135,7 +133,7 @@
           </view>
         </view>
       </view>
-    </view>
+    </view> -->
 
     <view class="detail-desc">
       <view class="d-header">
@@ -239,18 +237,18 @@
 
     <!-- 分享 -->
     <share ref="share" :contentHeight="580" :shareList="shareList"></share>
-    <coupons
+    <!-- <coupons
       v-if="goods.id"
       :goods_id="goods.id"
       :display.sync="showCouponMask"
-    ></coupons>
+    ></coupons> -->
   </view>
 </template>
 
 <script>
 import share from '@/components/share'
 import { isCollect } from '../../api/userapi'
-import coupons from '@/components/coupons'
+// import coupons from '@/components/coupons'
 import { mapState } from 'vuex'
 import { deepEqual } from '../../utils/utils'
 
@@ -260,7 +258,7 @@ import wx from 'weixin-js-sdk'
 
 export default {
   components: {
-    coupons,
+    // coupons,
     share
   },
   data() {
@@ -328,13 +326,13 @@ export default {
       this.specSelected = Object.assign({}, this.specSelected)
     }
 
-    let activityRes = await this.$api.activity.getActivityByGoodsId({
-      goods_id: this.goods.id,
-      com_id: this.goods.com_id
-    })
-    if (activityRes.code == 'success') {
-      this.activity = activityRes.data
-    }
+    // let activityRes = await this.$api.activity.getActivityByGoodsId({
+    //   goods_id: this.goods.id,
+    //   com_id: this.goods.com_id
+    // })
+    // if (activityRes.code == 'success') {
+    //   this.activity = activityRes.data
+    // }
 
     //#ifdef H5
     if (this.clientType == 'wx_official') {
@@ -350,21 +348,21 @@ export default {
       this.$api.user.addUserHistory({ type: 'goods', target_id: this.goods.id })
     }
 
-    let commentListRes = await this.$api.comment.getCommentList({
-      goods_id: this.goods.id,
-      limit: 5
-    })
-    if (commentListRes.code == 'success') {
-      this.commentList = commentListRes.data
-    }
+    // let commentListRes = await this.$api.comment.getCommentList({
+    //   goods_id: this.goods.id,
+    //   limit: 5
+    // })
+    // if (commentListRes.code == 'success') {
+    //   this.commentList = commentListRes.data
+    // }
 
-    let commentNumRes = await this.$api.comment.getGoodsCommentNum({
-      goods_id: this.goods.id
-    })
-    if (commentNumRes.code == 'success') {
-      this.commentNum = commentNumRes.data.num
-      this.goodCommentNum = commentNumRes.data.good_num
-    }
+    // let commentNumRes = await this.$api.comment.getGoodsCommentNum({
+    //   goods_id: this.goods.id
+    // })
+    // if (commentNumRes.code == 'success') {
+    //   this.commentNum = commentNumRes.data.num
+    //   this.goodCommentNum = commentNumRes.data.good_num
+    // }
 
     //this.shareList = await this.$api.json('shareList');
   },
@@ -1069,7 +1067,6 @@ page {
   border-radius: 16upx;
 
   .p-b-btn {
- 
     flex: 1;
     flex-direction: column;
     align-items: center;
@@ -1079,7 +1076,7 @@ page {
     width: 96upx;
     height: 80upx;
     line-height: 80upx;
-    margin-left: 20upx; 
+    margin-left: 20upx;
     .yticon {
       font-size: 30upx;
       line-height: 48upx;
