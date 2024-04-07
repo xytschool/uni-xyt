@@ -29,20 +29,6 @@
       </view>
     </view>
 
-    <!--  分享 -->
-    <!-- <view class="share-section" @click="share">
-      <view class="share-icon">
-        <text class="yticon icon-xingxing"></text>
-        返
-      </view>
-      <text class="tit">该商品分享可领49减10红包</text>
-      <text class="yticon icon-bangzhu1"></text>
-      <view class="share-btn">
-        立即分享
-        <text class="yticon icon-you"></text>
-      </view>
-    </view> -->
-
     <view class="c-list">
       <view
         class="c-row b-b"
@@ -61,79 +47,7 @@
         </view>
         <text class="yticon icon-you"></text>
       </view>
-      <!-- <view class="c-row b-b" @click="showCouponMask = 1">
-        <text class="tit">优惠券</text>
-        <text class="con t-r red">领取优惠券</text>
-        <text class="yticon icon-you"></text>
-      </view> -->
-
-      <!-- <view class="c-row b-b" v-if="activity">
-        <text class="tit">促销活动</text>
-        <view class="con-list">
-   
-          <rich-text :nodes="activity.body"></rich-text>
-        </view>
-      </view> -->
-      <!-- <view class="c-row b-b">
-        <text class="tit">服务</text>
-        <view class="bz-list con">
-          <text>{{ goods.service }}</text>
-        </view>
-      </view> -->
     </view>
-
-    <!-- 评价 -->
-    <!-- <view class="eva-section">
-      <view class="e-header">
-        <text class="tit">评价</text>
-        <text>({{ commentNum }})</text>
-        <text class="tip"
-          >好评率 {{ ((100 * goodCommentNum) / commentNum).toFixed(1) }}%</text
-        >
-        <text class="yticon icon-you" @click="gotoCommentList"></text>
-      </view>
-
-      <view class="eva-box" v-for="(item, index) in commentList">
-        <image class="portrait" :src="item.avatar" mode="aspectFill"></image>
-        <view class="right">
-          <text class="name">{{
-            item.nickname ? item.nickname : '匿名用户'
-          }}</text>
-          <text class="con">{{ item.content }}</text>
-          <view class="content">
-            <img
-              v-for="(cover, index) in item.covers"
-              style="width:48%;margin-right:2%"
-              :key="index"
-              :src="cover"
-              mode="aspectFit"
-            />
-          </view>
-          <view class="bot">
-            <text class="attr">购买类型：默认类型</text>
-            <text class="time">{{ item.created_at }}</text>
-          </view>
-        </view>
-      </view>
-
-      <view class="eva-box" v-if="false">
-        <image
-          class="portrait"
-          src="http://img3.imgtn.bdimg.com/it/u=1150341365,1327279810&fm=26&gp=0.jpg"
-          mode="aspectFill"
-        ></image>
-        <view class="right">
-          <text class="name">Leo yo</text>
-          <text class="con"
-            >商品收到了，79元两件，质量不错，试了一下有点瘦，但是加个外罩很漂亮，我很喜欢</text
-          >
-          <view class="bot">
-            <text class="attr">购买类型：XL 红色</text>
-            <text class="time">2019-04-01 19:21</text>
-          </view>
-        </view>
-      </view>
-    </view> -->
 
     <view class="detail-desc">
       <view class="d-header">
@@ -150,14 +64,7 @@
         <text class="yticon icon-xiatubiao--copy"></text>
         <text>首页</text>
       </navigator>
-      <!-- <navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
-        <text class="yticon icon-gouwuche"></text>
-        <text>购物车</text>
-      </navigator> -->
-      <!-- <view class="p-b-btn" :class="{ active: favorite }" @click="toFavorite">
-        <text class="yticon icon-shoucang"></text>
-        <text>收藏</text>
-      </view> -->
+
       <view>
         <text class="price">
           折扣¥{{ goods.real_price | numberToCurrency }}
@@ -172,13 +79,6 @@
         >
           立即购买
         </button>
-        <!-- <button
-        type="primary"
-        class=" action-btn no-border add-cart-btn"
-        @click="addCartGoods"
-      >
-        加入购物车
-      </button> -->
       </view>
     </view>
 
@@ -234,19 +134,10 @@
         <button class="btn" @click="toggleSpec">完成</button>
       </view>
     </view>
-
-    <!-- 分享 -->
-    <share ref="share" :contentHeight="580" :shareList="shareList"></share>
-    <!-- <coupons
-      v-if="goods.id"
-      :goods_id="goods.id"
-      :display.sync="showCouponMask"
-    ></coupons> -->
   </view>
 </template>
 
 <script>
-import share from '@/components/share'
 import { isCollect } from '../../api/userapi'
 // import coupons from '@/components/coupons'
 import { mapState } from 'vuex'
@@ -257,10 +148,6 @@ import wx from 'weixin-js-sdk'
 //#endif
 
 export default {
-  components: {
-    // coupons,
-    share
-  },
   data() {
     return {
       showCouponMask: 0,
@@ -274,7 +161,7 @@ export default {
         id: 0
       },
       favorite: false,
-      shareList: [],
+
       commentList: [],
       commentNum: 0,
       goodCommentNum: 0,
@@ -347,24 +234,6 @@ export default {
       }
       this.$api.user.addUserHistory({ type: 'goods', target_id: this.goods.id })
     }
-
-    // let commentListRes = await this.$api.comment.getCommentList({
-    //   goods_id: this.goods.id,
-    //   limit: 5
-    // })
-    // if (commentListRes.code == 'success') {
-    //   this.commentList = commentListRes.data
-    // }
-
-    // let commentNumRes = await this.$api.comment.getGoodsCommentNum({
-    //   goods_id: this.goods.id
-    // })
-    // if (commentNumRes.code == 'success') {
-    //   this.commentNum = commentNumRes.data.num
-    //   this.goodCommentNum = commentNumRes.data.good_num
-    // }
-
-    //this.shareList = await this.$api.json('shareList');
   },
   methods: {
     //#ifdef H5
@@ -526,18 +395,21 @@ export default {
       }
     },
     buy() {
-      if (!this.hasLogin) {
-        this.$store.dispatch('user/checkLogin', this.com_id)
+      // if (!this.hasLogin) {
+      //   this.$store.dispatch('user/checkLogin', this.com_id)
 
-        return
-      }
-      console.log(2345678)
+      //   return
+      // }
+
       this.$store.dispatch('order/reset')
       var cartGoodsItem = this.buildCartGoods()
+
       if (!cartGoodsItem) {
         return
       }
       this.$store.dispatch('order/preOrderByGoodsList', [cartGoodsItem])
+
+      this.$store.dispatch('order/preOrderBygoodsType', this.goods.goods_type)
       uni.navigateTo({
         url: `/pages/order/createOrder?from_user=` + this.from_user_id
       })
@@ -550,7 +422,8 @@ export default {
         price: parseInt(this.goods.price),
         real_price: parseInt(this.goods.real_price),
         cover: this.goods.small_cover,
-        num: 1
+        num: 1,
+        goods_type: this.goods.goods_type
       }
       if (this.goods.sku_labels && this.goods.sku_labels.length > 0) {
         //有sku的商品
@@ -564,6 +437,7 @@ export default {
         cartGoodsItem.cover = this.currentSku.cover
         cartGoodsItem.label_combine = this.currentSku.label_combine
       }
+      console.log(cartGoodsItem, '34567654345')
       return cartGoodsItem
     },
     stopPrevent() {}

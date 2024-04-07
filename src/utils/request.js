@@ -10,7 +10,9 @@ function request(method, url, query, is_raw) {
   }
 
   return new Promise((resolve, reject) => {
-    var token = getAuthToken()
+    // var token = getAuthToken()
+    var token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IiIsInVzZXJfaWQiOjYxNjQsIk1hcENsYWltcyI6eyJleHAiOjE3MTQ4NzYwMjAsImlhdCI6MTcxMjI4NDAyMCwiaXNzIjoiZ28tY2xlYW4tdGVtcGxhdGUifX0.H2CXsZs3aFW1Au0MWT9lvVdbFxnVe2i4w4Etg6O70iQ'
     var clientId = getClientID()
 
     var fullUrl = ''
@@ -46,12 +48,9 @@ function request(method, url, query, is_raw) {
           res = res.data
           if (res.code === 200 || res.code === 700 || res.code === 0) {
             resolve(res)
-          } else {
-            uni.showToast({
-              icon: 'none',
-              title: res.msg,
-              duration: 3000
-            })
+          }
+          else {
+         
             resolve(res)
           }
         } else if (res.statusCode == 401) {

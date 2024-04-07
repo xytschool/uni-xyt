@@ -140,13 +140,13 @@
           title="我的验证"
           tips=""
         ></list-cell>
-        <list-cell
+        <!-- <list-cell
           icon="icon-iconfontweixin"
           @eventClick="myCode()"
           iconColor="#e07472"
           title="我的二维码"
           tips=""
-        ></list-cell>
+        ></list-cell> -->
 
         <list-cell
           icon="icon-iconfontweixin"

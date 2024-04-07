@@ -60,7 +60,7 @@ export default {
       this.maskState = this.display
     },
     order() {
-      this.getCouponsByOrder()
+      // this.addAddress()
     }
   },
   async created() {
@@ -78,17 +78,17 @@ export default {
       this.couponList = res.data
     }
     if (this.order) {
-      this.getCouponsByOrder()
+      // this.addAddress()
     }
   },
   methods: {
-    async getCouponsByOrder() {
-      let res = await this.$api.activity.getCouponsByOrder(this.order)
-      if (res.code == 200 && res.data) {
-        this.couponList = res.data.user
-        console.log('getCouponsByOrder', this.couponList)
-      }
-    },
+    // async addAddress() {
+    //   let res = await this.$api.activity.addAddress(this.order)
+    //   if (res.code == 200 && res.data) {
+    //     this.couponList = res.data.user
+    //     console.log('addAddress', this.couponList)
+    //   }
+    // },
     //显示优惠券面板
     toggleMask(type) {
       let timer = type === 'show' ? 10 : 300
