@@ -294,6 +294,13 @@
       "style": {
         "navigationBarTitleText": "新增常用使用人"
       }
+    },
+    {
+     
+      "path": "pages/order/detail",
+      "style": {
+        "navigationBarTitleText": "商品详情页"
+      }
     }
   ],
   "globalStyle": {
