@@ -2,35 +2,37 @@
 import App from './App'
 import Json from './Json' //测试用数据
 import store from './store'
-import {getComId, getUserInfo, setUserInfo} from "./utils/utils";
+import { getComId, getUserInfo, setUserInfo } from './utils/utils'
 
 import { numberToCurrencyNo } from '@/utils/numberToCurrency'
+import { transformTimestamp } from '@/utils/transformTimestamp'
 Vue.config.productionTip = false
-import uView from "uview-ui";
+import uView from 'uview-ui'
 
-Vue.use(uView);
+Vue.use(uView)
 App.mpType = 'app'
 // 配置全局过滤器，实现数字千分位格式
 Vue.filter('numberToCurrency', numberToCurrencyNo)
+Vue.filter('transformTimestamp', transformTimestamp)
 const msg = (title, duration = 1500, mask = false, icon = 'none') => {
-    //统一提示方便全局修改
-    if (Boolean(title) === false) {
-        return;
-    }
-    uni.showToast({
-        title,
-        duration,
-        mask,
-        icon
-    });
+  //统一提示方便全局修改
+  if (Boolean(title) === false) {
+    return
+  }
+  uni.showToast({
+    title,
+    duration,
+    mask,
+    icon
+  })
 }
-const json = type => {
-    //模拟异步请求数据
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(Json[type]);
-        }, 500)
-    })
+const json = (type) => {
+  //模拟异步请求数据
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(Json[type])
+    }, 500)
+  })
 }
 const prePage = () => {
     let pages = getCurrentPages();
@@ -47,9 +49,9 @@ var vConsole = new VConsole();
 var clientType = "h5"
 
 var ua = navigator.userAgent.toLowerCase()
-if (ua.match(/MicroMessenger/i) == "micromessenger") {
-    //在微信中打开
-    clientType = "wx_official"
+if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+  //在微信中打开
+  clientType = 'wx_official'
 }
 //#endif
 
@@ -63,8 +65,8 @@ var com_id = getComId()
 
 Vue.prototype.$com_id = com_id
 Vue.config.productionTip = false
-Vue.prototype.$fire = new Vue();
-Vue.prototype.$store = store;
+Vue.prototype.$fire = new Vue()
+Vue.prototype.$store = store
 
 import site from './api/site' //测试用数据
 import activity from './api/activity' //测试用数据
@@ -73,25 +75,35 @@ import order from './api/order' //测试用数据
 import goods from './api/goods' //测试用数据
 import comment from './api/comment'
 import message from './api/message'
-import {parseDate} from "./utils/date";
+import { parseDate } from './utils/date'
+
 
 {
-    // 加载必要数据
-    store.dispatch('company/getCompany')
-    // 微信回调会在html中写入用户信息
-    if (window && window.userInfo && window.userInfo.id) {
-        setUserInfo(window.userInfo)
-    }
+  // 加载必要数据
+  store.dispatch('company/getCompany')
+  // 微信回调会在html中写入用户信息
+  if (window && window.userInfo && window.userInfo.id) {
+    setUserInfo(window.userInfo)
+  }
 
-    let userInfo = getUserInfo()
-    if (userInfo) {
-        store.commit('user/setUser', userInfo)
-    }
+  let userInfo = getUserInfo()
+  if (userInfo) {
+    store.commit('user/setUser', userInfo)
+  }
 }
-
 Vue.prototype.clientType = clientType
-Vue.prototype.$api = {msg, json, prePage, activity, message, site, user, order, goods, comment};
-
+Vue.prototype.$api = {
+  msg,
+  json,
+  prePage,
+  activity,
+  message,
+  site,
+  user,
+  order,
+  goods,
+  comment
+}
 Vue.directive('datetime', {
     bind: function (el, binding, vnode) {
         el.innerText = parseDate(binding.value)
