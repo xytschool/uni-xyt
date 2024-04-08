@@ -3,12 +3,12 @@
     <!-- 小程序头部兼容 -->
     <!-- #ifdef MP -->
     <view class="mp-search-box">
-      <input
+      <!-- <input
         class="ser-input"
         @change="changeKeyword"
         type="text"
         v-model="keyword"
-      />
+      /> -->
     </view>
     <!-- #endif -->
 
@@ -374,6 +374,7 @@ export default {
     },
     changeKeyword() {
       console.log(this.keyword)
+      
     },
     //轮播图切换修改背景色
     swiperChange(e) {
