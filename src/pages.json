@@ -7,10 +7,6 @@
     {
       "path": "pages/index/index",
       "style": {
-        // #ifdef MP
-        "navigationBarTitleText": "商城",
-        //"navigationStyle": "custom",
-        // #endif
         "app-plus": {
           "titleNView": {
             "type": "transparent",
@@ -230,25 +226,7 @@
               "placeholder": "请输入搜索商品关键词",
               "disabled": false,
               "placeholderColor": "#606266"
-            },
-            "buttons": [
-              {
-                "fontSrc": "/static/yticon.ttf",
-                "text": "\ue60d",
-                "fontSize": "26",
-                "color": "#303133",
-                "float": "left",
-                "background": "rgba(0,0,0,0)"
-              },
-              {
-                "fontSrc": "/static/yticon.ttf",
-                "text": "\ue744",
-                "fontSize": "27",
-                "color": "#303133",
-                "background": "rgba(0,0,0,0)",
-                "redDot": true
-              }
-            ]
+            }
           }
         }
       }
@@ -259,13 +237,13 @@
         "navigationBarTitleText": "门票列表"
       }
     },
-    {
-      "path": "pages/comment/index",
-      "style": {
-        "navigationBarTitleText": "评论列表",
-        "enablePullDownRefresh": true
-      }
-    },
+    // {
+    //   "path": "pages/comment/index",
+    //   "style": {
+    //     "navigationBarTitleText": "评论列表",
+    //     "enablePullDownRefresh": true
+    //   }
+    // },
     {
       "path": "pages/login/index",
       "style": {
@@ -296,7 +274,6 @@
       }
     },
     {
-     
       "path": "pages/order/detail",
       "style": {
         "navigationBarTitleText": "商品详情页"
