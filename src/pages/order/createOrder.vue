@@ -185,17 +185,14 @@ export default {
     changePayType(type) {
       this.payType = type
     },
-    checkboxChange(item) {
-      if (!item.checked) {
-        this.params.push({ ...item, ...this.goodsList[0] })
-      }
-    },
+    checkboxChange(item) {},
 
     valChange(e) {
       this.real_total = e.value * this.real_amount
     },
     async submit() {
       console.log('submit ...')
+      this.params = []
       if (!this.canSubmit) {
         console.log('submit ... rep')
         uni.showToast({ title: '支付中请勿重复点击' })
@@ -205,6 +202,12 @@ export default {
       let params = {
         inviter_id: this.inviter_id
       }
+      this.getpeopleList.forEach((item) => {
+        if (item.checked) {
+          this.params.push({ ...item, ...this.goodsList[0] })
+        }
+      })
+      console.log(this.params, 'this.params')
       if (
         this.tickets > this.params.length ||
         this.tickets < this.params.length

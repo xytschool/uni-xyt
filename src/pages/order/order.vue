@@ -74,10 +74,13 @@
                   mode="aspectFill"
                 ></image>
                 <text class="title clamp">{{ goodsItem.name }}</text>
-                <text class="price"
-                  ><text>{{ goodsItem.real_price | numberToCurrency }}</text> x
-                  {{ goodsItem.num }}</text
-                >
+                <text class="price">
+                  <text>{{ goodsItem.real_price | numberToCurrency }}</text>
+                  <text v-if="goodsItem.num > 1">
+                    <text>x</text>
+                    <text>{{ goodsItem.num }}</text>
+                  </text>
+                </text>
               </view>
             </scroll-view>
             <view
@@ -94,12 +97,12 @@
               ></image>
               <view class="right">
                 <text class="title clamp">{{ goodsItem.name }}</text>
-                <text class="attr-box"
-                  >{{ goodsItem.attr }} x {{ goodsItem.num }}</text
+                <view class="attr-box">
+                  x <text>{{ goodsItem.num }}</text>
+                </view>
+                <view class="price">
+                  {{ goodsItem.real_price | numberToCurrency }}</view
                 >
-                <text class="price">{{
-                  goodsItem.real_price | numberToCurrency
-                }}</text>
               </view>
             </view>
 
@@ -136,6 +139,13 @@
                 @click="gotoRefund(item)"
               >
                 退款
+              </button>
+              <button
+                class="action-btn"
+                v-if="item.pay_status == 'paid'"
+                @click="toDetail(item)"
+              >
+                查看票码
               </button>
               <view v-if="item.pay_status == 'torefund'">
                 退款中

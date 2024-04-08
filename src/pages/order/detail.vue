@@ -19,9 +19,13 @@
           姓名：<text>{{ item.username }}</text>
         </view>
         <view class="tickets-item">
-          身份证号：<text>{{ item.code }}</text>
+          身份证号：<text>
+            {{ item.code.replace(/^(.{8})(?:\d+)(.{4})$/, '$1******$2') }}</text
+          >
         </view>
+
         <tki-qrcode
+          v-if="item.status == 'normal'"
           cid="qrcode1"
           ref="qrcode"
           :val="item.code"
@@ -37,6 +41,9 @@
           @result="qrR"
           class="qrcode"
         />
+        <view v-else class="tickets-item">
+          使用时间：<text>{{ item.used_at | transformTimestamp }}</text>
+        </view>
       </view>
     </view>
   </view>
