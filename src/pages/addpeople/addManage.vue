@@ -17,7 +17,7 @@
       <view class="cont">
         <input
           class="input"
-          type="number"
+          type="idcard"
           v-model="addressData.id_card"
           placeholder="请输入使用人证件号码"
           placeholder-class="placeholder"
@@ -34,8 +34,8 @@ export default {
   data() {
     return {
       addressData: {
-        username: '王五',
-        id_card: '420607202201031921',
+        username: '',
+        id_card: '',
         type: 'id_card'
       }
     }
