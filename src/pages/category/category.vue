@@ -37,7 +37,7 @@
             <view class="desc">
               <text class="name">{{ titem.name }}</text>
               <text class="price"
-                >￥ {{ item.real_price | numberToCurrency }}</text
+                >￥ {{ titem.real_price | numberToCurrency }}</text
               >
             </view>
           </view>
