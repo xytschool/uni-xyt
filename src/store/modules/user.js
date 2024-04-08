@@ -2,7 +2,8 @@ import {
   getAddress,
   getUserAddressList,
   login,
-  getUserInfo
+  getUserInfo,
+  tologin
 } from '../../api/userapi'
 
 const userMoudle = {
@@ -18,6 +19,7 @@ const userMoudle = {
   }),
   mutations: {
     setUser(state, user) {
+      console.log('setUser', user)
       state.user = user
       state.hasLogin = true
       uni.setStorage({
@@ -32,15 +34,15 @@ const userMoudle = {
       })
     },
     updateUser(state, user) {
-      state.user.score = user.score
-      state.user.vip_level = user.vip_level
-      state.user.roles = user.roles
+      console.log('updateUser', user)
+      state.user = user
+
+      console.log('state.user', state.user)
       uni.setStorage({
         //缓存用户登陆状态
         key: 'userInfo',
         data: state.user
       })
-
       if (user.jws_token) {
         uni.setStorage({
           //缓存用户登陆状态
@@ -108,6 +110,7 @@ const userMoudle = {
     async login({ commit, dispatch, state }, data) {
       let res = await login(data)
       if (res.code == 200) {
+        console.log(res.data, 'res.data')
         commit('setUser', res.data)
         return true
       } else {
@@ -119,32 +122,20 @@ const userMoudle = {
       }
     },
     checkLogin({ commit, dispatch, state }, com_id) {
+      const that = this
       if (!state.hasLogin) {
         uni.showModal({
           content: '您还没有登录，去登录',
-          success: (e) => {
+          success: async (e) => {
             if (e.confirm) {
-              // uni.navigateTo({ url: '/pages/login/index?com_id=' + com_id })
-              wx.login({
-                success: (res) => {
-                  console.log('code: ' + res.code)
-                  wx.request({
-                    url:
-                      'http://mall.lo.mytool.zone/14/api/v1/auth/wechatMiniAppLogin',
-                    method: 'POST',
-                    data: {
-                      code: res.code
-                    },
-                    success: function(data) {
-                      wx.setStorage({
-                        key: 'token',
-                        data: data.data.data.token
-                      })
-                      state.hasLogin = true
-                    }
-                  })
+              await tologin()
+              setTimeout(async () => {
+                let userInfoRes = await getUserInfo()
+                if ((userInfoRes.code = 'success')) {
+                  commit('updateUser', userInfoRes.data)
+                  state.hasLogin = true
                 }
-              })
+              }, 1000)
             }
           }
         })
@@ -155,15 +146,11 @@ const userMoudle = {
     logout({ commit, dispatch, state }) {
       commit('logout')
     },
-    async updateUserInfo({ commit, dispatch, state }) {
-      let userInfoRes = await getUserInfo()
-      console.log('userInfo res ', userInfoRes)
-      if ((userInfoRes.code = 200)) {
-        commit('updateUser', userInfoRes.data)
-      }
-    },
+
+    // async updateUserInfo({ commit, dispatch, state }) {
+
+    // },
     async getAddress({ commit, dispatch, state }) {
-      console.log(345)
       let userAddressListRes = await getAddress()
       if ((userAddressListRes.code = 200)) {
         let list = userAddressListRes.data

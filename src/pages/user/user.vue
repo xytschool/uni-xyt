@@ -5,6 +5,7 @@
         class="bg"
         src="http://data.xytschool.com/m/v1/static/user-bg.jpg"
       ></image>
+      <!-- {{ JSON.stringify(user) + '345676543' }} -->
       <view class="user-info-box">
         <view class="portrait-box">
           <image
@@ -23,15 +24,15 @@
           src="http://data.xytschool.com/m/v1/static/vip-card-bg.png"
           mode=""
         ></image>
-        <view
+        <!-- <view
           class="b-btn"
           v-if="user.vip_level <= 0"
           @click="navTo('/pages/user/openVip')"
         >
           开通会员
-        </view>
+        </view> -->
 
-        <view class="tit" v-if="user.vip_level > 0" @click="showUserCode">
+        <!-- <view class="tit" v-if="user.vip_level > 0" @click="showUserCode">
           <text class="yticon icon-iLinkapp-"></text>
           黄金会员
           <u-icon
@@ -40,10 +41,10 @@
             size="28"
             style="margin-left: 10px"
           ></u-icon>
-        </view>
+        </view> -->
 
-        <text class="e-m">创意坊 xytschool</text>
-        <text class="e-b">总有人要成功为什么不是我</text>
+        <text class="e-m">南湾湖景区 </text>
+        <!-- <text class="e-b">总有人要成功为什么不是我</text> -->
       </view>
     </view>
 
@@ -105,7 +106,7 @@
           :hover-stay-time="50"
         >
           <text class="yticon icon-yishouhuo"></text>
-          <text>待收货</text>
+          <text>待使用</text>
         </view>
         <view
           class="order-item"
@@ -119,10 +120,10 @@
       </view>
       <!-- 浏览历史 -->
       <view class="history-section icon">
-        <view class="sec-header">
+        <!-- <view class="sec-header">
           <text class="yticon icon-lishijilu"></text>
           <text>浏览历史</text>
-        </view>
+        </view> -->
         <scroll-view scroll-x class="h-list">
           <image
             @click="navTo('/pages/product/product?id=' + item.id)"
@@ -134,11 +135,10 @@
           <!--					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105320890&di=c743386be51f2c4c0fd4b75754d14f3c&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fhb%2FMTQ1OTg4ODY0MDA3Ny05OTQ4ODY1NDQ%3D.jpg" mode="aspectFill"></image>-->
         </scroll-view>
         <list-cell
-          icon="icon-iconfontweixin"
+          icon="icon-saomiao"
           @eventClick="navTo('/pages/MyVerification/index')"
           iconColor="#e07472"
-          title="我的验证"
-          tips=""
+          title="人脸认证"
         ></list-cell>
         <!-- <list-cell
           icon="icon-iconfontweixin"
@@ -148,44 +148,44 @@
           tips=""
         ></list-cell> -->
 
-        <list-cell
+        <!-- <list-cell
           icon="icon-iconfontweixin"
           @eventClick="navTo('/pages/user/userAwards')"
           iconColor="#e07472"
           title="我的奖品"
           tips=""
-        ></list-cell>
-        <list-cell
+        ></list-cell> -->
+        <!-- <list-cell
           icon="icon-dizhi"
           iconColor="#5fcda2"
           title="地址管理"
           @eventClick="navTo('/pages/address/address')"
-        ></list-cell>
+        ></list-cell> -->
         <list-cell
           icon="icon-tuandui"
           iconColor="#649C4A"
-          title="使用人"
+          title="常用联系人"
           @eventClick="navTo('/pages/addpeople/addpeople')"
         ></list-cell>
-        <list-cell
+        <!-- <list-cell
           icon="icon-share"
           iconColor="#9789f7"
           title="分享"
           tips="邀请好友赢10万大礼"
-        ></list-cell>
+        ></list-cell> -->
         <!--				<list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="晒单" tips="晒单抢红包"></list-cell>-->
         <!-- <list-cell
           icon="icon-shoucang_xuanzhongzhuangtai"
           iconColor="#54b4ef"
           title="我的收藏"
         ></list-cell> -->
-        <list-cell
+        <!-- <list-cell
           icon="icon-shezhi1"
           iconColor="#e07472"
           title="设置"
           border=""
           @eventClick="navTo('/pages/set/set')"
-        ></list-cell>
+        ></list-cell> -->
       </view>
     </view>
     <u-modal
@@ -238,18 +238,18 @@ export default {
   onLoad(params) {
     this.com_id = params.com_id
     this.$store.dispatch('user/checkLogin', this.com_id)
-    this.$store.dispatch('user/updateUserInfo')
-    this.$api.user.getUserHistoryList().then((list) => {
-      var dateRange = list.data
-      for (var date in dateRange) {
-        var dateItems = dateRange[date]
-        for (var index in dateItems) {
-          this.historyList.push(dateItems[index])
-        }
-      }
-      this.historyList = this.historyList.subarray(0, 10)
-      console.log(this.historyList)
-    })
+
+    // this.$api.user.getUserHistoryList().then((list) => {
+    //   var dateRange = list.data
+    //   for (var date in dateRange) {
+    //     var dateItems = dateRange[date]
+    //     for (var index in dateItems) {
+    //       this.historyList.push(dateItems[index])
+    //     }
+    //   }
+    //   this.historyList = this.historyList.subarray(0, 10)
+    //   console.log(this.historyList)
+    // })
   },
   // #ifndef MP
   onNavigationBarButtonTap(e) {

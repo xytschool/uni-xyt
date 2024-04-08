@@ -1,11 +1,13 @@
-import { get, post, del, put } from '../utils/request'
+import { get, post, del, put, tologin  } from '../utils/request'
 import { baseUrl } from '../config'
 //const host = "http://shop.laravelschool.xyt/shop-api"
 //const host = "http://site.ideatest.top:8889/v1/site"
 //const host = "http://localhost:8889/v1/site"
 //const host = "/dev/user"
 const host = baseUrl + '/user'
+
 module.exports = {
+  tologin,
   async sendLoginMessage(params) {
     return post(host + '/sendVerifyCodeSms', params)
   },
