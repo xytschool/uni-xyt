@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import { isCollect } from '../../api/userapi'
+// import { isCollect } from '../../api/userapi'
 // import coupons from '@/components/coupons'
 import { mapState } from 'vuex'
 import { deepEqual } from '../../utils/utils'
@@ -227,13 +227,13 @@ export default {
     }
     //#endif
 
-    if (this.hasLogin) {
-      let collectRes = await isCollect('goods', this.goods.id)
-      if (collectRes.code == 'success') {
-        this.favorite = collectRes.data
-      }
-      this.$api.user.addUserHistory({ type: 'goods', target_id: this.goods.id })
-    }
+    // if (this.hasLogin) {
+    //   let collectRes = await isCollect('goods', this.goods.id)
+    //   if (collectRes.code == 'success') {
+    //     this.favorite = collectRes.data
+    //   }
+    //   this.$api.user.addUserHistory({ type: 'goods', target_id: this.goods.id })
+    // }
   },
   methods: {
     //#ifdef H5

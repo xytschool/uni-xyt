@@ -65,7 +65,7 @@ function request(method, url, query, is_raw) {
             }
           })
         } else {
-          reject(res)
+          resolve(res.data)
         }
       },
       fail(res) {

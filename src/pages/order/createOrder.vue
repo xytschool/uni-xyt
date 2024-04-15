@@ -236,7 +236,7 @@ export default {
         commit('clearTempOrder', res.data)
         return true
       } else {
-        uni.showToast({ title: '下单失败' + res.msg })
+        uni.showToast({ title: res.message, icon: 'none' })
         return false
       }
     },
@@ -578,6 +578,7 @@ page {
   }
   .addpeople {
     color: #649c4a;
+    margin-left: 20upx;
   }
   .cell-tip {
     font-size: 26upx;
