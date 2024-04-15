@@ -40,7 +40,7 @@
       </view>
     </view>
     <!-- 分类 -->
-    <view class="cate-section">
+    <!-- <view class="cate-section">
       <view
         class="cate-item"
         v-for="item in navList"
@@ -50,11 +50,11 @@
         <image :src="item.icon"></image>
         <text class="cate-name">{{ item.name }}</text>
       </view>
-    </view>
-
+    </view> -->
+<!-- 
     <view class="ad-1">
       <image :src="ad_banners[0].cover" mode="scaleToFill"></image>
-    </view>
+    </view> -->
 
     <!--        <wx-open-launch-weapp-->
     <!--                id="launch-btn"-->
