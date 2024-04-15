@@ -97,11 +97,11 @@
           src="http://data.xytschool.com/m/v1/static/temp/secskill-img.jpg"
           mode="widthFix"
         ></image>
-        <text class="tip">8点场</text>
+        <!-- <text class="tip">8点场</text>
         <text class="hour timer">07</text>
         <text class="minute timer">13</text>
-        <text class="second timer">55</text>
-        <text class="yticon icon-you"></text>
+        <text class="second timer">55</text> -->
+        <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式 -->
       </view>
       <scroll-view class="floor-list" scroll-x>
         <view class="scoll-wrapper">
@@ -128,7 +128,7 @@
         <text class="tit">精品团购</text>
         <text class="tit2">Boutique Group Buying</text>
       </view>
-      <text class="yticon icon-you"></text>
+      <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式  -->
     </view>
 
     <view class="group-section">
@@ -206,7 +206,7 @@
         <text class="tit">分类精选</text>
         <text class="tit2">Competitive Products For You</text>
       </view>
-      <text class="yticon icon-you"></text>
+      <!-- <text class="yticon icon-you"></text>由于目前没有更多页面暂时注释掉更多样式  -->
     </view>
     <view class="hot-floor">
       <view class="floor-img-box">
@@ -229,8 +229,8 @@
             <text class="price" > ￥ {{ item.real_price | numberToCurrency }}</text>
           </view>
           <view class="more">
-            <text>查看全部</text>
-            <text>More+</text>
+            <text>已经到底了！</text>
+    
           </view>
         </view>
       </scroll-view>
@@ -255,8 +255,8 @@
             <text class="price" > ￥ {{ item.real_price | numberToCurrency }}</text>
           </view>
           <view class="more">
-            <text>查看全部</text>
-            <text>More+</text>
+            <text>已经到底了！</text>
+
           </view>
         </view>
       </scroll-view>
@@ -281,8 +281,8 @@
             <text class="price" > ￥ {{ item.real_price | numberToCurrency }}</text>
           </view>
           <view class="more">
-            <text>查看全部</text>
-            <text>More+</text>
+            <text>已经到底了！</text>
+
           </view>
         </view>
       </scroll-view>
@@ -295,7 +295,7 @@
         <text class="tit">猜你喜欢</text>
         <text class="tit2">Guess You Like It</text>
       </view>
-      <text class="yticon icon-you"></text>
+      <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式 -->
     </view>
 
     <view class="guess-section">
