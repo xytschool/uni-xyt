@@ -99,8 +99,9 @@
 <script>
 import { mapState } from 'vuex'
 import coupons from '@/components/coupons'
-import { jsPay } from '../../utils/payment'
-import { createOrde } from '../../api/order.js'
+import { jsPay, miniPay } from '../../utils/payment'
+import { createOrder } from '../../api/order.js'
+import { prePayment } from '../../api/payment.js'
 
 export default {
   components: { coupons },
@@ -153,7 +154,8 @@ export default {
       // defaultAddress: (state) => state.user.defaultAddress,
       // orderAddress: (state) => state.order.tempAddress,
       goodsType: (state) => state.order.tempOrder.goods_type,
-      order: (state) => state.order.tempOrder
+      order: (state) => state.order.tempOrder,
+      user: (state) => state.user.user
     })
   },
   watch: {
@@ -207,7 +209,7 @@ export default {
           this.params.push({ ...item, ...this.goodsList[0] })
         }
       })
-      console.log(this.params, 'this.params')
+      console.log('create order params',this.params)
       if (
         this.tickets > this.params.length ||
         this.tickets < this.params.length
@@ -221,7 +223,7 @@ export default {
         return
       }
       console.log(this.goodsType, 'this.goodsType')
-      let res = await createOrde({
+      let res = await createOrder({
         goods_type: this.goodsType,
         pay_method: 'wx',
         source: '小程序',
@@ -230,15 +232,37 @@ export default {
         discount_type: 'none',
         goods_list: this.params
       })
-      console.log('res', res)
-      if (res.code == 'success') {
-        uni.showToast({ title: '下单成功' })
-        commit('clearTempOrder', res.data)
-        return true
-      } else {
+      console.log('create res', res, this.user)
+      if (res.code != 'success') {
         uni.showToast({ title: res.message, icon: 'none' })
         return false
       }
+
+        let wxPayParams = {
+            order_no : res.data.order_no,
+            total_amount: this.real_total || this.real_amount,
+            payway: 'weixin',
+            sub_payway: 'mini_prog',
+            payer_id: this.user.openid
+        }
+
+        console.log('wxPayParams', wxPayParams)
+
+        let prePayResp = await prePayment(wxPayParams)
+
+      console.log('prePayResp', prePayResp)
+      if (prePayResp.code != 'success') {
+          uni.showToast({ title: res.message, icon: 'none' })
+          return
+      }
+      let payRes = await miniPay(prePayResp.data.wap_pay_request)
+      if (payRes.code == "success"){
+          uni.showToast({ title: '下单成功' })
+      }else {
+          uni.showToast({ title: '下单失败' + res.errMsg})
+      }
+      //commit('clearTempOrder', res.data)
+      return true
     },
     stopPrevent() {},
     navTo(url) {

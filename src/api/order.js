@@ -51,7 +51,10 @@ module.exports = {
   async queryOrder(orderNo) {
     return post(host + '/queryOrder', { order_no: orderNo })
   },
-  async createOrde(data) {
+  async createOrder(data) {
+    return post(host + '/createOrder', data)
+  },
+  async prePayment(data) {
     return post(host + '/createOrder', data)
   },
   async getOrderDetail(data) {

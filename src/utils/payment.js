@@ -1,4 +1,4 @@
-function jsPay(params) {
+async function jsPay(params) {
     if (!WeixinJSBridge) {
         uni.showToast({
             title: "请在微信中打开下单"
@@ -22,23 +22,45 @@ function jsPay(params) {
     })
 }
 
-function miniPay(res) {
-    uni.requestPayment({
-        provider: 'wxpay',
-        timeStamp: String(Date.now()),
-        nonceStr: res.nonce_str,
-        package: 'prepay_id=' + res.prepay_id,
-        signType: 'MD5',
-        paySign: res.sign,
-        success: function (res) {
-            console.log('success:' + JSON.stringify(res));
-        },
-        fail: function (err) {
-            console.log('fail:' + JSON.stringify(err));
-        }
+async function  miniPay(res) {
+    return new Promise(function (resolve, reject) {
+        console.log('payment',{
+            provider: 'wxpay',
+            timeStamp: res.timeStamp,
+            nonceStr: res.nonceStr,
+            package: res.package,
+            signType: res.signType,
+            paySign: res.paySign,
+            success: function (res) {
+                console.log('success:' + JSON.stringify(res));
+                resolve(res)
+            },
+            fail: function (err) {
+                console.log('fail:' + JSON.stringify(err));
+                resolve(err)
+            }
+        })
+        uni.requestPayment({
+            provider: 'wxpay',
+            timeStamp: res.timeStamp,
+            nonceStr: res.nonceStr,
+            package: res.package,
+            signType: res.signType,
+            paySign: res.paySign,
+            success: function (res) {
+                console.log('success:' + JSON.stringify(res));
+                resolve({code:"success", ...res})
+            },
+            fail: function (err) {
+                console.log('fail:' + JSON.stringify(err));
+                resolve({code:"fail", ...res})
+
+            }
+        })
     })
 }
 
 module.exports = {
-     jsPay, miniPay
+     jsPay,
+     miniPay
 }
