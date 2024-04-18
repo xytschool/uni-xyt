@@ -23,11 +23,7 @@
         v-for="(tabItem, tabIndex) in navList"
         :key="tabIndex"
       >
-        <scroll-view
-          class="list-scroll-content"
-          scroll-y
-          @scrolltolower="loadData"
-        >
+        <scroll-view class="list-scroll-content" scroll-y>
           <!-- 空白页 -->
           <empty
             v-if="tabItem.loaded === true && tabItem.orderList.length === 0"
@@ -152,6 +148,7 @@
               </view>
             </view>
           </view>
+         
           <uni-load-more :status="tabItem.loadingType"></uni-load-more>
         </scroll-view>
       </swiper-item>
