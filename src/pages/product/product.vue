@@ -333,6 +333,7 @@ export default {
        */
       this.specSelected[labelItem.label] = option
       var currentSku = null
+      console.log(this.goods,"3333")
       this.goods.skus.forEach((sku) => {
         if (deepEqual(this.specSelected, sku.label_combine)) {
           currentSku = sku
@@ -418,8 +419,8 @@ export default {
         goods_id: parseInt(this.goods.id),
         sku_id: this.currentSku.id,
         name: this.goods.name,
-        price: parseInt(this.goods.price),
-        real_price: parseInt(this.goods.real_price),
+        price: parseFloat(this.goods.price),
+        real_price: parseFloat(this.goods.real_price),
         cover: this.goods.small_cover,
         num: 1,
         goods_type: this.goods.goods_type
