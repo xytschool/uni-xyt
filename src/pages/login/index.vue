@@ -77,7 +77,7 @@
     <view class="wrap">
         <view class="top"></view>
         <view class="content">
-            <view class="title">欢迎登录南湾湖</view>
+            <view class="title">欢迎登录南湾湖景区</view>
             <view class="u-margin-bottom-40">
                 <input class="u-border-bottom" type="number" v-model="mobile" placeholder="请输入手机号"/>
             </view>
