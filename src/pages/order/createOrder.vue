@@ -12,10 +12,10 @@
 
           <view class="price-box">
             <text class="real_price"
-              >￥ {{ goods.real_price | numberToCurrency }}</text
+              >￥  {{ goods.real_price | numberToCurrency }}</text
             >
             <text class="price">￥ {{ goods.price | numberToCurrency }}</text>
-            <!-- <text class="number">x {{ goods.num }}</text> -->
+            <text class="number">x {{ tickets }}</text>
           </view>
         </view>
       </view>
@@ -209,7 +209,7 @@ export default {
           this.params.push({ ...item, ...this.goodsList[0] })
         }
       })
-      console.log('create order params',this.params)
+      console.log('create order params', this.params)
       if (
         this.tickets > this.params.length ||
         this.tickets < this.params.length
@@ -238,28 +238,28 @@ export default {
         return false
       }
 
-        let wxPayParams = {
-            order_no : res.data.order_no,
-            total_amount: this.real_total || this.real_amount,
-            payway: 'weixin',
-            sub_payway: 'mini_prog',
-            payer_id: this.user.openid
-        }
+      let wxPayParams = {
+        order_no: res.data.order_no,
+        total_amount: this.real_total || this.real_amount,
+        payway: 'weixin',
+        sub_payway: 'mini_prog',
+        payer_id: this.user.openid
+      }
 
-        console.log('wxPayParams', wxPayParams)
+      console.log('wxPayParams', wxPayParams)
 
-        let prePayResp = await prePayment(wxPayParams)
+      let prePayResp = await prePayment(wxPayParams)
 
       console.log('prePayResp', prePayResp)
       if (prePayResp.code != 'success') {
-          uni.showToast({ title: res.message, icon: 'none' })
-          return
+        uni.showToast({ title: res.message, icon: 'none' })
+        return
       }
       let payRes = await miniPay(prePayResp.data.wap_pay_request)
-      if (payRes.code == "success"){
-          uni.showToast({ title: '下单成功' })
-      }else {
-          uni.showToast({ title: '下单失败' + res.errMsg})
+      if (payRes.code == 'success') {
+        uni.showToast({ title: '下单成功' })
+      } else {
+        uni.showToast({ title: '下单失败' + res.errMsg })
       }
       //commit('clearTempOrder', res.data)
       return true
