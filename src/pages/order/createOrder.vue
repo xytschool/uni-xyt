@@ -15,19 +15,19 @@
               >￥ {{ goods.real_price | numberToCurrency }}</text
             >
             <text class="price">￥ {{ goods.price | numberToCurrency }}</text>
-            <text class="number">x {{ goods.num }}</text>
+            <!-- <text class="number">x {{ goods.num }}</text> -->
           </view>
         </view>
       </view>
     </view>
 
     <!-- 金额明细 -->
-    <view class="yt-list">
+    <!-- <view class="yt-list">
       <view class="yt-list-cell b-b">
         <text class="cell-tit clamp">商品金额</text>
         <text class="cell-tip">￥ {{ amount | numberToCurrency }}</text>
       </view>
-    </view>
+    </view> -->
     <!-- 购票张数 -->
     <view class="tickets-Number">
       <view class="yt-list-cell desc-cell">
