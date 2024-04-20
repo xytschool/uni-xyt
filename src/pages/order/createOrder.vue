@@ -12,7 +12,7 @@
 
           <view class="price-box">
             <text class="real_price"
-              >￥  {{ goods.real_price | numberToCurrency }}</text
+              >￥ {{ goods.real_price | numberToCurrency }}</text
             >
             <text class="price">￥ {{ goods.price | numberToCurrency }}</text>
             <text class="number">x {{ tickets }}</text>
@@ -193,7 +193,6 @@ export default {
       this.real_total = e.value * this.real_amount
     },
     async submit() {
-      console.log('submit ...')
       this.params = []
       if (!this.canSubmit) {
         console.log('submit ... rep')
@@ -258,6 +257,9 @@ export default {
       let payRes = await miniPay(prePayResp.data.wap_pay_request)
       if (payRes.code == 'success') {
         uni.showToast({ title: '下单成功' })
+        uni.navigateTo({
+          url: `/pages/order/detail?order_no=${res.data.order_no}`
+        })
       } else {
         uni.showToast({ title: '下单失败' + res.errMsg })
       }
