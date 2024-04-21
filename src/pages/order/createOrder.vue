@@ -84,7 +84,7 @@
 
         <text class="price" v-else>{{ real_amount | numberToCurrency }}</text>
       </view>
-      <text class="submit" @click="submit" :disabled="canSubmit">提交订单</text>
+      <text  class="submit" @click="submit" :disabled="canSubmit" >提交订单</text>
     </view>
 
     <coupons
@@ -100,7 +100,7 @@
 import { mapState } from 'vuex'
 import coupons from '@/components/coupons'
 import { jsPay, miniPay } from '../../utils/payment'
-import { createOrder ,queryOrder} from '../../api/order.js'
+import { createOrder, queryOrder } from '../../api/order.js'
 import { prePayment } from '../../api/payment.js'
 
 export default {
@@ -175,6 +175,7 @@ export default {
         res.data.forEach((element) => {
           element.checked = false
         })
+
         this.getpeopleList = res.data
       })
     },
@@ -193,31 +194,28 @@ export default {
       this.real_total = e.value * this.real_amount
     },
     async submit() {
+      const that = this
+      that.goodsList[0].id_cards = []
       let real_total = parseInt(this.real_amount * 100)
-      console.log('submit ...',this.real_amount, real_total)
       this.params = []
       if (!this.canSubmit) {
-        console.log('submit ... rep')
         uni.showToast({ title: '支付中请勿重复点击' })
         return
       }
       this.canSubmit = false
-      let params = {
-        inviter_id: this.inviter_id
-      }
       this.getpeopleList.forEach((item) => {
         if (item.checked) {
-          this.params.push({ ...item, ...this.goodsList[0] })
+          that.goodsList[0].id_cards.push(item)
         }
       })
-      console.log('create order params', this.params)
+      that.goodsList[0].num= that.goodsList[0].id_cards.length
       if (
-        this.tickets > this.params.length ||
-        this.tickets < this.params.length
+        this.tickets > this.goodsList[0].id_cards.length ||
+        this.tickets < this.goodsList[0].id_cards.length
       ) {
         uni.showToast({
           icon: 'none',
-          title: `共需选择${this.tickets}位使用人，\r\n已选择${this.params.length}位使用人`
+          title: `共需选择${this.tickets}位使用人，\r\n已选择${this.goodsList[0].id_cards.length}位使用人`
         })
         this.canSubmit = true
 
@@ -231,7 +229,7 @@ export default {
         client_type: 'wx_miniapp',
         real_total: this.real_amount,
         discount_type: 'none',
-        goods_list: this.params
+        goods_list: [this.goodsList[0]]
       })
       console.log('create res', order, this.user)
       if (orderResp.code != 'success') {
@@ -256,16 +254,16 @@ export default {
       }
       let payRes = await miniPay(prePayResp.data.wap_pay_request)
       if (payRes.code == 'success') {
-          uni.showToast({ title: '下单成功' })
-          await queryOrder(order.order_no)
-          uni.navigateTo({
-              url: `/pages/order/detail?order_no=${order.order_no}`
-          })
+        uni.showToast({ title: '下单成功' })
+        await queryOrder(order.order_no)
+        uni.navigateTo({
+          url: `/pages/order/detail?order_no=${order.order_no}`
+        })
       } else {
-          uni.showToast({ title: '下单失败' + payRes.errMsg })
-          uni.navigateTo({
-              url: `pages/order/order`
-          })
+        uni.showToast({ title: '下单失败' + payRes.errMsg })
+        uni.navigateTo({
+          url: `pages/order/order`
+        })
       }
       //commit('clearTempOrder', res.data)
       return true

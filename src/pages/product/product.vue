@@ -333,7 +333,7 @@ export default {
        */
       this.specSelected[labelItem.label] = option
       var currentSku = null
-      console.log(this.goods,"3333")
+      console.log(this.goods, '3333')
       this.goods.skus.forEach((sku) => {
         if (deepEqual(this.specSelected, sku.label_combine)) {
           currentSku = sku
@@ -423,7 +423,8 @@ export default {
         real_price: parseFloat(this.goods.real_price),
         cover: this.goods.small_cover,
         num: 1,
-        goods_type: this.goods.goods_type
+        goods_type: this.goods.goods_type,
+        id_cards: []
       }
       if (this.goods.sku_labels && this.goods.sku_labels.length > 0) {
         //有sku的商品
