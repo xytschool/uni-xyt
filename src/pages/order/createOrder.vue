@@ -100,8 +100,8 @@
 import { mapState } from 'vuex'
 import coupons from '@/components/coupons'
 import { jsPay, miniPay } from '../../utils/payment'
-import { createOrder, queryOrder } from '../../api/order.js'
-import { prePayment } from '../../api/payment.js'
+import { createOrder } from '../../api/order.js'
+import { prePayment,queryOrder } from '../../api/payment.js'
 
 export default {
   components: { coupons },

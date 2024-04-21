@@ -396,10 +396,10 @@ export default {
       }
     },
     buy() {
-      // if (!this.hasLogin) {
-      //   this.$store.dispatch('user/checkLogin', this.com_id)
-      //   return
-      // }
+      if (!this.hasLogin) {
+        this.$store.dispatch('user/checkLogin', this.com_id)
+        return
+      }
 
       this.$store.dispatch('order/reset')
       var cartGoodsItem = this.buildCartGoods()
