@@ -13,6 +13,6 @@ module.exports = {
     return post(host + '/refund', data)
   },
   async queryOrder(data) {
-    return post(host, data)
+    return post(host  + '/queryOrder', data)
   },
 }

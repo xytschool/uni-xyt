@@ -255,7 +255,7 @@ export default {
       let payRes = await miniPay(prePayResp.data.wap_pay_request)
       if (payRes.code == 'success') {
         uni.showToast({ title: '下单成功' })
-        await queryOrder(order.order_no)
+        await queryOrder(order)
         uni.navigateTo({
           url: `/pages/order/detail?order_no=${order.order_no}`
         })
