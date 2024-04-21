@@ -134,12 +134,12 @@
           <!--					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105231218&di=09534b9833b5243296630e6d5b728eff&imgtype=0&src=http%3A%2F%2Fimg002.hc360.cn%2Fm1%2FM05%2FD1%2FAC%2FwKhQcFQ3iN2EQTo8AAAAAHQU6_8355.jpg" mode="aspectFill"></image>-->
           <!--					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105320890&di=c743386be51f2c4c0fd4b75754d14f3c&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fhb%2FMTQ1OTg4ODY0MDA3Ny05OTQ4ODY1NDQ%3D.jpg" mode="aspectFill"></image>-->
         </scroll-view>
-        <list-cell
+        <!-- <list-cell
           icon="icon-saomiao"
           @eventClick="navTo('/pages/MyVerification/index')"
           iconColor="#e07472"
           title="人脸认证"
-        ></list-cell>
+        ></list-cell> -->
         <!-- <list-cell
           icon="icon-iconfontweixin"
           @eventClick="myCode()"
