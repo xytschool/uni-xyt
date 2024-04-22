@@ -25,7 +25,8 @@ const orderMoudle = {
     payData: {}
   }),
   mutations: {
-    createTempOrderByGoodsList(state, goodsList) {
+    createTempOrderByGoodsList (state, goodsList) {
+      console.log(goodsList,"goodsList21111")
       state.tempOrder.isOk = true
       state.tempOrder.goodsList = goodsList
     },
