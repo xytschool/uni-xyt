@@ -14,7 +14,9 @@
             <text class="real_price"
               >￥ {{ goods.real_price | numberToCurrency }}</text
             >
-            <text class="price">￥ {{ goods.price | numberToCurrency }}</text>
+            <text class="price" v-if="goods.real_price < goods.price"
+              >￥ {{ goods.price | numberToCurrency }}</text
+            >
             <text class="number">x {{ tickets }}</text>
           </view>
         </view>
@@ -84,7 +86,7 @@
 
         <text class="price" v-else>{{ real_amount | numberToCurrency }}</text>
       </view>
-      <text  class="submit" @click="submit" :disabled="canSubmit" >提交订单</text>
+      <text class="submit" @click="submit" :disabled="canSubmit">提交订单</text>
     </view>
 
     <coupons
@@ -101,7 +103,7 @@ import { mapState } from 'vuex'
 import coupons from '@/components/coupons'
 import { jsPay, miniPay } from '../../utils/payment'
 import { createOrder } from '../../api/order.js'
-import { prePayment,queryOrder } from '../../api/payment.js'
+import { prePayment, queryOrder } from '../../api/payment.js'
 
 export default {
   components: { coupons },
@@ -208,7 +210,7 @@ export default {
           that.goodsList[0].id_cards.push(item)
         }
       })
-      that.goodsList[0].num= that.goodsList[0].id_cards.length
+      that.goodsList[0].num = that.goodsList[0].id_cards.length
       if (
         this.tickets > this.goodsList[0].id_cards.length ||
         this.tickets < this.goodsList[0].id_cards.length

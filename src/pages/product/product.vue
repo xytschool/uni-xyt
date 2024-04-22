@@ -19,7 +19,7 @@
       <view class="price-box">
         <text class="price-tip">¥</text>
         <text class="price"> {{ goods.real_price | numberToCurrency }}</text>
-        <text class="m-price">¥ {{ goods.price | numberToCurrency }}</text>
+        <text class="m-price" v-if="goods.real_price < goods.price" >¥ {{ goods.price | numberToCurrency }}</text>
         <text class="coupon-tip">折扣</text>
       </view>
       <view class="bot-row">
@@ -403,7 +403,7 @@ export default {
 
       this.$store.dispatch('order/reset')
       var cartGoodsItem = this.buildCartGoods()
-
+console.log(cartGoodsItem,"222222")
       if (!cartGoodsItem) {
         return
       }
@@ -533,6 +533,7 @@ page {
   font-size: $font-lg + 2upx;
   color: $uni-color-primary;
   margin-bottom: 10upx;
+  margin-right:  12upx;
 }
 
 .m-price {
