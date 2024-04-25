@@ -24,23 +24,25 @@
           >
         </view>
 
-        <tki-qrcode
-          v-if="item.status == 'normal'"
-          cid="qrcode1"
-          ref="qrcode"
-          :val="item.code"
-          :size="size"
-          :unit="unit"
-          :icon="icon"
-          :iconSize="iconsize"
-          :lv="lv"
-          :onval="onval"
-          :loadMake="loadMake"
-          :usingComponents="true"
-          :showLoading="false"
-          @result="qrR"
-          class="qrcode"
-        />
+        <view v-if="item.status == 'notuse'">
+          <tki-qrcode
+            cid="qrcode1"
+            ref="qrcode"
+            :val="item.code"
+            :size="size"
+            :unit="unit"
+            :icon="icon"
+            :iconSize="iconsize"
+            :lv="lv"
+            :onval="onval"
+            :loadMake="loadMake"
+            :usingComponents="true"
+            :showLoading="false"
+            @result="qrR"
+            class="qrcode"
+          />
+        </view>
+
         <view v-else class="tickets-item">
           使用时间：<text>{{ item.used_at | transformTimestamp }}</text>
         </view>
