@@ -155,10 +155,10 @@ const userMoudle = {
       if ((userAddressListRes.code = 200)) {
         let list = userAddressListRes.data
         console.log(5654567876567, list)
-        if (!list || list.length == 0) {
-          uni.showToast({ title: '缺少使用人' })
-          return false
-        }
+        // if (!list || list.length == 0) {
+        //   uni.showToast({ title: '缺少使用人' })
+        //   return false
+        // }
         commit('setDefaultAddPeople', userAddressListRes.data)
 
         commit('setAddPeopleList', userAddressListRes.data)
