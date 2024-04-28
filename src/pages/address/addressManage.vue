@@ -114,7 +114,7 @@
 
                 if (data.id) {
                     this.$api.user.changeAddress(data).then(res => {
-                        if (res.code = 200) {
+                        if (res.code = "success") {
                             this.$store.commit('user/updateAddress', res.data)
                             this.$api.msg(`地址${this.manageType == 'edit' ? '修改' : '添加'}成功`);
                             uni.navigateBack()
@@ -125,7 +125,7 @@
                 } else {
                     this.$api.user.addAddress(data).then(res => {
                         //console.log(res)
-                        if (res.code = 200) {
+                        if (res.code = "success") {
                             this.$api.msg(`地址${this.manageType == 'edit' ? '修改' : '添加'}成功`);
                             this.$store.commit('user/addAddress', res.data)
                             uni.navigateBack()

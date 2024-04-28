@@ -20,7 +20,7 @@
         </view>
         <view class="tickets-item">
           身份证号：<text>
-            {{ item.code.replace(/^(.{8})(?:\d+)(.{4})$/, '$1******$2') }}</text
+            {{ item.id_card.replace(/^(.{8})(?:\d+)(.{4})$/, '$1******$2') }}</text
           >
         </view>
 
