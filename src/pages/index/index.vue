@@ -51,7 +51,7 @@
         <text class="cate-name">{{ item.name }}</text>
       </view>
     </view> -->
-<!-- 
+    <!-- 
     <view class="ad-1">
       <image :src="ad_banners[0].cover" mode="scaleToFill"></image>
     </view> -->
@@ -90,20 +90,21 @@
     </view> -->
 
     <!-- 秒杀楼层 -->
-    <view class="seckill-section m-t">
-      <view class="s-header">
+    <!-- <view class="seckill-section m-t"> -->
+      <!-- <view class="s-header">
         <image
           class="s-img"
           src="http://data.xytschool.com/m/v1/static/temp/secskill-img.jpg"
           mode="widthFix"
         ></image>
-        <!-- <text class="tip">8点场</text>
+     
+      </view> -->
+         <!-- <text class="tip">8点场</text>
         <text class="hour timer">07</text>
         <text class="minute timer">13</text>
         <text class="second timer">55</text> -->
         <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式 -->
-      </view>
-      <scroll-view class="floor-list" scroll-x>
+      <!-- <scroll-view class="floor-list" scroll-x>
         <view class="scoll-wrapper">
           <view
             v-for="(item, index) in recommendGoodsList"
@@ -118,20 +119,20 @@
             >
           </view>
         </view>
-      </scroll-view>
-    </view>
+      </scroll-view> -->
+    <!-- </view> -->
 
     <!-- 团购楼层 -->
-    <view class="f-header m-t">
+    <!-- <view class="f-header m-t">
       <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
       <view class="tit-box">
         <text class="tit">精品团购</text>
         <text class="tit2">Boutique Group Buying</text>
       </view>
-      <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式  -->
-    </view>
+    </view> -->
+    <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式  -->
 
-    <view class="group-section">
+    <!-- <view class="group-section">
       <swiper class="g-swiper" :duration="500">
         <swiper-item
           class="g-swiper-item"
@@ -198,22 +199,19 @@
           </view>
         </swiper-item>
       </swiper>
-    </view>
+    </view> -->
     <!-- 分类推荐楼层 -->
-    <view class="f-header m-t">
+    <!-- <view class="f-header m-t">
       <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
       <view class="tit-box">
         <text class="tit">分类精选</text>
         <text class="tit2">Competitive Products For You</text>
       </view>
-      <!-- <text class="yticon icon-you"></text>由于目前没有更多页面暂时注释掉更多样式  -->
-    </view>
-    <view class="hot-floor">
+     
+    </view> -->
+    <!-- <text class="yticon icon-you"></text>由于目前没有更多页面暂时注释掉更多样式  -->
+    <!-- <view class="hot-floor">
       <view class="floor-img-box">
-        <!--                <image class="floor-img"-->
-        <!--                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409398864&di=4a12763adccf229133fb85193b7cc08f&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201703%2F19%2F20170319150032_MNwmn.jpeg"-->
-        <!--                       mode="scaleToFill"></image>-->
-
         <image :src="cate_banners[1].cover" mode="scaleToFill"></image>
       </view>
       <scroll-view class="floor-list" scroll-x>
@@ -226,20 +224,19 @@
           >
             <image :src="item.small_cover" mode="aspectFill"></image>
             <text class="title clamp">{{ item.name }}</text>
-            <text class="price" > ￥ {{ item.real_price | numberToCurrency }}</text>
+            <text class="price">
+              ￥ {{ item.real_price | numberToCurrency }}</text
+            >
           </view>
           <view class="more">
             <text>已经到底了！</text>
-    
           </view>
         </view>
       </scroll-view>
-    </view>
-    <view class="hot-floor">
+    </view> -->
+    <!-- <view class="hot-floor">
       <view class="floor-img-box">
-        <!--                <image class="floor-img"-->
-        <!--                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409984228&di=dee176242038c2d545b7690b303d65ea&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F5ef4da9f17faaf4612f0d5046f4161e556e9bbcfdb5b-rHjf00_fw658"-->
-        <!--                       mode="scaleToFill"></image>-->
+      
         <image :src="cate_banners[2].cover" mode="scaleToFill"></image>
       </view>
       <scroll-view class="floor-list" scroll-x>
@@ -252,20 +249,19 @@
           >
             <image :src="item.small_cover" mode="aspectFill"></image>
             <text class="title clamp">{{ item.name }}</text>
-            <text class="price" > ￥ {{ item.real_price | numberToCurrency }}</text>
+            <text class="price">
+              ￥ {{ item.real_price | numberToCurrency }}</text
+            >
           </view>
           <view class="more">
             <text>已经到底了！</text>
-
           </view>
         </view>
       </scroll-view>
-    </view>
-    <view class="hot-floor">
+    </view> -->
+    <!-- <view class="hot-floor">
       <view class="floor-img-box">
-        <!--                <image class="floor-img"-->
-        <!--                       src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553409794730&di=12b840ec4f5748ef06880b85ff63e34e&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01dc03589ed568a8012060c82ac03c.jpg%40900w_1l_2o_100sh.jpg"-->
-        <!--                       mode="scaleToFill"></image>-->
+
         <image :src="cate_banners[3].cover" mode="scaleToFill"></image>
       </view>
       <scroll-view class="floor-list" scroll-x>
@@ -278,15 +274,16 @@
           >
             <image :src="item.small_cover" mode="aspectFill"></image>
             <text class="title clamp">{{ item.name }}</text>
-            <text class="price" > ￥ {{ item.real_price | numberToCurrency }}</text>
+            <text class="price">
+              ￥ {{ item.real_price | numberToCurrency }}</text
+            >
           </view>
           <view class="more">
             <text>已经到底了！</text>
-
           </view>
         </view>
       </scroll-view>
-    </view>
+    </view> -->
 
     <!-- 猜你喜欢 -->
     <view class="f-header m-t">
@@ -309,7 +306,7 @@
           <image :src="item.small_cover" mode="aspectFill"></image>
         </view>
         <text class="title clamp">{{ item.name }}</text>
-        <text class="price" > ￥ {{ item.real_price | numberToCurrency }}</text>
+        <text class="price"> ￥ {{ item.real_price | numberToCurrency }}</text>
       </view>
     </view>
   </view>
@@ -374,7 +371,6 @@ export default {
     },
     changeKeyword() {
       console.log(this.keyword)
-      
     },
     //轮播图切换修改背景色
     swiperChange(e) {
