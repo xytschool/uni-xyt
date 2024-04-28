@@ -62,13 +62,13 @@ export default {
       //接口
       this.$api.user.addAddress(data).then((res) => {
         console.log(res)
-        if ((res.code = 200)) {
+        if (res.code == "success") {
           this.$api.msg(`常用人已添加成功`)
           // this.$store.commit('user/addPeople', data)
           this.$store.dispatch('user/getAddress')
           uni.navigateBack()
         } else {
-          this.$api.msg('添加失败,' + res.msg)
+          this.$api.msg('添加失败,' + res.message)
         }
       })
 
