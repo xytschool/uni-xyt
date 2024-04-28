@@ -91,7 +91,7 @@
 
     <!-- 秒杀楼层 -->
     <!-- <view class="seckill-section m-t"> -->
-      <!-- <view class="s-header">
+    <!-- <view class="s-header">
         <image
           class="s-img"
           src="http://data.xytschool.com/m/v1/static/temp/secskill-img.jpg"
@@ -99,12 +99,12 @@
         ></image>
      
       </view> -->
-         <!-- <text class="tip">8点场</text>
+    <!-- <text class="tip">8点场</text>
         <text class="hour timer">07</text>
         <text class="minute timer">13</text>
         <text class="second timer">55</text> -->
-        <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式 -->
-      <!-- <scroll-view class="floor-list" scroll-x>
+    <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式 -->
+    <!-- <scroll-view class="floor-list" scroll-x>
         <view class="scoll-wrapper">
           <view
             v-for="(item, index) in recommendGoodsList"
@@ -289,8 +289,8 @@
     <view class="f-header m-t">
       <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
       <view class="tit-box">
-        <text class="tit">猜你喜欢</text>
-        <text class="tit2">Guess You Like It</text>
+        <text class="tit">商品列表</text>
+        <text class="tit2">Product list</text>
       </view>
       <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式 -->
     </view>
