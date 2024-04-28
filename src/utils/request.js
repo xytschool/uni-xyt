@@ -50,7 +50,8 @@ function request(method, url, query, is_raw) {
           } else {
             resolve(res)
           }
-        } else if (res.statusCode == 401) {
+        } else if (res.statusCode == 401 || res.statusCode == 500) {
+          debugger
           uni.showModal({
             title: '当前未登录',
             content: '授权登陆',
@@ -65,6 +66,7 @@ function request(method, url, query, is_raw) {
             }
           })
         } else {
+          
           resolve(res.data)
         }
       },
