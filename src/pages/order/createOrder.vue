@@ -198,8 +198,7 @@ export default {
     async submit() {
       const that = this
       that.goodsList[0].id_cards = []
-      let real_total = parseInt(this.real_amount * this.tickets * 100)
-      let real_Price = this.real_amount * this.tickets
+      let real_total = this.real_amount * this.tickets
 
       console.log('real_total', real_total)
 
@@ -224,16 +223,16 @@ export default {
           title: `共需选择${this.tickets}位使用人，\r\n已选择${this.goodsList[0].id_cards.length}位使用人`
         })
         this.canSubmit = true
-
         return
       }
-      console.log(this.goodsType, 'this.goodsType')
+
+      console.log('this.goodsType',this.goodsType)
       let orderResp = await createOrder({
         goods_type: this.goodsType,
         pay_method: 'wx',
         source: '小程序',
         client_type: 'wx_miniapp',
-        real_total: real_Price,
+        real_total: real_total,
         discount_type: 'none',
         goods_list: [this.goodsList[0]]
       })
@@ -247,7 +246,7 @@ export default {
       let order = orderResp.data
       let wxPayParams = {
         order_no: order.order_no,
-        total_amount: real_total,
+        total_amount: parseInt(real_total*100 ),
         payway: 'weixin',
         sub_payway: 'mini_prog',
         payer_id: this.user.openid
@@ -267,8 +266,9 @@ export default {
         })
         this.canSubmit = true
       } else {
-        uni.showToast({ title: '下单失败' + payRes.errMsg })
-        uni.navigateTo({
+          console.log('orderResp',payRes)
+          uni.showToast({ title: '下单失败' })
+          uni.navigateTo({
           url: `pages/order/order`
         })
         this.canSubmit = true

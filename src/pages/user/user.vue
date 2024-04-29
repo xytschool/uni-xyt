@@ -135,12 +135,6 @@
           <!--					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105320890&di=c743386be51f2c4c0fd4b75754d14f3c&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fhb%2FMTQ1OTg4ODY0MDA3Ny05OTQ4ODY1NDQ%3D.jpg" mode="aspectFill"></image>-->
         </scroll-view>
         <!-- <list-cell
-          icon="icon-saomiao"
-          @eventClick="navTo('/pages/MyVerification/index')"
-          iconColor="#e07472"
-          title="人脸认证"
-        ></list-cell> -->
-        <!-- <list-cell
           icon="icon-iconfontweixin"
           @eventClick="myCode()"
           iconColor="#e07472"

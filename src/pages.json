@@ -259,9 +259,6 @@
       }
     },
     {
-      "path": "pages/MyVerification/index"
-    },
-    {
       "path": "pages/addpeople/addpeople",
       "style": {
         "navigationBarTitleText": "常用使用人"

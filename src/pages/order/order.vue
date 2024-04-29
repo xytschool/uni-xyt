@@ -116,12 +116,12 @@
               >
                 取消订单
               </button>
-              <button
-                class="action-btn  recom"
-                v-if="item.pay_status == 'unpay'"
-              >
-                立即支付
-              </button>
+<!--              <button-->
+<!--                class="action-btn  recom"-->
+<!--                v-if="item.pay_status == 'unpay'"-->
+<!--              >-->
+<!--                立即支付-->
+<!--              </button>-->
               <button
                 class="action-btn"
                 v-if="item.pay_status == 'signed'"
