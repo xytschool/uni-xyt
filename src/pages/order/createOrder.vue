@@ -198,8 +198,9 @@ export default {
     async submit() {
       const that = this
       that.goodsList[0].id_cards = []
-      let real_total = parseInt(this.real_total * 100)
-      console.log('real_total', real_total)
+      let real_total = parseInt(this.real_amount * this.tickets * 100)
+      let real_Price = this.real_amount * this.tickets
+
       console.log('real_total', real_total)
 
       this.params = []
@@ -232,13 +233,13 @@ export default {
         pay_method: 'wx',
         source: '小程序',
         client_type: 'wx_miniapp',
-        real_total: this.real_total,
+        real_total: real_Price,
         discount_type: 'none',
         goods_list: [this.goodsList[0]]
       })
       console.log('create res', order, this.user)
       if (orderResp.code != 'success') {
-        uni.showToast({ title: order.message, icon: 'none' })
+        uni.showToast({ title: orderResp.message, icon: 'none' })
         this.canSubmit = true
         return false
       }
