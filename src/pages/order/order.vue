@@ -130,13 +130,13 @@
                 去评价
               </button>
 
-<!--              <button-->
-<!--                class="action-btn"-->
-<!--                v-if="item.pay_status == 'paid'" -->
-<!--                @click="gotoRefund(item)"-->
-<!--              >-->
-<!--                退款-->
-<!--              </button>-->
+              <!-- <button
+                class="action-btn"
+                v-if="item.pay_status == 'paid'"
+                @click="gotoRefund(item)"
+              >
+                退款
+              </button> -->
               <button
                 class="action-btn"
                 v-if="item.pay_status == 'paid'"
@@ -322,29 +322,29 @@ export default {
           goodsList
       })
     },
-    async gotoRefund (item) {
+    async gotoRefund(item) {
+      let that = this
       uni.showModal({
-	title: '退款',
-	content: '确定要退款吗',
-	success: async function (res) {
-		if (res.confirm) {
+        title: '退款',
+        content: '确定要退款吗',
+        success: async function(res) {
+          if (res.confirm) {
+            const res = await refund({
+              order_no: item.order_no,
+              user_id: item.user_id
+            })
+            if (res.code == 'success') {
+              console.log(res.code)
+              const last_id = 0
+              uni.showToast({ title: '退款成功', icon: 'success' })
 
-      const res = await refund({
-        order_no: item.order_no,
-        user_id: item.user_id
+              that.loadData('', last_id, 'more')
+            } else {
+              uni.showToast({ title: res.message, icon: 'error' })
+            }
+          }
+        }
       })
-      if (res.code == 'success') {
-        const last_id = 0
-
-        this.loadData('', last_id, 'more')
-      }else{
-        uni.showToast({ title: res.message, icon: 'error' })
-
-      }
-		}
-	}
-});
-
     },
     //订单状态文字和颜色
     orderStateExp(state) {
