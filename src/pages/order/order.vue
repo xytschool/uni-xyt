@@ -139,7 +139,7 @@
               </button> -->
               <button
                 class="action-btn"
-                v-if="item.pay_status == 'paid'"
+                v-if="item.pay_status == 'paid'||item.pay_status == 'shipping'||item.pay_status == 'signed'"
                 @click="toDetail(item)"
               >
                 查看票码
@@ -357,6 +357,9 @@ export default {
         case 'paid':
           stateTip = '待使用'
           break
+        case 'signed':
+          stateTip = '已使用'
+           break
         case 'torefund':
           stateTip = '退款中'
           break
@@ -373,11 +376,9 @@ export default {
     },
 
     toDetail(item) {
-      if (this.payDetail.includes(item.pay_status)) {
         uni.navigateTo({
-          url: `/pages/order/detail?order_no=${item.order_no}`
+            url: `/pages/order/detail?order_no=${item.order_no}`
         })
-      }
     }
   }
 }
