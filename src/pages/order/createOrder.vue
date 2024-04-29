@@ -198,7 +198,10 @@ export default {
     async submit() {
       const that = this
       that.goodsList[0].id_cards = []
-      let real_total = parseInt(this.real_amount * 100)
+      let real_total = parseInt(this.real_total * 100)
+      console.log('real_total', real_total)
+      console.log('real_total', real_total)
+
       this.params = []
       if (!this.canSubmit) {
         uni.showToast({ title: '支付中请勿重复点击' })
@@ -219,8 +222,6 @@ export default {
           icon: 'none',
           title: `共需选择${this.tickets}位使用人，\r\n已选择${this.goodsList[0].id_cards.length}位使用人`
         })
-        this.canSubmit = true
-
         return
       }
       console.log(this.goodsType, 'this.goodsType')
@@ -229,13 +230,14 @@ export default {
         pay_method: 'wx',
         source: '小程序',
         client_type: 'wx_miniapp',
-        real_total: this.real_amount,
+        real_total: this.real_total,
         discount_type: 'none',
         goods_list: [this.goodsList[0]]
       })
       console.log('create res', order, this.user)
       if (orderResp.code != 'success') {
         uni.showToast({ title: order.message, icon: 'none' })
+        this.canSubmit = true
         return false
       }
 
@@ -249,7 +251,6 @@ export default {
       }
 
       let prePayResp = await prePayment(wxPayParams)
-
       if (prePayResp.code != 'success') {
         uni.showToast({ title: prePayResp.message, icon: 'none' })
         return
@@ -261,11 +262,13 @@ export default {
         uni.navigateTo({
           url: `/pages/order/detail?order_no=${order.order_no}`
         })
+        this.canSubmit = true
       } else {
         uni.showToast({ title: '下单失败' + payRes.errMsg })
         uni.navigateTo({
           url: `pages/order/order`
         })
+        this.canSubmit = true
       }
       //commit('clearTempOrder', res.data)
       return true
