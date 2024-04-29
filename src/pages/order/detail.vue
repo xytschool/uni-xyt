@@ -15,16 +15,19 @@
         <text class="cell-tit clamp">二维码：</text>
       </view>
       <view v-for="(item, index) in dataList.tickets" class="tickets">
-        <view class="tickets-item">
-          姓名：<text>{{ item.username }}</text>
-        </view>
-        <view class="tickets-item">
-          身份证号：<text>
-            {{ item.id_card.replace(/^(.{8})(?:\d+)(.{4})$/, '$1******$2') }}</text
-          >
+<!--        <view class="tickets-item">-->
+<!--          姓名：<text>{{ item.username }}</text>-->
+<!--        </view>-->
+<!--        <view class="tickets-item">-->
+<!--          身份证号：<text>-->
+<!--            {{ item.id_card.replace(/^(.{8})(?:\d+)(.{4})$/, '$1******$2') }}</text-->
+<!--          >-->
+<!--        </view>-->
+        <view class="tickets-item" style="margin-bottom: 15px">
+            票名：<text>{{ item.name }}</text> x <text>{{ item.number }}张</text>
         </view>
 
-        <view v-if="item.status == 'notuse'">
+        <view>
           <tki-qrcode
             cid="qrcode1"
             ref="qrcode"
@@ -43,8 +46,9 @@
           />
         </view>
 
-        <view v-else class="tickets-item">
-          使用时间：<text>{{ item.used_at | transformTimestamp }}</text>
+        <view v-if="item.logs" class="tickets-item">
+            <view style="margin-bottom: 10px">使用记录：</view>
+            <text>{{ item.logs }}</text>
         </view>
       </view>
     </view>

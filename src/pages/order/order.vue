@@ -129,14 +129,14 @@
               >
                 去评价
               </button>
-            
-              <button
-                class="action-btn"
-                v-if="item.pay_status == 'paid'" 
-                @click="gotoRefund(item)"
-              >
-                退款
-              </button>
+
+<!--              <button-->
+<!--                class="action-btn"-->
+<!--                v-if="item.pay_status == 'paid'" -->
+<!--                @click="gotoRefund(item)"-->
+<!--              >-->
+<!--                退款-->
+<!--              </button>-->
               <button
                 class="action-btn"
                 v-if="item.pay_status == 'paid'"
@@ -149,7 +149,7 @@
               </view>
             </view>
           </view>
-         
+
           <uni-load-more :status="tabItem.loadingType"></uni-load-more>
         </scroll-view>
       </swiper-item>
@@ -328,7 +328,7 @@ export default {
 	content: '确定要退款吗',
 	success: async function (res) {
 		if (res.confirm) {
-	     
+
       const res = await refund({
         order_no: item.order_no,
         user_id: item.user_id
@@ -339,12 +339,12 @@ export default {
         this.loadData('', last_id, 'more')
       }else{
         uni.showToast({ title: res.message, icon: 'error' })
-        
+
       }
-		} 
+		}
 	}
 });
- 
+
     },
     //订单状态文字和颜色
     orderStateExp(state) {
