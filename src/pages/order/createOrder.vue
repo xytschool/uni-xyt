@@ -222,6 +222,8 @@ export default {
           icon: 'none',
           title: `共需选择${this.tickets}位使用人，\r\n已选择${this.goodsList[0].id_cards.length}位使用人`
         })
+        this.canSubmit = true
+
         return
       }
       console.log(this.goodsType, 'this.goodsType')
