@@ -178,12 +178,12 @@
     {
       "path": "pages/address/addressManage"
     },
-    {
-      "path": "pages/money/pay",
-      "style": {
-        "navigationBarTitleText": "支付"
-      }
-    },
+    // {
+    //   "path": "pages/money/pay",
+    //   "style": {
+    //     "navigationBarTitleText": "支付"
+    //   }
+    // },
     {
       "path": "pages/money/paySuccess",
       "style": {
