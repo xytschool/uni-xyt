@@ -15,16 +15,16 @@
         <text class="cell-tit clamp">二维码：</text>
       </view>
       <view v-for="(item, index) in dataList.tickets" class="tickets">
-<!--        <view class="tickets-item">-->
-<!--          姓名：<text>{{ item.username }}</text>-->
-<!--        </view>-->
-<!--        <view class="tickets-item">-->
-<!--          身份证号：<text>-->
-<!--            {{ item.id_card.replace(/^(.{8})(?:\d+)(.{4})$/, '$1******$2') }}</text-->
-<!--          >-->
-<!--        </view>-->
+        <!--        <view class="tickets-item">-->
+        <!--          姓名：<text>{{ item.username }}</text>-->
+        <!--        </view>-->
+        <!--        <view class="tickets-item">-->
+        <!--          身份证号：<text>-->
+        <!--            {{ item.id_card.replace(/^(.{8})(?:\d+)(.{4})$/, '$1******$2') }}</text-->
+        <!--          >-->
+        <!--        </view>-->
         <view class="tickets-item" style="margin-bottom: 15px">
-            票名：<text>{{ item.name }}</text> x <text>{{ item.number }}张</text>
+          票名：<text>{{ item.name }}</text> x <text>{{ item.number }}张</text>
         </view>
 
         <view>
@@ -47,8 +47,8 @@
         </view>
 
         <view v-if="item.logs" class="tickets-item">
-            <view style="margin-bottom: 10px">使用记录：</view>
-            <text>{{ item.logs }}</text>
+          <view style="margin-bottom: 10px">使用记录：</view>
+          <text>{{ item.logs }}</text>
         </view>
       </view>
     </view>
@@ -73,10 +73,14 @@ export default {
       foreground: '#309286', // 前景色
       pdground: '#32dbc6', // 角标色
       onval: true, // val值变化时自动重新生成二维码
-      loadMake: true // 组件加载完成后自动生成二维码
+      loadMake: true, // 组件加载完成后自动生成二维码
+      num: 0, // 计数器，初始为0
+      timer: null // 定时器
     }
   },
-
+  created() {
+    this.timer = setInterval(this.loadData, 10000)
+  },
   onLoad(options) {
     uni.showLoading({
       title: '加载中'
@@ -86,10 +90,26 @@ export default {
   },
   methods: {
     async loadData() {
-      const { data } = await getOrderDetail({ order_no: this.order_no })
-      this.dataList = data
-      uni.hideLoading()
+      console.log(22222)
+      if (this.num < 100) {
+        const { data } = await getOrderDetail({ order_no: this.order_no })
+        this.dataList = data
+        uni.hideLoading()
+        this.num++
+      } else {
+        clearInterval(this.timer)
+        this.timer = null
+      }
+    },
+    stop() {
+      clearInterval(this.timer)
+      this.timer = null
     }
+  },
+  destroyed() {
+    //离开页面是销毁
+    clearInterval(this.timer)
+    this.timer = null
   }
 }
 </script>
