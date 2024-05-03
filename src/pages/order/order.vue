@@ -116,12 +116,12 @@
               >
                 取消订单
               </button>
-<!--              <button-->
-<!--                class="action-btn  recom"-->
-<!--                v-if="item.pay_status == 'unpay'"-->
-<!--              >-->
-<!--                立即支付-->
-<!--              </button>-->
+              <!--              <button-->
+              <!--                class="action-btn  recom"-->
+              <!--                v-if="item.pay_status == 'unpay'"-->
+              <!--              >-->
+              <!--                立即支付-->
+              <!--              </button>-->
               <button
                 class="action-btn"
                 v-if="item.pay_status == 'signed'"
@@ -129,17 +129,21 @@
               >
                 去评价
               </button>
-
-              <!-- <button
+              <!--  -->
+              <button
                 class="action-btn"
                 v-if="item.pay_status == 'paid'"
                 @click="gotoRefund(item)"
               >
                 退款
-              </button> -->
+              </button>
               <button
                 class="action-btn"
-                v-if="item.pay_status == 'paid'||item.pay_status == 'shipping'||item.pay_status == 'signed'"
+                v-if="
+                  item.pay_status == 'paid' ||
+                    item.pay_status == 'shipping' ||
+                    item.pay_status == 'signed'
+                "
                 @click="toDetail(item)"
               >
                 查看票码
@@ -323,28 +327,33 @@ export default {
       })
     },
     async gotoRefund(item) {
-      let that = this
-      uni.showModal({
-        title: '退款',
-        content: '确定要退款吗',
-        success: async function(res) {
-          if (res.confirm) {
-            const res = await refund({
-              order_no: item.order_no,
-              user_id: item.user_id
-            })
-            if (res.code == 'success') {
-              console.log(res.code)
-              const last_id = 0
-              uni.showToast({ title: '退款成功', icon: 'success' })
-
-              that.loadData('', last_id, 'more')
-            } else {
-              uni.showToast({ title: res.message, icon: 'error' })
-            }
-          }
-        }
+      uni.showToast({
+        title: `请您游客中心办理退款，联系电话:\r\n0376-6376018`,
+        icon: 'none',
+        duration: 5000
       })
+      // let that = this
+      // uni.showModal({
+      //   title: '退款',
+      //   content: '确定要退款吗',
+      //   success: async function(res) {
+      //     if (res.confirm) {
+      //       const res = await refund({
+      //         order_no: item.order_no,
+      //         user_id: item.user_id
+      //       })
+      //       if (res.code == 'success') {
+      //         console.log(res.code)
+      //         const last_id = 0
+      //         uni.showToast({ title: '退款成功', icon: 'success' })
+
+      //         that.loadData('', last_id, 'more')
+      //       } else {
+      //         uni.showToast({ title: res.message, icon: 'error' })
+      //       }
+      //     }
+      //   }
+      // })
     },
     //订单状态文字和颜色
     orderStateExp(state) {
@@ -359,7 +368,7 @@ export default {
           break
         case 'signed':
           stateTip = '已使用'
-           break
+          break
         case 'torefund':
           stateTip = '退款中'
           break
@@ -376,9 +385,9 @@ export default {
     },
 
     toDetail(item) {
-        uni.navigateTo({
-            url: `/pages/order/detail?order_no=${item.order_no}`
-        })
+      uni.navigateTo({
+        url: `/pages/order/detail?order_no=${item.order_no}`
+      })
     }
   }
 }
