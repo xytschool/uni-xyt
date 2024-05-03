@@ -161,6 +161,12 @@
           title="常用联系人"
           @eventClick="navTo('/pages/addpeople/addpeople')"
         ></list-cell>
+        <list-cell
+          icon="icon-shoucang_xuanzhongzhuangtai"
+          iconColor="#54b4ef"
+          title="景区联系方式：0376-6376018"
+        ></list-cell>
+
         <!-- <list-cell
           icon="icon-share"
           iconColor="#9789f7"
@@ -181,6 +187,13 @@
           @eventClick="navTo('/pages/set/set')"
         ></list-cell> -->
       </view>
+      <!-- <list>
+        <cell
+          icon="icon-shoucang_xuanzhongzhuangtai"
+          iconColor="#9789f7"
+          title="景区联系方式"
+        ></cell>
+      </list> -->
     </view>
     <u-modal
       v-model="isShowUserCode"
