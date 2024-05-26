@@ -328,7 +328,7 @@ export default {
     },
     async gotoRefund(item) {
       uni.showToast({
-        title: `请您游客中心办理退款，联系电话:\r\n0376-6376018`,
+        title: `请您游客中心办理退款，联系电话:0376-6376018`,
         icon: 'none',
         duration: 5000
       })

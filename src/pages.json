@@ -275,7 +275,15 @@
       "style": {
         "navigationBarTitleText": "商品详情页"
       }
+    },
+    {
+      "path": "pages/introduction/index",
+      "style": {
+        "navigationBarTitleText": "关于我们"
+      }
     }
+
+    
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",

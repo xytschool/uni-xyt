@@ -284,7 +284,28 @@
         </view>
       </scroll-view>
     </view> -->
-
+    <view class="ticket-content">
+      <view class="item" @click="navToDetailPage({ id: 246 })">
+        <span>门票购买</span>
+        <view class="en">Ticket</view>
+        <span class="iconfont icon-menpiao"></span>
+      </view>
+      <view class="item" @click="navToDetailPage({ id: 262 })">
+        <span> 船票购买</span>
+        <view class="en"> steamer</view>
+        <span class="iconfont icon-chuanpiao"></span>
+      </view>
+      <view class="item" @click="introduction">
+        <span> 景区介绍</span>
+        <view class="en"> regarding</view>
+        <span class="iconfont icon-guanyuwomen"></span>
+      </view>
+      <view class="item">
+        <span style="font-size: 36rpx;"> 客服电话:<br />0376-6376018</span>
+        <view class="en"> Service Hot-Line</view>
+        <!-- <span class="iconfont icon-bangzhuzhongxin-copy"></span> -->
+      </view>
+    </view>
     <!-- 猜你喜欢 -->
     <view class="f-header m-t">
       <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
@@ -412,6 +433,11 @@ export default {
           url: item.href
         })
       }
+    },
+    introduction() {
+      uni.navigateTo({
+        url: '/pages/introduction/index'
+      })
     }
   },
   // #ifndef MP
@@ -451,8 +477,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-/* #ifdef MP */
+<style lang="scss" scoped>
 .mp-search-box {
   position: absolute;
   left: 0;
@@ -938,6 +963,50 @@ page {
     font-size: $font-lg;
     color: $uni-color-primary;
     line-height: 1;
+  }
+}
+
+.ticket-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 20rpx;
+  .item {
+    width: 48%;
+    height: 260rpx;
+    border-radius: 10rpx;
+    margin-top: 10rpx;
+    color: #fff;
+    padding: 40rpx;
+    position: relative;
+    span {
+      font-size: 46rpx;
+      font-family: PingFang SC, PingFang SC;
+      font-weight: 400;
+    }
+    .en {
+      font-size: 30rpx;
+      font-family: PingFang SC, PingFang SC;
+      font-weight: 200;
+    }
+    .iconfont {
+      // background: red;
+      font-size: 70rpx;
+      position: absolute;
+      right: 30rpx;
+    }
+  }
+  .item:nth-child(1) {
+    background: #a6635f;
+  }
+  .item:nth-child(2) {
+    background: #b17965;
+  }
+  .item:nth-child(3) {
+    background: #507487;
+  }
+  .item:nth-child(4) {
+    background: #b68e59;
   }
 }
 </style>

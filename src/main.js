@@ -3,7 +3,7 @@ import App from './App'
 import Json from './Json' //测试用数据
 import store from './store'
 import { getComId, getUserInfo, setUserInfo } from './utils/utils'
-
+import '@/font/iconfont.css';
 import { numberToCurrencyNo } from '@/utils/numberToCurrency'
 import { transformTimestamp } from '@/utils/transformTimestamp'
 Vue.config.productionTip = false
