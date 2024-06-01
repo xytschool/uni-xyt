@@ -19,7 +19,9 @@
       <view class="price-box">
         <text class="price-tip">¥</text>
         <text class="price"> {{ goods.real_price | numberToCurrency }}</text>
-        <text class="m-price" v-if="goods.real_price < goods.price" >¥ {{ goods.price | numberToCurrency }}</text>
+        <text class="m-price" v-if="goods.real_price < goods.price"
+          >¥ {{ goods.price | numberToCurrency }}</text
+        >
         <text class="coupon-tip">折扣</text>
       </view>
       <view class="bot-row">
@@ -403,7 +405,7 @@ export default {
 
       this.$store.dispatch('order/reset')
       var cartGoodsItem = this.buildCartGoods()
-console.log(cartGoodsItem,"222222")
+      console.log(cartGoodsItem, '222222')
       if (!cartGoodsItem) {
         return
       }
@@ -424,6 +426,7 @@ console.log(cartGoodsItem,"222222")
         cover: this.goods.small_cover,
         num: 1,
         goods_type: this.goods.goods_type,
+        express_type: this.goods.express_type,
         id_cards: []
       }
       if (this.goods.sku_labels && this.goods.sku_labels.length > 0) {
@@ -533,7 +536,7 @@ page {
   font-size: $font-lg + 2upx;
   color: $uni-color-primary;
   margin-bottom: 10upx;
-  margin-right:  12upx;
+  margin-right: 12upx;
 }
 
 .m-price {

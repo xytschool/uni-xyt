@@ -31,7 +31,10 @@
       </view>
     </view> -->
     <!-- 购票张数 -->
-    <view class="tickets-Number">
+    <view
+      class="tickets-Number"
+     
+    >
       <view class="yt-list-cell desc-cell">
         <text class="cell-tit clamp">购票张数</text>
 
@@ -40,12 +43,12 @@
           v-model="tickets"
           @change="valChange"
         ></u-number-box>
-        <text class="addpeople" @click="navTo('/pages/addpeople/addpeople')">
+        <text  v-if="goodsList[0].express_type === 'need_id_card'" class="addpeople" @click="navTo('/pages/addpeople/addpeople')">
           去添加使用人
         </text>
       </view>
     </view>
-    <view class="personnel">
+    <view class="personnel" v-if="goodsList[0].express_type === 'need_id_card'">
       <view v-if="getpeopleList">
         <view
           class="list b-b"
@@ -143,6 +146,7 @@ export default {
       this.inviter_id = parseInt(option.from_user)
     }
     this.getdata()
+    console.log(this.goodsList, 'that.goodsList')
   },
   computed: {
     ...mapState({
@@ -199,34 +203,35 @@ export default {
       const that = this
       that.goodsList[0].id_cards = []
       let real_total = this.real_amount * this.tickets
-
       console.log('real_total', real_total)
-
       this.params = []
       if (!this.canSubmit) {
         uni.showToast({ title: '支付中请勿重复点击' })
         return
       }
       this.canSubmit = false
-      this.getpeopleList.forEach((item) => {
-        if (item.checked) {
-          that.goodsList[0].id_cards.push(item)
-        }
-      })
-      that.goodsList[0].num = that.goodsList[0].id_cards.length
-      if (
-        this.tickets > this.goodsList[0].id_cards.length ||
-        this.tickets < this.goodsList[0].id_cards.length
-      ) {
-        uni.showToast({
-          icon: 'none',
-          title: `共需选择${this.tickets}位使用人，\r\n已选择${this.goodsList[0].id_cards.length}位使用人`
+      that.goodsList[0].num = this.tickets 
+      if (that.goodsList[0].express_type === 'need_id_card') {
+        this.getpeopleList.forEach((item) => {
+          if (item.checked) {
+            that.goodsList[0].id_cards.push(item)
+          }
         })
-        this.canSubmit = true
-        return
+        that.goodsList[0].num = that.goodsList[0].id_cards.length
+        if (
+          this.tickets > this.goodsList[0].id_cards.length ||
+          this.tickets < this.goodsList[0].id_cards.length
+        ) {
+          uni.showToast({
+            icon: 'none',
+            title: `共需选择${this.tickets}位使用人，\r\n已选择${this.goodsList[0].id_cards.length}位使用人`
+          })
+          this.canSubmit = true
+          return
+        }
       }
 
-      console.log('this.goodsType',this.goodsType)
+      console.log('this.goodsType', this.goodsType)
       let orderResp = await createOrder({
         goods_type: this.goodsType,
         pay_method: 'wx',
@@ -246,7 +251,7 @@ export default {
       let order = orderResp.data
       let wxPayParams = {
         order_no: order.order_no,
-        total_amount: parseInt(real_total*100 ),
+        total_amount: parseInt(real_total * 100),
         payway: 'weixin',
         sub_payway: 'mini_prog',
         payer_id: this.user.openid
@@ -266,9 +271,9 @@ export default {
         })
         this.canSubmit = true
       } else {
-          console.log('orderResp',payRes)
-          uni.showToast({ title: '下单失败' })
-          uni.navigateTo({
+        console.log('orderResp', payRes)
+        uni.showToast({ title: '下单失败' })
+        uni.navigateTo({
           url: `pages/order/order`
         })
         this.canSubmit = true
