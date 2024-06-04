@@ -31,19 +31,19 @@
       </view>
     </view> -->
     <!-- 购票张数 -->
-    <view
-      class="tickets-Number"
-     
-    >
+    <view class="tickets-Number">
       <view class="yt-list-cell desc-cell">
         <text class="cell-tit clamp">购票张数</text>
-
         <u-number-box
           :min="1"
           v-model="tickets"
           @change="valChange"
         ></u-number-box>
-        <text  v-if="goodsList[0].express_type === 'need_id_card'" class="addpeople" @click="navTo('/pages/addpeople/addpeople')">
+        <text
+          v-if="goodsList[0].express_type === 'need_id_card'"
+          class="addpeople"
+          @click="navTo('/pages/addpeople/addpeople')"
+        >
           去添加使用人
         </text>
       </view>
@@ -210,7 +210,7 @@ export default {
         return
       }
       this.canSubmit = false
-      that.goodsList[0].num = this.tickets 
+      that.goodsList[0].num = this.tickets
       if (that.goodsList[0].express_type === 'need_id_card') {
         this.getpeopleList.forEach((item) => {
           if (item.checked) {
