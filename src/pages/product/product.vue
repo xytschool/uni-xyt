@@ -24,11 +24,11 @@
         >
         <text class="coupon-tip">折扣</text>
       </view>
-      <view class="bot-row">
+      <!-- <view class="bot-row">
         <text>销量: {{ goods.sale_num }}</text>
         <text>库存: {{ goods.num }}</text>
         <text>浏览量: {{ goods.pv }}</text>
-      </view>
+      </view> -->
     </view>
 
     <view class="c-list">
