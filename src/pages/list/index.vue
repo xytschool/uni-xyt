@@ -32,7 +32,18 @@ export default {
         this.goodsList = goodsRes.data || []
         console.log(this.goodsList, '  this.goodsList')
       }
-    }
+    },
+     //详情页
+     navToDetailPage(item) {
+      let id = item.id
+      if (item.href) {
+        uni.navigateTo({ url: item.href })
+      } else {
+        uni.navigateTo({
+          url: `/pages/product/product?id=${id}`
+        })
+      }
+    },
   }
 }
 </script>
