@@ -290,10 +290,10 @@
         <view class="en">Ticket</view>
         <span class="iconfont icon-menpiao"></span>
       </view>
-      <view class="item" @click="navToDetailPage({ id: 262 })">
-        <span> 船票购买</span>
-        <view class="en"> steamer</view>
-        <span class="iconfont icon-chuanpiao"></span>
+      <view class="item" @click="noticeTicket()">
+        <span> 购票须知</span>
+        <view class="en"> Ticket Notice</view>
+        <span class="iconfont icon-goupiaoxuzhi"></span>
       </view>
       <view class="item" @click="introduction">
         <span> 景区介绍</span>
@@ -409,6 +409,12 @@ export default {
           url: `/pages/product/product?id=${id}`
         })
       }
+    },
+    noticeTicket() {
+      // 购票须知
+      uni.navigateTo({
+        url: `/pages/noticeTicket/index`
+      })
     },
     //详情页
     navToVideo(item) {
