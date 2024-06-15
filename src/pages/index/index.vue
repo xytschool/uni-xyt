@@ -285,9 +285,9 @@
       </scroll-view>
     </view> -->
     <view class="ticket-content">
-      <view class="item" @click="navToDetailPage({ id: 246 })">
-        <span>门票购买</span>
-        <view class="en">Ticket</view>
+      <view class="item" @click="onlineTicket()">
+        <span>在线购票</span>
+        <view class="en">Online Ticket</view>
         <span class="iconfont icon-menpiao"></span>
       </view>
       <view class="item" @click="noticeTicket()">
@@ -409,6 +409,11 @@ export default {
           url: `/pages/product/product?id=${id}`
         })
       }
+    },
+    onlineTicket () { //在线购票
+      uni.navigateTo({
+        url: `/pages/list/index`
+      })
     },
     noticeTicket() {
       // 购票须知

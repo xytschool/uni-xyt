@@ -17,6 +17,11 @@
       <p>
         针对持有《中华人民共和国退役军人优待证》《中华人民共和国烈士、因公牺牲军人、病故军人遗属优待证》的来景区，享受免门票。
       </p>
+      <image
+        src="https://data.xytschool.com/2024/06/15/666d9f1c81052.jpg"
+        class="images"
+      >
+      </image>
       <h1>南湾湖景区乘船须知</h1>
 
       <p>
@@ -40,6 +45,11 @@
       <p>
         8、景区客服在受理您的诉求时，会第一时间联系船队，专门为您安排包船，按您的要求送达目的地(码头)。同船的其他散客乘船继续游览;安排的包船费用由游客本人承担，(包船费用按茶岛、猴岛300元/船;乌岛420元/船;乘坐包船含8人，超出人数按40元/人收取)。
       </p>
+      <image
+        src="https://data.xytschool.com/2024/06/15/666d9f156b3a1.jpg"
+        class="images"
+      >
+      </image>
       <div class="footer">
         <h3>景区客服中心电话:6376018 6379061</h3>
         <h3>游船调度: <span>涂队长17638392929</span></h3>
@@ -47,6 +57,12 @@
       </div>
 
       <h5>南湾湖景区游船有限公司</h5>
+      <!-- <image
+        mode="aspectFit"
+        src="https://data.xytschool.com/2024/06/15/666d9f1b44d2c.jpg"
+        class="images"
+      >
+      </image> -->
     </view>
   </view>
 </template>
@@ -54,10 +70,10 @@
 <style lang="scss" scoped>
 .wrap {
   width: 750rpx;
-}
-.preferential {
   padding: 26rpx;
   background: #3a4b4a;
+}
+.preferential {
   h1 {
     font-family: PingFang SC, PingFang SC;
     font-weight: 500;
@@ -86,6 +102,11 @@
     text-align: right;
     margin-top: 50rpx;
   }
+}
+.images {
+  width: 100%;
+  // height: auto;
+  margin-top: 30rpx;
 }
 .footer {
   margin-top: 40rpx;

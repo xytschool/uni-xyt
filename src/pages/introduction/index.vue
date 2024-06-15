@@ -92,7 +92,7 @@
       src="https://data.xytschool.com/2024/05/27/6653d95c63220.jpg"
     ></image>
     <view class="title">南湾水上游乐园</view>
-    <view class="content">
+    <view class="content" style="padding-bottom: 50rpx;">
       南湾水上游乐园是南湾湖边的一处娱乐设施，提供丰富 的水上游玩项目和设施。
     </view>
   </view>
