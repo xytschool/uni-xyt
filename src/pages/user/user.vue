@@ -43,7 +43,7 @@
           ></u-icon>
         </view> -->
 
-        <text class="e-m">南湾湖景区 </text>
+        <text class="e-m">{{ scenicSpot }}景区 </text>
         <!-- <text class="e-b">总有人要成功为什么不是我</text> -->
       </view>
     </view>
@@ -239,13 +239,14 @@ export default {
       leftTime: 0,
       userCode: '',
       showCodePicker: false,
-      loadMake: false
+      loadMake: false,
+      scenicSpot: ''
     }
   },
   onLoad(params) {
     this.com_id = params.com_id
     this.$store.dispatch('user/checkLogin', this.com_id)
-
+    this.scenicSpot = this.$scenicSpot
     // this.$api.user.getUserHistoryList().then((list) => {
     //   var dateRange = list.data
     //   for (var date in dateRange) {

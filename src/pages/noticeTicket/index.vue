@@ -1,7 +1,7 @@
 <template>
   <view class="wrap">
     <view class="preferential">
-      <h1>南湾湖景区优惠政策通知</h1>
+      <h1>{{ scenicSpot }}景区优惠政策通知</h1>
       <p>
         一、景区根据《信阳市激励大学生入伍 6
         条优待办法》的通知。实行以下优惠政策:
@@ -22,7 +22,7 @@
         class="images"
       >
       </image>
-      <h1>南湾湖景区乘船须知</h1>
+      <h1>{{ scenicSpot }}景区乘船须知</h1>
 
       <p>
         1、购买景区船票时，须先购景区门票、保险和出示本人身份证，再购买船票。
@@ -56,7 +56,7 @@
         <h3 style="margin-left: 170rpx;">伍队长13083760825</h3>
       </div>
 
-      <h5>南湾湖景区游船有限公司</h5>
+      <h5>{{ scenicSpot }}景区游船有限公司</h5>
       <!-- <image
         mode="aspectFit"
         src="https://data.xytschool.com/2024/06/15/666d9f1b44d2c.jpg"
@@ -66,7 +66,18 @@
     </view>
   </view>
 </template>
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      scenicSpot: ''
+    }
+  },
+  onLoad(params) {
+    this.scenicSpot = this.$scenicSpot
+  }
+}
+</script>
 <style lang="scss" scoped>
 .wrap {
   width: 750rpx;

@@ -763,6 +763,11 @@ page {
   }
 
   .detail-desc-text {
+    width: 100%;
+    // imgae{
+
+    //   height: auto;
+    // }
   }
 }
 

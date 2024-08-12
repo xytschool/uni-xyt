@@ -352,6 +352,9 @@ export default {
   },
 
   onLoad() {
+    uni.setNavigationBarTitle({
+      title: this.$scenicSpot
+    })
     this.loadData()
   },
   methods: {
@@ -410,7 +413,8 @@ export default {
         })
       }
     },
-    onlineTicket () { //在线购票
+    onlineTicket() {
+      //在线购票
       uni.navigateTo({
         url: `/pages/list/index`
       })

@@ -14,6 +14,9 @@ App.mpType = 'app'
 // 配置全局过滤器，实现数字千分位格式
 Vue.filter('numberToCurrency', numberToCurrencyNo)
 Vue.filter('transformTimestamp', transformTimestamp)
+
+
+Vue.prototype.$scenicSpot = "南湾湖"
 const msg = (title, duration = 1500, mask = false, icon = 'none') => {
   //统一提示方便全局修改
   if (Boolean(title) === false) {
