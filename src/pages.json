@@ -293,6 +293,12 @@
       "style": {
         "navigationBarTitleText": "在线购票"
       }
+    },
+    {
+      "path": "pages/map/index",
+      "style": {
+        "navigationBarTitleText": "地图设置"
+      }
     }
   ],
   "globalStyle": {
@@ -333,6 +339,13 @@
         "text": "我的"
       }
     ]
+  },
+  "permission": {
+    "scope": {
+      "location": {
+        "desc": "我们需要获取您的位置信息"
+      }
+    }
   },
   "condition": { //模式配置，仅开发期间生效
     "current": 0, //当前激活的模式(list 的索引项)

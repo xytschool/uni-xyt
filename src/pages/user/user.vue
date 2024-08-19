@@ -166,6 +166,12 @@
           iconColor="#54b4ef"
           title="景区联系方式：0376-6376018"
         ></list-cell>
+        <list-cell
+          icon="icon-dizhi"
+          iconColor="#54b4ef"
+          title="地图设置"
+          @eventClick="navTo('/pages/map/index')"
+        ></list-cell>
 
         <!-- <list-cell
           icon="icon-share"
