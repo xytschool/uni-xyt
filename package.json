@@ -50,6 +50,7 @@
     "@dcloudio/uni-quickapp-webview": "^2.0.0-27920200527001",
     "@dcloudio/uni-stat": "^2.0.0-27920200527001",
     "core-js": "^2.6.5",
+    "element-resize-detector": "^1.2.4",
     "flyio": "^0.6.2",
     "qrcodejs2": "^0.0.2",
     "regenerator-runtime": "^0.12.1",

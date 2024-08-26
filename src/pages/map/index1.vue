@@ -1,5 +1,6 @@
 <template>
   <view>
+    <!--  -->
     <view class="page-section page-section-gap">
       <map
         style="width: 100%; height: 100vh;"
@@ -12,15 +13,9 @@
       </map>
     </view>
     <view>
-      <u-popup
-        v-model="show"
-        border-radius="14"
-        ref="popup"
-        mode="bottom"
-        closeable="true"
-      >
+      <u-popup v-model="show" border-radius="14" ref="popup" mode="bottom">
         <view class="popup">
-          <view class="list">
+          <view class="list" style="height: 40px;">
             <view class="title">
               添加标记
             </view>
@@ -28,13 +23,18 @@
           </view>
           <view class="list">
             <span>地点名称：</span>
-            <input class="text" type="text" placeholder="请输入地点名称" />
+            <input
+              v-model="name"
+              class="text"
+              type="text"
+              placeholder="请输入地点名称"
+            />
           </view>
-          <view class="list" style="height: 120px;">
+          <view class="list" style="height: 100px;">
             <span>描述信息：</span>
             <textarea
               class="remarks"
-              v-model="value1"
+              v-model="info"
               placeholder="请输入描述信息"
             ></textarea>
             <!-- cols="3"
@@ -42,7 +42,7 @@
               maxlength="50" -->
             <!-- <view class="more">更多</view> -->
           </view>
-          <button class="add">添加</button>
+          <button class="add" @click="add">添加</button>
           <!-- <view class="list"> <span>相关商品：</span><input type="text"/></view> -->
         </view>
       </u-popup>
@@ -51,20 +51,25 @@
 </template>
 
 <script>
+import { postlocation } from '../../api/map.js'
+
 export default {
   data() {
     return {
-      id: 0, // 使用 marker点击事件 需要填写id
-      title: 'map',
-      latitude: '',
-      longitude: '',
-      show: true
+      // latitude: '',
+      // longitude: '',
+      latitude: '39.77972195095486',
+      longitude: '116.52091606987847',
+      show: true,
+      name: '',
+      info: ''
     }
   },
   onLoad() {},
   methods: {
     getLocation() {
       uni.authorize({
+        scope: 'scope.userLocation',
         success: () => {
           // 已授权，获取位置信息
           uni.getLocation({
@@ -73,6 +78,8 @@ export default {
               const { latitude, longitude } = res
               this.latitude = latitude
               this.longitude = longitude
+              console.log(this.latitude, '  this.latitude')
+              console.log(this.longitude, '  this.longitude')
             },
             fail: () => {
               uni.showToast({
@@ -89,10 +96,45 @@ export default {
           })
         }
       })
+    },
+    async add() {
+      const validations = [
+        { field: this.name, message: '请填写地点名称' },
+        { field: this.info, message: '请填写描述信息' }
+      ]
+      for (const { field, message } of validations) {
+        if (!field) {
+          uni.showToast({
+            title: message,
+            icon: 'none'
+          })
+          return
+        }
+      }
+      let prePayResp = await postlocation({
+        name: this.name,
+        info: this.info,
+        latitude: Number(this.latitude),
+        longitude: Number(this.longitude)
+      })
+      console.log(prePayResp, 'prePayResp')
+      if (prePayResp.code === 'success') {
+        uni.showToast({
+          title: '添加成功',
+          icon: 'none'
+        })
+        this.$refs.popup.close()
+        uni.navigateBack()
+      } else {
+        uni.showToast({
+          title: prePayResp.message,
+          icon: 'none'
+        })
+      }
     }
   },
   mounted() {
-    // this.getLocation()
+    this.getLocation()
   }
 }
 </script>
@@ -121,14 +163,22 @@ export default {
 .list {
   height: 50px;
   display: flex;
-
+  // i {
+  //   color: red;
+  //   display: inline-block;
+  // }
   span {
-    width: 160rpx;
+    width: 168rpx;
     line-height: 40px;
     font-family: PingFang SC, PingFang SC;
     font-weight: 400;
     font-size: 12px;
     color: #3f3f3f;
+  }
+  span::before {
+    content: '*';
+    color: red;
+    padding-right: 4px;
   }
   .text {
     width: 200px;
@@ -145,7 +195,7 @@ export default {
   }
 }
 .remarks {
-  height: 120px;
+  height: 100px;
   line-height: 18px;
   width: 200px;
   box-shadow: 0px 1px 4px 0px rgba(114, 114, 114, 0.05);
