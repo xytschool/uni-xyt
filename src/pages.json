@@ -159,10 +159,10 @@
     //        }
     //      }
     //    },
-    {
-      "path": "pages/money/money",
-      "style": {}
-    },
+    // {
+    //   "path": "pages/money/money",
+    //   "style": {}
+    // },
     {
       "path": "pages/order/createOrder",
       "style": {
@@ -190,12 +190,12 @@
         "navigationBarTitleText": "支付成功"
       }
     },
-    {
-      "path": "pages/notice/notice",
-      "style": {
-        "navigationBarTitleText": "通知"
-      }
-    },
+    // {
+    //   "path": "pages/notice/notice",
+    //   "style": {
+    //     "navigationBarTitleText": "通知"
+    //   }
+    // },
     {
       "path": "pages/category/category",
       "style": {
@@ -298,6 +298,18 @@
       "path": "pages/map/index",
       "style": {
         "navigationBarTitleText": "地图设置"
+      }
+    },
+    {
+      "path": "pages/map/mapMarker",
+      "style": {
+        "navigationBarTitleText": "地图详情"
+      }
+    },
+    {
+      "path": "pages/map/mapdetails",
+      "style": {
+        "navigationBarTitleText": "地图信息详情"
       }
     }
   ],

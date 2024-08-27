@@ -29,6 +29,8 @@
 </template>
 <script>
 import commodityList from '@/components/commodityList.vue'
+import audioManager from './utils/audio.js'
+
 export default {
   components: {
     commodityList
@@ -41,27 +43,26 @@ export default {
     }
   },
   async onLoad(options) {
-    console.log(JSON.parse(options.item), 'options')
     this.data = JSON.parse(options.item)
     this.goodsList = this.data.goods_ids
-    console.log(this.goodsList, 'this.goodsList')
   },
   methods: {
     bjMusicClick() {
       if (this.musicShow) {
         console.log('播放')
-        this.innerAudioContext = uni.createInnerAudioContext()
-        this.innerAudioContext.src = this.data.voice_url //必须放在 static下
-        const timout = setTimeout(() => {
-          clearTimeout(timout)
-          this.innerAudioContext.play()
-        }, 500)
+
+        audioManager.AudioPlay(this.data.voice_url)
       } else {
         console.log('暂停')
-        this.innerAudioContext.pause()
+
+        audioManager.audioStop()
       }
       this.musicShow = !this.musicShow
     }
+  },
+  beforeDestroy() {
+    // 在页面关闭时停止音乐播放
+    audioManager.audioStop()
   }
 }
 </script>

@@ -135,9 +135,7 @@
 
 <script>
 import { getlocation } from '../../api/map.js'
-import { AudioPlay, audioStop } from './utils/audio.js'
-const innerAudioContext = uni.createInnerAudioContext()
-const audio = uni.createInnerAudioContext() // 音频对象
+import audioManager from './utils/audio.js'
 
 export default {
   data() {
@@ -148,7 +146,7 @@ export default {
       covers: [],
       detailsList: {},
       musicShow: true,
-
+      markeraudio: null,
       currentPlayingMarker: null, // 当前播放音频的标记点
       isPlaying: true
     }
@@ -212,7 +210,8 @@ export default {
         if (distance < 100) {
           // 设置一个阈值，比如100米
           isWithinAnyMarker = true
-
+          this.markeraudio = marker
+          console.log(this.markeraudio, 'this.markeraudio ')
           this.playAudio(marker)
         } else {
           this.stopAudio()
@@ -239,28 +238,15 @@ export default {
       return distance
     },
     playAudio(marker) {
-      if (!audio) {
-        audio = uni.createInnerAudioContext()
-      }
-      audio.src = marker.voice_url
-      console.log(audio.src, '   this.audio.src')
-      audio.play()
+      audioManager.AudioPlay(marker.voice_url)
       this.currentPlayingMarker = marker // 记录当前播放的标记点
       this.isPlaying = true // 设置为播放状态
-      console.log(this.isPlaying, 'this.isPlaying ')
     },
 
     bindmarkertap(e) {
       const { markerId } = e.detail
       this.detailsList = this.covers.find((element) => element.id === markerId)
       this.show = this.detailsList ? true : false
-
-      innerAudioContext.src = this.detailsList.voice_url //必须放在 static下
-      innerAudioContext.onError((res) => {
-        console.error(res.errMsg)
-      })
-      console.log(innerAudioContext, 'this.innerAudioContext')
-      console.log(innerAudioContext.src, '  this.innerAudioContext.src')
     },
 
     async getdata() {
@@ -401,16 +387,15 @@ export default {
       this.longitude = this.covers[0].longitude
     },
     bjMusicClick() {
+      // audioManager.AudioPlay(this.detailsList.voice_url)
       if (this.musicShow) {
         console.log('播放')
         const timout = setTimeout(() => {
           clearTimeout(timout)
-          console.log(innerAudioContext, 'innerAudioContext')
-          innerAudioContext.play()
+          audioManager.AudioPlay(this.detailsList.voice_url)
         }, 500)
       } else {
-        console.log('暂停')
-        innerAudioContext.pause()
+        audioManager.audioStop()
       }
       this.musicShow = !this.musicShow
     },
@@ -433,27 +418,23 @@ export default {
       })
     },
     stopAudio() {
-      if (audio) {
-        audio.stop() // 停止播放音频
-        this.currentPlayingMarker = null // 重置当前播放的标记点
-      }
+      audioManager.audioStop()
+      this.currentPlayingMarker = null // 重置当前播放的标记点
       this.isPlaying = false // 设置为停止状态
     },
     showPlaying() {
       if (this.isPlaying) {
         this.isPlaying = false
-        audio.stop() // 停止播放音频
+        audioManager.audioStop()
       } else {
         this.isPlaying = true
-        audio.play() // 停止播放音频
+        audioManager.AudioPlay(this.markeraudio.voice_url)
       }
     }
   },
   beforeDestroy() {
-    this.stopAudio() // 页面关闭时停止音频播放
-    if (this.watchId) {
-      uni.stopLocationUpdate() // 停止位置更新
-    }
+    // 在页面关闭时停止音乐播放
+    audioManager.audioStop()
   }
 }
 </script>

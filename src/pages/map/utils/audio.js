@@ -1,7 +1,17 @@
-let currentAudio = uni.createInnerAudioContext()
+let currentAudio = null
+// let isPlaying = true
+
 const AudioPlay = (audioSrc) => {
   // 创建新的音频上下文
+  if (currentAudio) {
+    currentAudio.stop()
+  }
+  currentAudio = uni.createInnerAudioContext()
+  // console.log(currentAudio, 'currentAudio')
+  // console.log(audioSrc, 'audioSrc')
 
+  // 创建新的音频上下文
+  currentAudio = uni.createInnerAudioContext()
   currentAudio.src = audioSrc
   currentAudio.play()
 
@@ -12,9 +22,11 @@ const AudioPlay = (audioSrc) => {
 }
 
 const audioStop = () => {
+  console.log(currentAudio, ' currentAudio')
   if (currentAudio) {
     currentAudio.stop()
-    currentAudio = null
+    currentAudio = null // 停止后清空当前音频
+    console.log(currentAudio, ' currentAudio')
   }
 }
 
