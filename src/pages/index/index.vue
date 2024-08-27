@@ -299,10 +299,15 @@
         <view class="en"> regarding</view>
         <span class="iconfont icon-guanyuwomen"></span>
       </view>
-      <view class="item">
+      <!-- <view class="item">
         <span style="font-size: 36rpx;"> 客服电话:<br />0376-6376018</span>
         <view class="en"> Service Hot-Line</view>
-        <!-- <span class="iconfont icon-bangzhuzhongxin-copy"></span> -->
+     
+      </view> -->
+      <view class="item" @click="mapMarker">
+        <span style="font-size: 36rpx;"> 地图</span>
+        <view class="en"> map</view>
+        <span class="iconfont icon-bangzhuzhongxin-copy"></span>
       </view>
     </view>
     <!-- 猜你喜欢 -->
@@ -436,6 +441,11 @@ export default {
     introduction() {
       uni.navigateTo({
         url: '/pages/introduction/index'
+      })
+    },
+    mapMarker() {
+      uni.navigateTo({
+        url: '/pages/map/mapMarker'
       })
     }
   },

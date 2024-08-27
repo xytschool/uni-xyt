@@ -764,6 +764,10 @@ page {
 
   .detail-desc-text {
     width: 100%;
+    // img {
+    //   width: 100%;
+    //   height: auto;
+    // }
     // imgae{
 
     //   height: auto;
