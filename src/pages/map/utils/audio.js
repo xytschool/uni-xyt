@@ -9,7 +9,7 @@ const AudioPlay = (audioSrc) => {
   currentAudio = uni.createInnerAudioContext()
   // console.log(currentAudio, 'currentAudio')
   // console.log(audioSrc, 'audioSrc')
-
+  currentAudio.sessionCategory = 'playback'
   // 创建新的音频上下文
   currentAudio = uni.createInnerAudioContext()
   currentAudio.src = audioSrc

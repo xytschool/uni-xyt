@@ -36,17 +36,47 @@
               placeholder="请输入描述信息"
             ></textarea>
           </view>
+          <view class="picture">
+            <span>图片：</span>
+            <span> 最多可上传{{ practiceCertLimit }}张</span>
+
+            <view>
+              <u-upload
+                :custom-btn="true"
+                :max-count="practiceCertLimit"
+                :action="action"
+                :multiple="true"
+                class="select-file-rectangle"
+                @on-remove="onRemove"
+                :file-list="coversList"
+                @on-change="uploadFilePromise"
+              >
+                <view slot="addBtn" class="slot-btn">
+                  <image
+                    class="select-file-rectangle-image"
+                    src="../../static/select-file-rectangle.png"
+                    mode="aspectFit"
+                  />
+                </view>
+              </u-upload>
+            </view>
+          </view>
           <button class="add" @click="add">添加</button>
         </view>
       </u-popup>
     </view>
+    <selectImg ref="selectImgRef" @success="success" />
   </view>
 </template>
 
 <script>
 import { postlocation } from '../../api/map.js'
+import selectImg from '../../components/select-img.vue'
 
 export default {
+  components: {
+    selectImg
+  },
   data() {
     return {
       latitude: '',
@@ -55,7 +85,14 @@ export default {
       // longitude: '116.52091606987847',
       show: true,
       name: '',
-      info: ''
+      info: '',
+      practiceCert: [],
+      practiceCertFileList: [], // 执业证文件列表
+      practiceCertLimit: 6,
+      denote: '',
+      covers: [],
+      coversList: [],
+      action: 'https://mall.nanwanhu.com.cn/14/api/v1/file/upload'
     }
   },
   onLoad() {},
@@ -107,6 +144,7 @@ export default {
       let prePayResp = await postlocation({
         name: this.name,
         info: this.info,
+        covers: this.covers,
         latitude: Number(this.latitude),
         longitude: Number(this.longitude)
       })
@@ -123,6 +161,50 @@ export default {
       } else {
         uni.showToast({
           title: prePayResp.message,
+          icon: 'none'
+        })
+      }
+    },
+    // 选择文件（进行数量判断）
+    selectFile(e, count) {
+      this.denote = e
+      count = this.determineUploadableValues(e)
+      if (count <= 0) {
+        return
+      }
+
+      this.$refs.selectImgRef.open(count)
+    },
+    determineUploadableValues(e) {
+      return this.practiceCertLimit - this.practiceCertFileList.length
+    },
+    success(e) {
+      this.practiceCert.push(...e.map((item) => item.path))
+      this.practiceCertFileList.push(...e)
+    },
+    deleteFile(index) {
+      this.practiceCert.splice(index, 1)
+      this.practiceCertFileList.splice(index, 1)
+    },
+    onRemove(index, lists) {
+      console.log('图片已被移除', index, lists)
+      lists.forEach((element) => {
+        console.log(element, 'element')
+        // if (element) {
+
+        // }
+      })
+    },
+    uploadFilePromise(file) {
+      const { data } = file
+      const datas = JSON.parse(data)
+      if (datas.code === 'success') {
+        console.log('上传成功:', datas.data.url)
+        this.covers.push(datas.data.url)
+        console.log(' this.covers:', this.covers)
+      } else if (file.status === 'fail') {
+        uni.showToast({
+          title: '上传失败',
           icon: 'none'
         })
       }
@@ -158,10 +240,7 @@ export default {
 .list {
   height: 50px;
   display: flex;
-  // i {
-  //   color: red;
-  //   display: inline-block;
-  // }
+
   span {
     width: 168rpx;
     line-height: 40px;
@@ -220,5 +299,20 @@ export default {
   font-size: 14px;
   color: #ffffff;
   margin-top: 20px;
+}
+.picture {
+  span {
+    line-height: 50px;
+  }
+}
+
+.slot-btn {
+  width: 83px;
+  height: 83px;
+}
+.select-file-rectangle-image {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
 }
 </style>

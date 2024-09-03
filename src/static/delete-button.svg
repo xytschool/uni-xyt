@@ -1,0 +1,24 @@
+<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 919" clip-path="url(#clip0_589_637)">
+<path id="Rectangle 1451" d="M0 0H7.63C8.93892 0 10 1.06109 10 2.37V10H2.58889C1.15909 10 0 8.84091 0 7.41111V0Z" fill="#0E0E0E" fill-opacity="0.54"/>
+<g id="Frame" clip-path="url(#clip1_589_637)">
+<path id="Vector" d="M3.14795 3.14941L6.85165 6.85312" stroke="white" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M3.14795 6.85312L6.85165 3.14941" stroke="white" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g id="Frame_2" clip-path="url(#clip2_589_637)">
+<path id="Vector_3" d="M3.14795 3.14941L6.85165 6.85312" stroke="white" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M3.14795 6.85312L6.85165 3.14941" stroke="white" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_589_637">
+<rect width="10" height="10" fill="white"/>
+</clipPath>
+<clipPath id="clip1_589_637">
+<rect width="5.55556" height="5.55556" fill="white" transform="translate(2.22217 2.22266)"/>
+</clipPath>
+<clipPath id="clip2_589_637">
+<rect width="5.55556" height="5.55556" fill="white" transform="translate(2.22217 2.22266)"/>
+</clipPath>
+</defs>
+</svg>

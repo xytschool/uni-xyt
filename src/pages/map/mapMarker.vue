@@ -238,6 +238,7 @@ export default {
       return distance
     },
     playAudio(marker) {
+      console.log(marker.voice_url, 'marker.voice_url')
       audioManager.AudioPlay(marker.voice_url)
       this.currentPlayingMarker = marker // 记录当前播放的标记点
       this.isPlaying = true // 设置为播放状态
@@ -251,126 +252,127 @@ export default {
 
     async getdata() {
       let prePayResp = await getlocation()
-      // this.covers = prePayResp.data
-      this.covers = [
-        {
-          id: 1,
-          name: '故宫博物院',
-          address: '北京市东城区景山前街4号',
-          info:
-            '百里滇池，奔来眼底，披襟岸帻，喜茫茫空阔无边。看东骧神骏，西翥灵仪，北走蜿蜒，南翔缟素。高人韵士，何妨选胜登临。趁蟹屿螺洲，梳裹就风鬟雾鬓；更苹天苇地，点缀些翠羽丹霞，莫辜负四围香稻，万顷晴沙，九夏芙蓉，三春杨柳。数千年往事，注到心头，把酒凌虚，叹滚滚英雄谁在。想汉习楼船，唐标铁柱，宋挥玉斧，元跨革囊。伟烈丰功，费尽移山心力。尽珠帘画栋，卷不及暮雨朝云；便断碣残碑，都付与苍烟落照。只赢得几杵疏钟，半江渔火，两行秋雁，一枕清霜。',
-          // latitude: 39.916594,
-          // longitude: 116.397128,
-          latitude: 39.77971571180556,
-          longitude: 116.5209423828125,
-          user_id: 12345,
-          voice_url:
-            'https://web-ext-storage.dcloud.net.cn/uni-app/ForElise.mp3',
-          // 'https://data.xytschool.com/ai_gen/%E5%8D%97%E6%B9%BE%E6%B9%96.mp3',
-          covers: null,
-          goods_ids: [
-            {
-              id: 246,
-              user_id: 0,
-              created_at: '2024-04-28T11:17:56+08:00',
-              updated_at: '2024-08-20T11:46:48+08:00',
-              com_id: 14,
-              price: 60,
-              real_price: 60,
-              num: 1000000,
-              pv: 0,
-              sale_num: 0,
-              status: 'publish',
-              express_type: 'none',
-              express: 0,
-              tags: '10037',
-              name: '全价门票',
-              small_cover:
-                'http://data.xytschool.com/storage/image/20240430/1714436793305953.png',
-              covers: [
-                'http://data.xytschool.com/storage/image/20240430/1714436803762264.png',
-                'http://data.xytschool.com/storage/image/20240430/1714436820274470.png'
-              ],
-              infos: {
-                subs: [
-                  {
-                    id: 244,
-                    name: '全价门票（首检）',
-                    cover: '',
-                    goods_type: 'ticket',
-                    number: 1
-                  },
-                  {
-                    id: 245,
-                    name: '全价门票（复检）',
-                    cover: '',
-                    goods_type: 'ticket',
-                    number: 1
-                  }
-                ],
-                ota: {
-                  pre_sale_time: 0
-                }
-              },
-              desc: '',
-              goods_type: 'mix_ticket',
-              parent_id: 0
-            },
-            {
-              id: 231,
-              user_id: 0,
-              created_at: '2024-04-25T22:24:07+08:00',
-              updated_at: '2024-08-13T07:55:52+08:00',
-              com_id: 14,
-              price: 100,
-              real_price: 100,
-              num: 100000,
-              pv: 0,
-              sale_num: 0,
-              status: 'publish',
-              express_type: 'none',
-              express: 0,
-              tags: '10044',
-              name: '全价门票+船票',
-              small_cover:
-                'http://data.xytschool.com/storage/image/20240430/1714455433605301.png',
-              covers: [
-                'http://data.xytschool.com/storage/image/20240425/1714053207856926.png',
-                'http://data.xytschool.com/storage/image/20240430/1714455444961961.png',
-                'http://data.xytschool.com/storage/image/20240430/1714455451737047.png'
-              ],
-              infos: {
-                subs: [
-                  {
-                    id: 265,
-                    name: '全价门票+船票（复检）',
-                    cover: '',
-                    goods_type: 'ticket',
-                    number: 1
-                  },
-                  {
-                    id: 266,
-                    name: '全价门票+船票（船队）',
-                    cover: '',
-                    goods_type: 'ticket',
-                    number: 1
-                  },
-                  {
-                    id: 264,
-                    name: '全价门票+船票（首检）',
-                    cover: '',
-                    goods_type: 'ticket',
-                    number: 1
-                  }
-                ]
-              }
-            }
-          ],
-          created_at: '2023-08-01T20:00:00+08:00',
-          updated_at: '2023-08-01T20:00:00+08:00'
-        }
-      ]
-      console.log(this.covers, ' this.covers ')
+      // console.log(prePayResp, 'prePayResp')
+      this.covers = prePayResp.data
+      console.log(this.covers, 'this.covers')
+      // this.covers = [
+      //   {
+      //     id: 1,
+      //     name: '故宫博物院',
+      //     address: '北京市东城区景山前街4号',
+      //     info:
+      //       '百里滇池，奔来眼底，披襟岸帻，喜茫茫空阔无边。看东骧神骏，西翥灵仪，北走蜿蜒，南翔缟素。高人韵士，何妨选胜登临。趁蟹屿螺洲，梳裹就风鬟雾鬓；更苹天苇地，点缀些翠羽丹霞，莫辜负四围香稻，万顷晴沙，九夏芙蓉，三春杨柳。数千年往事，注到心头，把酒凌虚，叹滚滚英雄谁在。想汉习楼船，唐标铁柱，宋挥玉斧，元跨革囊。伟烈丰功，费尽移山心力。尽珠帘画栋，卷不及暮雨朝云；便断碣残碑，都付与苍烟落照。只赢得几杵疏钟，半江渔火，两行秋雁，一枕清霜。',
+      //     // latitude: 39.916594,
+      //     // longitude: 116.397128,
+      //     latitude: 39.736514,
+      //     longitude: 116.545571,
+      //     user_id: 12345,
+      //     voice_url: 'https://data.xytschool.com/ai_gen/location_22.mp3',
+      //     // 'https://data.xytschool.com/ai_gen/%E5%8D%97%E6%B9%BE%E6%B9%96.mp3',
+      //     covers: null,
+      //     goods_ids: [
+      //       {
+      //         id: 246,
+      //         user_id: 0,
+      //         created_at: '2024-04-28T11:17:56+08:00',
+      //         updated_at: '2024-08-20T11:46:48+08:00',
+      //         com_id: 14,
+      //         price: 60,
+      //         real_price: 60,
+      //         num: 1000000,
+      //         pv: 0,
+      //         sale_num: 0,
+      //         status: 'publish',
+      //         express_type: 'none',
+      //         express: 0,
+      //         tags: '10037',
+      //         name: '全价门票',
+      //         small_cover:
+      //           'http://data.xytschool.com/storage/image/20240430/1714436793305953.png',
+      //         covers: [
+      //           'http://data.xytschool.com/storage/image/20240430/1714436803762264.png',
+      //           'http://data.xytschool.com/storage/image/20240430/1714436820274470.png'
+      //         ],
+      //         infos: {
+      //           subs: [
+      //             {
+      //               id: 244,
+      //               name: '全价门票（首检）',
+      //               cover: '',
+      //               goods_type: 'ticket',
+      //               number: 1
+      //             },
+      //             {
+      //               id: 245,
+      //               name: '全价门票（复检）',
+      //               cover: '',
+      //               goods_type: 'ticket',
+      //               number: 1
+      //             }
+      //           ],
+      //           ota: {
+      //             pre_sale_time: 0
+      //           }
+      //         },
+      //         desc: '',
+      //         goods_type: 'mix_ticket',
+      //         parent_id: 0
+      //       },
+      //       {
+      //         id: 231,
+      //         user_id: 0,
+      //         created_at: '2024-04-25T22:24:07+08:00',
+      //         updated_at: '2024-08-13T07:55:52+08:00',
+      //         com_id: 14,
+      //         price: 100,
+      //         real_price: 100,
+      //         num: 100000,
+      //         pv: 0,
+      //         sale_num: 0,
+      //         status: 'publish',
+      //         express_type: 'none',
+      //         express: 0,
+      //         tags: '10044',
+      //         name: '全价门票+船票',
+      //         small_cover:
+      //           'http://data.xytschool.com/storage/image/20240430/1714455433605301.png',
+      //         covers: [
+      //           'http://data.xytschool.com/storage/image/20240425/1714053207856926.png',
+      //           'http://data.xytschool.com/storage/image/20240430/1714455444961961.png',
+      //           'http://data.xytschool.com/storage/image/20240430/1714455451737047.png'
+      //         ],
+      //         infos: {
+      //           subs: [
+      //             {
+      //               id: 265,
+      //               name: '全价门票+船票（复检）',
+      //               cover: '',
+      //               goods_type: 'ticket',
+      //               number: 1
+      //             },
+      //             {
+      //               id: 266,
+      //               name: '全价门票+船票（船队）',
+      //               cover: '',
+      //               goods_type: 'ticket',
+      //               number: 1
+      //             },
+      //             {
+      //               id: 264,
+      //               name: '全价门票+船票（首检）',
+      //               cover: '',
+      //               goods_type: 'ticket',
+      //               number: 1
+      //             }
+      //           ]
+      //         }
+      //       }
+      //     ],
+      //     created_at: '2023-08-01T20:00:00+08:00',
+      //     updated_at: '2023-08-01T20:00:00+08:00'
+      //   }
+      // ]
+
       const defaultIconPath = '/static/flag.png' // 写死的图标路径
       this.covers = this.covers.map((marker) => ({
         ...marker,
@@ -383,15 +385,20 @@ export default {
           display: 'ALWAYS' //'BYCLICK':点击显示; 'ALWAYS':常显
         }
       }))
+      console.log(this.covers, ' this.covers ')
       this.latitude = this.covers[0].latitude
       this.longitude = this.covers[0].longitude
+      console.log(this.covers[0].latitude, 'this.covers[0].latitude')
     },
     bjMusicClick() {
       // audioManager.AudioPlay(this.detailsList.voice_url)
+      console.log('bjMusicClick')
       if (this.musicShow) {
         console.log('播放')
         const timout = setTimeout(() => {
           clearTimeout(timout)
+          console.log(this.detailsList.voice_url, 'this.detailsList.voice_url')
+
           audioManager.AudioPlay(this.detailsList.voice_url)
         }, 500)
       } else {
@@ -428,6 +435,8 @@ export default {
         audioManager.audioStop()
       } else {
         this.isPlaying = true
+        console.log(this.markeraudio.voice_url, 'this.markeraudio.voice_url')
+
         audioManager.AudioPlay(this.markeraudio.voice_url)
       }
     }

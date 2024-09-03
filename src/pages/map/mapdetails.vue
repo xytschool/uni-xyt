@@ -24,6 +24,11 @@
     <view class="info">
       {{ data.info }}
     </view>
+    <view class="img">
+      <view v-for="item in data.covers" :key="index" class="img-item">
+        <img :src="item" alt="" />
+      </view>
+    </view>
     <commodityList :goodsList="goodsList"></commodityList>
   </view>
 </template>
@@ -104,6 +109,24 @@ export default {
     color: #333333;
     font-size: 12px;
     display: inline-block;
+  }
+}
+.img {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .img-item {
+    flex: 0 0 calc((100% - 10px) / 2);
+    height: 120px;
+    margin: 0 5px 5px 0;
+    img{
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .item:nth-child(2n) {
+    margin-right: 0;
   }
 }
 </style>
