@@ -115,12 +115,14 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
   .img-item {
     flex: 0 0 calc((100% - 10px) / 2);
     height: 120px;
     margin: 0 5px 5px 0;
-    img{
+    img {
       width: 100%;
       height: 100%;
     }
