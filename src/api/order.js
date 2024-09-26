@@ -45,9 +45,16 @@ module.exports = {
   /**
    *   [{icon: '' , title: '' , link: ''}]
    * */
-  async refund(data) {
-    return post(host + '/refund', data)
+  // async refund(data) {
+  //   return post(host + '/refund', data)
+  // },
+
+ 
+  
+    async refund(data) {
+    return post(host + '/order/refund', data)
   },
+
   async queryOrder(orderNo) {
     return post(host + '/queryOrder', { order_no: orderNo })
   },
