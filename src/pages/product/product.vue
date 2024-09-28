@@ -56,7 +56,7 @@
         <text>图文详情</text>
       </view>
       <view class="detail-desc-text">
-        <rich-text :nodes="goods.body"></rich-text>
+        <rich-text :nodes="htmlString"></rich-text>
       </view>
     </view>
 
@@ -168,6 +168,7 @@ export default {
       commentNum: 0,
       goodCommentNum: 0,
       goods: {},
+      htmlString: '',
       activity: null,
       from_user_id: 0
     }
@@ -236,6 +237,11 @@ export default {
     //   }
     //   this.$api.user.addUserHistory({ type: 'goods', target_id: this.goods.id })
     // }
+    this.htmlString = this.goods.body.replace(
+      /<img/g,
+      '<img style="width:100vw; height:auto;"'
+    )
+    console.log( this.htmlString, 'htmlString')
   },
   methods: {
     //#ifdef H5
@@ -762,12 +768,15 @@ page {
     }
   }
 
-  .detail-desc-text {
-    width: 100%;
-    // imgae{
-
-    //   height: auto;
-    // }
+  .detail-desc-content {
+    width: 100ww;
+    p {
+      font-size: 24px;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 }
 
