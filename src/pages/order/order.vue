@@ -132,7 +132,7 @@
               <!--  -->
               <button
                 class="action-btn"
-                v-if="item.status == 'paid'"
+                v-if="item.pay_status == 'paid'"
                 @click="gotoRefund(item)"
               >
                 退款
