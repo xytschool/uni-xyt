@@ -49,10 +49,8 @@ module.exports = {
   //   return post(host + '/refund', data)
   // },
 
- 
-  
-    async refund(data) {
-    return post(host + '/order/refund', data)
+  async refund(data) {
+    return post(host + '/refund', data)
   },
 
   async queryOrder(orderNo) {
@@ -66,6 +64,5 @@ module.exports = {
   },
   async getOrderDetail(data) {
     return get(host + '/getOrderDetail', data)
-  },
-
+  }
 }
