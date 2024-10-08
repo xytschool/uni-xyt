@@ -6,14 +6,16 @@ import { getComId, getUserInfo, setUserInfo } from './utils/utils'
 import '@/font/iconfont.css';
 import { numberToCurrencyNo } from '@/utils/numberToCurrency'
 import { transformTimestamp } from '@/utils/transformTimestamp'
+import commonShare  from '@/utils/commonShare.js'
 Vue.config.productionTip = false
 import uView from 'uview-ui'
-
+Vue.mixin(commonShare)
 Vue.use(uView)
 App.mpType = 'app'
 // 配置全局过滤器，实现数字千分位格式
 Vue.filter('numberToCurrency', numberToCurrencyNo)
 Vue.filter('transformTimestamp', transformTimestamp)
+
 
 
 Vue.prototype.$scenicSpot = "南湾湖"
