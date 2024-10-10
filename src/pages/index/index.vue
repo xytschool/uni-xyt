@@ -317,17 +317,28 @@
     </view>
 
     <view class="guess-section">
-      <view
-        v-for="(item, index) in goodsList"
-        :key="index"
-        class="guess-item"
-        @click="navToDetailPage(item)"
-      >
-        <view class="image-wrapper">
-          <image :src="item.small_cover" mode="aspectFill"></image>
+      <view v-if="goodsList.length > 0" class="guess-warp">
+        <view
+          v-for="(item, index) in goodsList"
+          :key="index"
+          class="guess-item"
+          @click="navToDetailPage(item)"
+        >
+          <view class="image-wrapper">
+            <image :src="item.small_cover" mode="aspectFill"></image>
+          </view>
+          <text class="title clamp">{{ item.name }}</text>
+          <text class="price">
+            ￥ {{ item.real_price | numberToCurrency }}</text
+          >
         </view>
-        <text class="title clamp">{{ item.name }}</text>
-        <text class="price"> ￥ {{ item.real_price | numberToCurrency }}</text>
+      </view>
+
+      <view v-else class="noData">
+        <img src="../../static/noData.png" alt="" class="noDataImg" />
+        <view class="noDataText">
+          暂无商品
+        </view>
       </view>
     </view>
   </view>
@@ -939,11 +950,13 @@ page {
 
 /* 猜你喜欢 */
 .guess-section {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 30upx;
-  background: #fff;
-
+  .guess-warp {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 30rpx;
+    padding: 0 30upx;
+    background: #fff;
+  }
   .guess-item {
     display: flex;
     flex-direction: column;
@@ -1022,6 +1035,25 @@ page {
   }
   .item:nth-child(4) {
     background: #b68e59;
+  }
+}
+.noData {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .noDataImg {
+    width: 236rpx;
+    height: 236rpx;
+  }
+  .noDataText {
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 400;
+    font-size: 36rpx;
+    color: #999999;
+    margin-top: 48rpx;
   }
 }
 </style>
