@@ -59,6 +59,12 @@
         该订单正在退款中
       </view>
     </view>
+    <ad-custom
+      unit-id="adunit-8071496ede66bfe8"
+      bindload="adLoad"
+      binderror="adError"
+      bindclose="adClose"
+    ></ad-custom>
   </view>
 </template>
 <script>
@@ -129,6 +135,9 @@ page {
 .content {
   margin-top: 16upx;
   background: #fff;
+}
+.yt-list {
+  height: 100vh;
 }
 .yt-list-cell {
   display: flex;
