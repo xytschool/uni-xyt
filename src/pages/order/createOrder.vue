@@ -35,7 +35,8 @@
       <view class="yt-list-cell desc-cell">
         <text class="cell-tit clamp">购票张数</text>
         <u-number-box
-          :min="1"
+          min="1"
+          max="99"
           v-model="tickets"
           @change="valChange"
         ></u-number-box>
@@ -197,6 +198,11 @@ export default {
     checkboxChange(item) {},
 
     valChange(e) {
+      if (this.tickets < 1) {
+        this.tickets = 1
+      } else if (this.tickets >= 99) {
+        this.tickets = 99
+      }
       this.real_total = e.value * this.real_amount
     },
     async submit() {

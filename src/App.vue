@@ -1,12 +1,12 @@
 <script>
 export default {
-  onLaunch: function() {
-    uni.setInnerAudioOption({
-      obeyMuteSwitch: false
-    })
-  },
+  onLaunch: function() {},
   onShow: function() {
-    //console.log('App Show')
+    console.log('App Show')
+    wx.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
   },
   onHide: function() {
     //console.log('App Hide')

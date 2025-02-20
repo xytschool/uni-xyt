@@ -304,13 +304,18 @@ export default {
     },
     //取消订单
     cancelOrder(item) {
+      let that = this
+
       uni.showLoading({
         title: '请稍后'
       })
+      const last_id = 0
+
       this.$api.order.cancelOrder(item).then((res) => {
         uni.hideLoading()
         if (res.code == 'success') {
           uni.showToast({ title: '取消订单成功' })
+          that.loadData('', last_id, 'more')
         } else {
           uni.showToast({ title: '取消订单失败' + res.msg })
         }
@@ -327,33 +332,33 @@ export default {
       })
     },
     async gotoRefund(item) {
-      uni.showToast({
-        title: `请您游客中心办理退款，联系电话:0376-6376018`,
-        icon: 'none',
-        duration: 5000
-      })
-      // let that = this
-      // uni.showModal({
-      //   title: '退款',
-      //   content: '确定要退款吗',
-      //   success: async function(res) {
-      //     if (res.confirm) {
-      //       const res = await refund({
-      //         order_no: item.order_no,
-      //         user_id: item.user_id
-      //       })
-      //       if (res.code == 'success') {
-      //         console.log(res.code)
-      //         const last_id = 0
-      //         uni.showToast({ title: '退款成功', icon: 'success' })
-
-      //         that.loadData('', last_id, 'more')
-      //       } else {
-      //         uni.showToast({ title: res.message, icon: 'error' })
-      //       }
-      //     }
-      //   }
+      // uni.showToast({
+      //   title: `请您游客中心办理退款，联系电话:0376-6376018`,
+      //   icon: 'none',
+      //   duration: 5000
       // })
+      let that = this
+      uni.showModal({
+        title: '退款',
+        content: '确定要退款吗',
+        success: async function(res) {
+          if (res.confirm) {
+            const res = await refund({
+              order_no: item.order_no,
+              user_id: item.user_id
+            })
+            if (res.code == 'success') {
+              console.log(res.code)
+              const last_id = 0
+              uni.showToast({ title: '退款成功', icon: 'success' })
+
+              that.loadData('', last_id, 'more')
+            } else {
+              uni.showToast({ title: res.message, icon: 'error' })
+            }
+          }
+        }
+      })
     },
     //订单状态文字和颜色
     orderStateExp(state) {

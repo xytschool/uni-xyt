@@ -10,7 +10,7 @@
 //测试
 // export const baseUrl = 'https://gomall.test.mytool.zone/{$com_id}/api/v1'
 // export const baseUrlLogo = 'https://gomall.test.mytool.zone/14/api/v1'
-
+// 生产
 export const baseUrl = 'https://mall.nanwanhu.com.cn/{$com_id}/api/v1'
 export const baseUrlLogo = 'https://mall.nanwanhu.com.cn/14/api/v1'
 
