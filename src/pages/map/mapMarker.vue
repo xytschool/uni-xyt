@@ -8,7 +8,7 @@
         :markers="covers"
         @markertap="bindmarkertap"
         @regionchange="onRegionChange"
-        scale="17"
+        scale="18"
       >
         <cover-view slot="callout">
           <block v-for="(item, index) in covers" :key="index">

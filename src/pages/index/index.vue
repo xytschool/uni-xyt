@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <!-- 小程序头部兼容 -->
-    <!-- #ifdef MP -->
+
     <view class="mp-search-box">
       <!-- <input
         class="ser-input"
@@ -10,7 +10,6 @@
         v-model="keyword"
       /> -->
     </view>
-    <!-- #endif -->
 
     <!-- 头部轮播 -->
     <view class="carousel-section">
@@ -300,10 +299,15 @@
         <view class="en"> regarding</view>
         <span class="iconfont icon-guanyuwomen"></span>
       </view>
-      <view class="item">
+      <!-- <view class="item">
         <span style="font-size: 36rpx;"> 客服电话:<br />0376-6376018</span>
         <view class="en"> Service Hot-Line</view>
-        <!-- <span class="iconfont icon-bangzhuzhongxin-copy"></span> -->
+     
+      </view> -->
+      <view class="item" @click="mapMarker">
+        <span style="font-size: 36rpx;"> 地图</span>
+        <view class="en"> map</view>
+        <span class="iconfont icon-bangzhuzhongxin-copy"></span>
       </view>
     </view>
     <!-- 猜你喜欢 -->
@@ -313,39 +317,21 @@
         <text class="tit">商品列表</text>
         <text class="tit2">Product list</text>
       </view>
+
       <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式 -->
     </view>
 
-    <view class="guess-section">
-      <view v-if="goodsList.length > 0" class="guess-warp">
-        <view
-          v-for="(item, index) in goodsList"
-          :key="index"
-          class="guess-item"
-          @click="navToDetailPage(item)"
-        >
-          <view class="image-wrapper">
-            <image :src="item.small_cover" mode="aspectFill"></image>
-          </view>
-          <text class="title clamp">{{ item.name }}</text>
-          <text class="price">
-            ￥ {{ item.real_price | numberToCurrency }}</text
-          >
-        </view>
-      </view>
-
-      <view v-else class="noData">
-        <img src="../../static/noData.png" alt="" class="noDataImg" />
-        <view class="noDataText">
-          暂无商品
-        </view>
-      </view>
-    </view>
+    <commodityList :goodsList="goodsList"></commodityList>
   </view>
 </template>
 
 <script>
+import commodityList from '@/components/commodityList.vue'
 export default {
+  components: {
+    commodityList
+  },
+
   data() {
     return {
       titleNViewBackground: '',
@@ -413,17 +399,7 @@ export default {
       this.swiperCurrent = index
       this.titleNViewBackground = this.carouselList[index].background
     },
-    //详情页
-    navToDetailPage(item) {
-      let id = item.id
-      if (item.href) {
-        uni.navigateTo({ url: item.href })
-      } else {
-        uni.navigateTo({
-          url: `/pages/product/product?id=${id}`
-        })
-      }
-    },
+
     onlineTicket() {
       //在线购票
       uni.navigateTo({
@@ -446,7 +422,9 @@ export default {
     //详情页
     gotoNav(item) {
       if (!item.href) {
-        uni.showToast({ title: '请配置跳转地址' })
+        uni.showToast({
+          title: '请配置跳转地址'
+        })
         return
       }
       //console.log(item.link)
@@ -463,6 +441,16 @@ export default {
     introduction() {
       uni.navigateTo({
         url: '/pages/introduction/index'
+      })
+    },
+    mapMarker() {
+      uni.navigateTo({
+        url: '/pages/map/mapMarker'
+      })
+    },
+    mapMarker() {
+      uni.navigateTo({
+        url: '/pages/map/mapMarker'
       })
     }
   },
@@ -486,14 +474,13 @@ export default {
     if (index === 0) {
       this.$api.msg('点击了扫描')
     } else if (index === 1) {
-      // #ifdef APP-PLUS
       const pages = getCurrentPages()
       const page = pages[pages.length - 1]
       const currentWebview = page.$getAppWebview()
       currentWebview.hideTitleNViewButtonRedDot({
         index
       })
-      // #endif
+
       uni.navigateTo({
         url: '/pages/notice/notice'
       })
@@ -948,57 +935,12 @@ page {
   }
 }
 
-/* 猜你喜欢 */
-.guess-section {
-  .guess-warp {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 30rpx;
-    padding: 0 30upx;
-    background: #fff;
-  }
-  .guess-item {
-    display: flex;
-    flex-direction: column;
-    width: 48%;
-    padding-bottom: 40upx;
-
-    &:nth-child(2n + 1) {
-      margin-right: 4%;
-    }
-  }
-
-  .image-wrapper {
-    width: 100%;
-    height: 330upx;
-    border-radius: 3px;
-    overflow: hidden;
-
-    image {
-      width: 100%;
-      height: 100%;
-      opacity: 1;
-    }
-  }
-
-  .title {
-    font-size: $font-lg;
-    color: $font-color-dark;
-    line-height: 80upx;
-  }
-
-  .price {
-    font-size: $font-lg;
-    color: $uni-color-primary;
-    line-height: 1;
-  }
-}
-
 .ticket-content {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 20rpx;
+
   .item {
     width: 48%;
     height: 260rpx;
@@ -1007,16 +949,19 @@ page {
     color: #fff;
     padding: 40rpx;
     position: relative;
+
     span {
       font-size: 46rpx;
       font-family: PingFang SC, PingFang SC;
       font-weight: 400;
     }
+
     .en {
       font-size: 30rpx;
       font-family: PingFang SC, PingFang SC;
       font-weight: 200;
     }
+
     .iconfont {
       // background: red;
       font-size: 70rpx;
@@ -1024,36 +969,21 @@ page {
       right: 30rpx;
     }
   }
+
   .item:nth-child(1) {
     background: #a6635f;
   }
+
   .item:nth-child(2) {
     background: #b17965;
   }
+
   .item:nth-child(3) {
     background: #507487;
   }
+
   .item:nth-child(4) {
     background: #b68e59;
-  }
-}
-.noData {
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  .noDataImg {
-    width: 236rpx;
-    height: 236rpx;
-  }
-  .noDataText {
-    font-family: PingFang SC, PingFang SC;
-    font-weight: 400;
-    font-size: 36rpx;
-    color: #999999;
-    margin-top: 48rpx;
   }
 }
 </style>
