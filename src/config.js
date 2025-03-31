@@ -14,4 +14,7 @@
 export const baseUrl = 'https://mall.nanwanhu.com.cn/{$com_id}/api/v1'
 export const baseUrlLogo = 'https://mall.nanwanhu.com.cn/14/api/v1'
 
+// Base URL for data.mallzone.cn
+export const dataMallZoneUrl = 'https://data.mallzone.cn'
+
 // https://mall.mytool.zone/14/api/v1/goods/getGoodsList

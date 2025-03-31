@@ -3,7 +3,7 @@
     <view class="title">{{ scenicSpot }}景区</view>
     <image
       class="headDiagram"
-      src="https://data.xytschool.com/2024/05/27/6653d95141f77.jpg"
+      :src="`${dataMallZoneUrl}/2024/05/27/6653d95141f77.jpg`"
     ></image>
     <view class="title">
       景区简介
@@ -20,7 +20,7 @@
     <view class="introduce">
       <view class="introduce-item">
         <image
-          src="https://data.xytschool.com/2024/06/15/666da85b97aab.jpeg"
+          :src="`${dataMallZoneUrl}/2024/06/15/666da85b97aab.jpeg`"
         ></image>
         <view class="title">茶岛</view>
         <view class="content">
@@ -29,9 +29,7 @@
         </view>
       </view>
       <view class="introduce-item">
-        <image
-          src="https://data.xytschool.com/2024/06/15/666dad57904e4.jpg"
-        ></image>
+        <image :src="`${dataMallZoneUrl}/2024/06/15/666dad57904e4.jpg`"></image>
         <view class="title">樱花园</view>
         <view class="content">
           樱花园就位于茶岛上。春风醉茶都，樱漫{{
@@ -40,9 +38,7 @@
         </view>
       </view>
       <view class="introduce-item">
-        <image
-          src="https://data.xytschool.com/2024/06/15/666dad9b7928e.jpg"
-        ></image>
+        <image :src="`${dataMallZoneUrl}/2024/06/15/666dad9b7928e.jpg`"></image>
         <view class="title">鸟岛</view>
         <view class="content">
           鸟岛是{{ scenicSpot }}的保护区， 是许多鸟类的栖息地。岛
@@ -50,9 +46,7 @@
         </view>
       </view>
       <view class="introduce-item">
-        <image
-          src="https://data.xytschool.com/2024/06/15/666da85b76263.jpg"
-        ></image>
+        <image :src="`${dataMallZoneUrl}/2024/06/15/666da85b76263.jpg`"></image>
         <view class="title">猴岛</view>
         <view class="content">
           猴岛是{{ scenicSpot }}中的一座小 岛，岛上有大量的猴群栖
@@ -72,22 +66,22 @@
     <view class="title">旅游设施</view>
     <image
       class="headDiagram"
-      src="https://data.xytschool.com/2024/06/15/666daab64e9ae.jpg"
+      :src="`${dataMallZoneUrl}/2024/06/15/666daab64e9ae.jpg`"
     ></image>
     <view class="title">{{ scenicSpot }}大坝</view>
     <view class="content">
       {{
         scenicSpot
-      }}大坝长816.5米，坝顶宽8米，坝高38.3米，最大拦蓄水量为16.3亿立方米，大坝正面镶砌有毛泽东所题的“一定要把淮河修好”八个大字，坝顶、坝坡安装投光灯、高压钠灯共369盏，在东西坝头分设2盏高杆灯，并在高杆灯上设4台激光射灯。白天漫步坝顶，大坝如一条长龙，横贯东西，气势恢宏，放眼远眺，但觉碧波荡漾，颇有临江濒海之感。而夜幕下的大坝，灯火通明、金碧辉煌，灯光映照在湖面上波光粼粼，呈现出如梦如幻般景象，令人流连忘返。
+      }}大坝长816.5米，坝顶宽8米，坝高38.3米，最大拦蓄水量为16.3亿立方米，大坝正面镶砌有毛泽东所题的"一定要把淮河修好"八个大字，坝顶、坝坡安装投光灯、高压钠灯共369盏，在东西坝头分设2盏高杆灯，并在高杆灯上设4台激光射灯。白天漫步坝顶，大坝如一条长龙，横贯东西，气势恢宏，放眼远眺，但觉碧波荡漾，颇有临江濒海之感。而夜幕下的大坝，灯火通明、金碧辉煌，灯光映照在湖面上波光粼粼，呈现出如梦如幻般景象，令人流连忘返。
     </view>
 
     <image
       class="headDiagram"
-      src="https://data.xytschool.com/2024/06/15/666dab625a02e.jpg"
+      :src="`${dataMallZoneUrl}/2024/06/15/666dab625a02e.jpg`"
     ></image>
     <view class="title">贤隐寺</view>
     <view class="content" style="padding-bottom: 50rpx;">
-      贤隐寺为古时“中原五大寺”之一，与“嵩山少林寺、洛阳白马寺、开封相国寺、南阳玄观庙”齐名。
+      贤隐寺为古时"中原五大寺"之一，与"嵩山少林寺、洛阳白马寺、开封相国寺、南阳玄观庙"齐名。
     </view>
 
     <!-- <image
@@ -102,10 +96,13 @@
 </template>
 
 <script>
+import { dataMallZoneUrl } from '@/config'
+
 export default {
   data() {
     return {
-      scenicSpot: ''
+      scenicSpot: '南湾湖',
+      dataMallZoneUrl,
     }
   },
   onLoad(params) {
