@@ -63,6 +63,9 @@ export default {
   },
   onLoad() {
     this.loadData()
+    setTimeout(() => {
+      this.calcSize()
+    }, 100)
   },
   computed: {
     ...mapState({
@@ -117,9 +120,11 @@ export default {
               size: true
             },
             (data) => {
-              item.top = h
-              h += data.height
-              item.bottom = h
+              if (data) {
+                item.top = h
+                h += data.height
+                item.bottom = h
+              }
             }
           )
           .exec()

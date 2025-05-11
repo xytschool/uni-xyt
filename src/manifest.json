@@ -53,7 +53,7 @@
 			"sdkConfigs": {
 				"share": {
 					"weixin": {
-						"appid": "wxcefffb4e27941005",
+						"appid": "wxf334a95251c6afed",
 						"UniversalLinks": ""
 					}
 				}
@@ -64,7 +64,7 @@
 	"quickapp": {},
 	/* 快应用特有相关 */
 	"mp-weixin": {
-		"appid": "wxcefffb4e27941005",
+		"appid": "wxf334a95251c6afed",
 		"setting": {
 			"urlCheck": false
 		},

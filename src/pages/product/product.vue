@@ -14,43 +14,6 @@
       </swiper>
     </view>
 
-    <view class="introduce-section">
-      <text class="title">{{ goods.name }}</text>
-      <view class="price-box">
-        <text class="price-tip">¥</text>
-        <text class="price"> {{ goods.real_price | numberToCurrency }}</text>
-        <text class="m-price" v-if="goods.real_price < goods.price"
-          >¥ {{ goods.price | numberToCurrency }}</text
-        >
-        <text class="coupon-tip">折扣</text>
-      </view>
-      <!-- <view class="bot-row">
-        <text>销量: {{ goods.sale_num }}</text>
-        <text>库存: {{ goods.num }}</text>
-        <text>浏览量: {{ goods.pv }}</text>
-      </view> -->
-    </view>
-
-    <view class="c-list">
-      <view
-        class="c-row b-b"
-        @click="toggleSpec"
-        v-show="goods.sku_labels && goods.sku_labels.length != 0"
-      >
-        <text class="tit">购买类型</text>
-        <view class="con">
-          <text
-            class="selected-text"
-            v-for="(sItem, sIndex) in specSelected"
-            :key="sIndex"
-          >
-            {{ sItem }}
-          </text>
-        </view>
-        <text class="yticon icon-you"></text>
-      </view>
-    </view>
-
     <view class="detail-desc">
       <view class="d-header">
         <text>图文详情</text>
@@ -75,6 +38,15 @@
       </view>
       <view class="action-btn-group">
         <button
+          v-if="goods.goods_skus.length > 0"
+          type="primary"
+          class=" action-btn no-border buy-now-btn"
+          @click="openCalendar"
+        >
+          立即预约
+        </button>
+        <button
+          v-else
           type="primary"
           class=" action-btn no-border buy-now-btn"
           @click="buy"
@@ -136,6 +108,88 @@
         <button class="btn" @click="toggleSpec">完成</button>
       </view>
     </view>
+
+    <!-- 日历弹窗 -->
+    <u-popup v-model="showCalendar" mode="center">
+      <view class="calendar-popup u-calendar">
+        <view class="u-calendar__header">选择预约日期</view>
+        <view class="u-calendar__week">
+          <text
+            v-for="w in ['日', '一', '二', '三', '四', '五', '六']"
+            :key="w"
+            class="u-calendar__week-item"
+            >{{ w }}</text
+          >
+        </view>
+        <view class="calendar-grid u-calendar__body">
+          <view
+            v-for="empty in firstDayOfWeek"
+            :key="'empty' + empty"
+            class="calendar-cell u-calendar__cell u-calendar__cell--empty"
+          ></view>
+          <view
+            v-for="day in calendarDays"
+            :key="day.date"
+            class="calendar-cell u-calendar__cell"
+            :class="{
+              'u-calendar__cell--selected': day.date === selectedDate,
+              'u-calendar__cell--disabled': !day.price
+            }"
+            @click="onDateClick(day)"
+          >
+            <text>{{ day.day }}</text>
+            <text v-if="day.price" class="calendar-price"
+              >¥{{ day.price }}</text
+            >
+          </view>
+        </view>
+        <view class="u-calendar__footer">
+          <button class="u-calendar__btn " @click="showCalendar = false">
+            取消
+          </button>
+        </view>
+      </view>
+    </u-popup>
+
+    <!-- 时间段弹窗 -->
+    <u-popup v-model="showTimeRangePopup" mode="center">
+      <view class="timerange-popup">
+        <view class="timerange-header">选择时间段</view>
+        <scroll-view scroll-y class="timerange-scroll">
+          <view
+            v-for="tr in availableTimeRanges"
+            :key="tr.sku_id"
+            class="timerange-item"
+            :class="{
+              selected:
+                selectedTimeRange && selectedTimeRange.sku_id === tr.sku_id
+            }"
+            @click="onTimeRangeSelect(tr)"
+          >
+            <text class="timerange-time"
+              >{{ tr.time_range_start }} - {{ tr.time_range_end }}</text
+            >
+            <text class="timerange-price">¥{{ tr.real_price }}</text>
+          </view>
+        </scroll-view>
+        <view class="timerange-footer">
+          <span class="timerange-close" @click="showTimeRangePopup = false">
+            取消
+          </span>
+        </view>
+      </view>
+    </u-popup>
+
+    <!-- 底部确认栏 -->
+    <view v-if="confirmInfo" class="confirm-bar">
+      <span>已选：</span>
+      <text
+        >{{ confirmInfo.date }} {{ confirmInfo.timeRange }} ¥{{
+          confirmInfo.price
+        }}</text
+      >
+      <button @click="buy">确认预约</button>
+    </view>
   </view>
 </template>
 
@@ -144,12 +198,16 @@
 // import coupons from '@/components/coupons'
 import { mapState } from 'vuex'
 import { deepEqual } from '../../utils/utils'
+import uCalendar from 'uview-ui/components/u-calendar/u-calendar'
 
 //#ifdef H5
 import wx from 'weixin-js-sdk'
 //#endif
 
 export default {
+  components: {
+    uCalendar
+  },
   data() {
     return {
       showCouponMask: 0,
@@ -163,14 +221,31 @@ export default {
         id: 0
       },
       favorite: false,
-
       commentList: [],
       commentNum: 0,
       goodCommentNum: 0,
       goods: {},
       htmlString: '',
       activity: null,
-      from_user_id: 0
+      from_user_id: 0,
+      show: false,
+      mode: 'single',
+      markDate: [],
+      disabledDates: [],
+      selectedDate: '',
+      dateRange: [],
+      showTimePicker: false,
+      timeRange: [0, 0],
+      hours: Array.from({ length: 24 }, (_, i) => i),
+      selectedTimeRange: null,
+      showCalendar: false,
+      showTimeRangePopup: false,
+      datePriceMap: {},
+      dateTimeRangeMap: {},
+      calendarDays: [],
+      availableTimeRanges: [],
+      confirmInfo: null,
+      firstDayOfWeek: 0
     }
   },
   computed: {
@@ -178,7 +253,48 @@ export default {
       user: (state) => state.user.user,
       hasLogin: (state) => state.user.hasLogin,
       company: (state) => state.company.company
-    })
+    }),
+    maxDate() {
+      if (
+        !this.goods ||
+        !this.goods.goods_skus ||
+        !this.goods.goods_skus.length
+      ) {
+        return null
+      }
+
+      // 获取当前日期
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      // 获取所有有效的日期
+      const validDates = this.goods.goods_skus
+        .map((sku) => {
+          if (!sku.effect_date) return null
+          const date = new Date(sku.effect_date)
+          if (isNaN(date.getTime())) return null
+          return date
+        })
+        .filter((date) => date !== null)
+
+      if (validDates.length === 0) {
+        return null
+      }
+
+      // 找出最大日期
+      const maxTimestamp = Math.max(...validDates.map((date) => date.getTime()))
+      const maxDate = new Date(maxTimestamp)
+
+      // 确保最大日期不小于今天
+      const finalDate = maxTimestamp > today ? maxDate : today
+
+      // 格式化为 YYYY-MM-DD
+      const year = finalDate.getFullYear()
+      const month = String(finalDate.getMonth() + 1).padStart(2, '0')
+      const day = String(finalDate.getDate()).padStart(2, '0')
+
+      return `${year}-${month}-${day}`
+    }
   },
   async onLoad(options) {
     //接收传值,id里面放的是标题，因为测试数据并没写id
@@ -241,9 +357,56 @@ export default {
       /<img/g,
       '<img style="width:100vw; height:auto;"'
     )
-    console.log( this.htmlString, 'htmlString')
+    console.log(this.htmlString, 'htmlString')
+
+    // 处理日历数据
+    this.preprocessSkus()
+    this.generateCalendarDays()
   },
   methods: {
+    change(e) {
+      console.log('日期变化:', e)
+      this.selectedDate = e.result
+      this.showTimePicker = true
+    },
+    confirm(e) {
+      console.log('确认选择:', e)
+      this.dateRange = e.result
+      this.show = false
+    },
+    close() {
+      this.show = false
+    },
+    openCalendar() {
+      this.showCalendar = true
+    },
+    onTimeRangeChange(e) {
+      this.timeRange = e.detail.value
+    },
+    confirmTimeRange() {
+      const startHour = this.hours[this.timeRange[0]]
+      const endHour = this.hours[this.timeRange[1]]
+
+      if (startHour >= endHour) {
+        uni.showToast({
+          title: '结束时间必须大于开始时间',
+          icon: 'none'
+        })
+        return
+      }
+
+      this.selectedTimeRange = {
+        start: `${startHour}:00`,
+        end: `${endHour}:00`
+      }
+
+      // 这里可以处理预约逻辑
+      console.log('选择的日期:', this.selectedDate)
+      console.log('选择的时间范围:', this.selectedTimeRange)
+
+      this.showTimePicker = false
+      // 可以在这里调用预约API
+    },
     //#ifdef H5
     async setShareInfo() {
       var configRes = await this.$api.site.getWxConfig({
@@ -411,15 +574,16 @@ export default {
 
       this.$store.dispatch('order/reset')
       var cartGoodsItem = this.buildCartGoods()
-      console.log(cartGoodsItem, '222222')
+
       if (!cartGoodsItem) {
         return
       }
       this.$store.dispatch('order/preOrderByGoodsList', [cartGoodsItem])
 
       this.$store.dispatch('order/preOrderBygoodsType', this.goods.goods_type)
+
       uni.navigateTo({
-        url: `/pages/order/createOrder?from_user=` + this.from_user_id
+        url: `/pages/order/createOrder?from_user=${this.from_user_id}`
       })
     },
     buildCartGoods() {
@@ -435,6 +599,14 @@ export default {
         express_type: this.goods.express_type,
         id_cards: []
       }
+
+      if (this.goods.goods_skus.length > 0) {
+        cartGoodsItem.sku_id = this.confirmInfo.sku_id
+        cartGoodsItem.sku_name = this.confirmInfo.sku_name
+        cartGoodsItem.real_price = parseFloat(this.confirmInfo.price)
+        cartGoodsItem.price = parseFloat(this.confirmInfo.price)
+      }
+
       if (this.goods.sku_labels && this.goods.sku_labels.length > 0) {
         //有sku的商品
         if (this.currentSku.num == 0) {
@@ -450,7 +622,80 @@ export default {
       console.log(cartGoodsItem, '34567654345')
       return cartGoodsItem
     },
-    stopPrevent() {}
+    stopPrevent() {},
+
+    // 禁用日期
+    disabledDate(date) {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      return date < today
+    },
+    preprocessSkus() {
+      this.datePriceMap = {}
+      this.dateTimeRangeMap = {}
+      ;(this.goods.goods_skus || []).forEach((sku) => {
+        const date = sku.effect_date
+        // 价格只取最低价
+        if (
+          !this.datePriceMap[date] ||
+          sku.real_price < this.datePriceMap[date]
+        ) {
+          this.datePriceMap[date] = sku.real_price
+        }
+        if (!this.dateTimeRangeMap[date]) this.dateTimeRangeMap[date] = []
+        this.dateTimeRangeMap[date].push({
+          start: sku.time_range_start,
+          end: sku.time_range_end,
+          sku_id: sku.id,
+          ...sku
+        })
+      })
+    },
+    generateCalendarDays() {
+      const today = new Date()
+      const year = today.getFullYear()
+      const month = today.getMonth()
+      const firstDay = new Date(year, month, 1)
+      const lastDay = new Date(year, month + 1, 0)
+      const days = []
+      this.firstDayOfWeek = firstDay.getDay()
+      for (let d = 1; d <= lastDay.getDate(); d++) {
+        const dateStr = `${year}-${(month + 1)
+          .toString()
+          .padStart(2, '0')}-${d.toString().padStart(2, '0')}`
+        days.push({
+          date: dateStr,
+          day: d,
+          price: this.datePriceMap[dateStr] || null
+        })
+      }
+      this.calendarDays = days
+    },
+    onDateClick(day) {
+      if (!day.price) return
+      this.selectedDate = day.date
+      this.availableTimeRanges = this.dateTimeRangeMap[day.date] || []
+      this.showCalendar = false
+      this.showTimeRangePopup = true
+      this.selectedTimeRange = null
+    },
+    onTimeRangeSelect(tr) {
+      this.selectedTimeRange = tr
+      this.showTimeRangePopup = false
+      this.confirmInfo = {
+        date: this.selectedDate,
+        timeRange: `${tr.time_range_start
+          .split(':')
+          .slice(0, 2)
+          .join(':')} - ${tr.time_range_end
+          .split(':')
+          .slice(0, 2)
+          .join(':')}`,
+        price: tr.real_price,
+        sku_id: tr.sku_id,
+        sku_name: tr.name
+      }
+    }
   }
 }
 </script>
@@ -1025,6 +1270,276 @@ page {
       border-radius: 0;
       background: transparent;
     }
+  }
+}
+
+/* 日历样式 */
+.u-calendar {
+  background-color: #fff;
+  border-radius: 12rpx;
+  overflow: hidden;
+
+  .u-calendar__header {
+    padding: 20rpx;
+    text-align: center;
+    font-size: 32rpx;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .u-calendar__body {
+    padding: 20rpx;
+
+    .u-calendar__row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20rpx;
+
+      .u-calendar__cell {
+        flex: 1;
+        text-align: center;
+        padding: 10rpx;
+
+        &.u-calendar__cell--selected {
+          background-color: #fa436a;
+          color: #fff;
+          border-radius: 8rpx;
+        }
+
+        &.u-calendar__cell--disabled {
+          color: #ccc;
+        }
+      }
+    }
+  }
+
+  .u-calendar__footer {
+    padding: 20rpx;
+    display: flex;
+    justify-content: space-between;
+
+    .u-calendar__btn {
+      border-radius: 8rpx;
+      font-size: 28rpx;
+    }
+  }
+}
+
+.time-picker {
+  background-color: #fff;
+  padding: 20rpx;
+
+  .time-picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20rpx 0;
+    border-bottom: 1px solid #eee;
+
+    .close {
+      color: #666;
+      font-size: 28rpx;
+    }
+  }
+
+  .time-picker-content {
+    height: 400rpx;
+
+    .time-picker-view {
+      width: 100%;
+      height: 100%;
+    }
+
+    .time-item {
+      line-height: 80rpx;
+      text-align: center;
+    }
+  }
+
+  .time-picker-footer {
+    padding: 20rpx 0;
+
+    .confirm-btn {
+      background: #fa436a;
+      color: #fff;
+      border-radius: 40rpx;
+      font-size: 28rpx;
+    }
+  }
+}
+
+.calendar-popup {
+  background-color: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+  min-width: 650rpx;
+  overflow: hidden;
+}
+.u-calendar__header {
+  padding: 32rpx 0 16rpx 0;
+  text-align: center;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 1rpx solid #f2f2f2;
+}
+.u-calendar__week {
+  display: flex;
+  justify-content: space-between;
+  padding: 12rpx 0 0 0;
+  color: #999;
+  font-size: 26rpx;
+}
+.u-calendar__week-item {
+  flex: 1;
+  text-align: center;
+}
+.u-calendar__body {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 420rpx;
+  padding: 0 0 16rpx 0;
+}
+.calendar-cell {
+  width: 14.28%;
+  text-align: center;
+  margin-bottom: 10rpx;
+  padding: 18rpx 0 8rpx 0;
+  border-radius: 12rpx;
+  background: #fff;
+  margin-right: 0;
+  font-size: 30rpx;
+  position: relative;
+  transition: background 0.2s;
+}
+.u-calendar__cell--selected {
+  background: #fa436a;
+  color: #fff;
+}
+.u-calendar__cell--disabled {
+  color: #ccc;
+  background: #f5f5f5;
+}
+.u-calendar__cell--empty {
+  background: transparent;
+}
+.calendar-price {
+  display: block;
+  color: #fa436a;
+  font-size: 22rpx;
+  margin-top: 2rpx;
+}
+.u-calendar__cell--selected .calendar-price {
+  color: #fff;
+}
+.u-calendar__footer {
+  padding: 24rpx 0 24rpx 0;
+  display: flex;
+  justify-content: flex-end;
+}
+.u-calendar__btn {
+  background: #fff;
+  color: #666;
+  margin-left: 16rpx;
+}
+
+// 时间段弹窗
+.timerange-popup {
+  background: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+  min-width: 600rpx;
+  min-height: 400rpx;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.timerange-header {
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 32rpx 0 16rpx 0;
+  text-align: center;
+  border-bottom: 1rpx solid #f2f2f2;
+}
+.timerange-scroll {
+  flex: 1;
+  max-height: 400rpx;
+  overflow-y: auto;
+  padding: 0 0 0 0;
+}
+.timerange-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 40rpx;
+  font-size: 30rpx;
+  border-bottom: 1rpx solid #f2f2f2;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.timerange-item.selected,
+.timerange-item:active {
+  background: #fa436a;
+  color: #fff;
+}
+.timerange-time {
+  font-weight: 500;
+}
+.timerange-price {
+  color: #fa436a;
+  font-size: 28rpx;
+  margin-left: 16rpx;
+}
+.timerange-footer {
+  padding: 24rpx 0 24rpx 0;
+  display: flex;
+  justify-content: space-around;
+}
+.timerange-close {
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  border: 1rpx solid #fa436a;
+  background: #fff;
+  color: #fa436a;
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+}
+.confirm-bar {
+  position: fixed;
+  left: 30upx;
+  bottom: 30upx;
+  z-index: 95;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 690upx;
+  height: 100upx;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 20upx 0 rgba(0, 0, 0, 0.5);
+  border-radius: 16upx;
+  padding: 0 20upx;
+  span {
+    font-size: 26rpx;
+  }
+  text {
+    font-size: $font-sm;
+    color: $font-color-base;
+  }
+
+  button {
+    width: 200upx;
+    height: 76upx;
+    border-radius: 100px;
+    overflow: hidden;
+    box-shadow: 0 20upx 40upx -16upx #fa436a;
+    box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
+    background: linear-gradient(to right, #ffac30, #fa436a, #f56c6c);
+    font-size: $font-base;
+    color: #fff;
+    border: none;
+    margin-left: 20upx;
   }
 }
 </style>

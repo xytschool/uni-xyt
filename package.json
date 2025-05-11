@@ -54,7 +54,7 @@
     "qrcodejs2": "^0.0.2",
     "regenerator-runtime": "^0.12.1",
     "tki-qrcode": "^0.1.6",
-    "uview-ui": "^1.4.5",
+    "uview-ui": "^1.8.8",
     "vant": "^2.8.5",
     "vconsole": "^3.3.4",
     "video.js": "^7.9.7",

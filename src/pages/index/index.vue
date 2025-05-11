@@ -39,251 +39,15 @@
         <text class="num">{{ swiperLength }}</text>
       </view>
     </view>
-    <!-- 分类 -->
-    <!-- <view class="cate-section">
-      <view
-        class="cate-item"
-        v-for="item in navList"
-        :key="item.id"
-        @click="gotoNav(item)"
-      >
-        <image :src="item.icon"></image>
-        <text class="cate-name">{{ item.name }}</text>
-      </view>
-    </view> -->
-    <!-- 
-    <view class="ad-1">
-      <image :src="ad_banners[0].cover" mode="scaleToFill"></image>
-    </view> -->
 
-    <!--        <wx-open-launch-weapp-->
-    <!--                id="launch-btn"-->
-    <!--                username="gh_df82fb548290"-->
-    <!--                path="pages/index/index"-->
-    <!--        >-->
-    <!--            <script type="text/wxtag-template">-->
-    <!--                <style>.btn { padding: 12px }</style>-->
-    <!--                <button class="btn" >打开小程序</button>-->
-    <!--            </script>-->
-    <!--        </wx-open-launch-weapp>-->
+    <u-notice-bar
+      mode="horizontal"
+      :show.sync="showNotice"
+      :list="list"
+      close-icon="close"
+      @close="Noticeclose"
+    ></u-notice-bar>
 
-    <!-- 在线直播 -->
-    <!-- <view class="seckill-section m-t" v-if="videoList && videoList.length">
-      <view class="s-header">
-        <text style="font-size: 22px;font-weight: 500;color: #ceae51;"
-          >在线直播</text
-        >
-      </view>
-      <scroll-view class="floor-list" scroll-x>
-        <view class="scoll-wrapper">
-          <view
-            v-for="(item, index) in videoList"
-            :key="index"
-            class="floor-item"
-            @click="navToVideo(item)"
-          >
-            <image :src="item.small_cover" mode="aspectFill"></image>
-            <text class="title clamp">{{ item.name }}</text>
-          </view>
-        </view>
-      </scroll-view>
-    </view> -->
-
-    <!-- 秒杀楼层 -->
-    <!-- <view class="seckill-section m-t"> -->
-    <!-- <view class="s-header">
-        <image
-          class="s-img"
-          src="http://data.xytschool.com/m/v1/static/temp/secskill-img.jpg"
-          mode="widthFix"
-        ></image>
-     
-      </view> -->
-    <!-- <text class="tip">8点场</text>
-        <text class="hour timer">07</text>
-        <text class="minute timer">13</text>
-        <text class="second timer">55</text> -->
-    <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式 -->
-    <!-- <scroll-view class="floor-list" scroll-x>
-        <view class="scoll-wrapper">
-          <view
-            v-for="(item, index) in recommendGoodsList"
-            :key="index"
-            class="floor-item"
-            @click="navToDetailPage(item)"
-          >
-            <image :src="item.small_cover" mode="aspectFill"></image>
-            <text class="title clamp">{{ item.name }}</text>
-            <text class="price"
-              >￥{{ item.real_price | numberToCurrency }}</text
-            >
-          </view>
-        </view>
-      </scroll-view> -->
-    <!-- </view> -->
-
-    <!-- 团购楼层 -->
-    <!-- <view class="f-header m-t">
-      <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
-      <view class="tit-box">
-        <text class="tit">精品团购</text>
-        <text class="tit2">Boutique Group Buying</text>
-      </view>
-    </view> -->
-    <!-- <text class="yticon icon-you"></text> 由于目前没有更多页面暂时注释掉更多样式  -->
-
-    <!-- <view class="group-section">
-      <swiper class="g-swiper" :duration="500">
-        <swiper-item
-          class="g-swiper-item"
-          v-for="(item, index) in goodsList"
-          :key="index"
-          v-if="index % 2 === 0"
-          @click="navToDetailPage(item)"
-        >
-          <view class="g-item left">
-            <image :src="item.small_cover" mode="aspectFill"></image>
-            <view class="t-box">
-              <text class="title clamp">{{ item.name }}</text>
-              <view class="price-box">
-                <text class="price">
-                  ￥ {{ item.real_price | numberToCurrency }}
-                </text>
-
-                <text class="m-price">￥188</text>
-              </view>
-
-              <view class="pro-box">
-                <view class="progress-box">
-                  <progress
-                    percent="72"
-                    activeColor="#fa436a"
-                    active
-                    stroke-width="6"
-                  />
-                </view>
-                <text>6人成团</text>
-              </view>
-            </view>
-          </view>
-          <view class="g-item right">
-            <image
-              :src="
-                goodsList[index + 1] ? goodsList[index + 1].small_cover : ''
-              "
-              mode="aspectFill"
-            ></image>
-            <view class="t-box">
-              <text class="title clamp">{{
-                goodsList[index + 1] ? goodsList[index + 1].title : ''
-              }}</text>
-              <view class="price-box">
-              
-                <text class="price">
-                  ￥ {{goodsList[index + 1]? (goodsList[index + 1].real_price | numberToCurrency ) : '' }}
-                </text>
-                <text class="m-price">￥188</text>
-              </view>
-              <view class="pro-box">
-                <view class="progress-box">
-                  <progress
-                    percent="72"
-                    activeColor="#fa436a"
-                    active
-                    stroke-width="6"
-                  />
-                </view>
-                <text>10人成团</text>
-              </view>
-            </view>
-          </view>
-        </swiper-item>
-      </swiper>
-    </view> -->
-    <!-- 分类推荐楼层 -->
-    <!-- <view class="f-header m-t">
-      <image src="http://data.xytschool.com/m/v1/static/temp/h1.png"></image>
-      <view class="tit-box">
-        <text class="tit">分类精选</text>
-        <text class="tit2">Competitive Products For You</text>
-      </view>
-     
-    </view> -->
-    <!-- <text class="yticon icon-you"></text>由于目前没有更多页面暂时注释掉更多样式  -->
-    <!-- <view class="hot-floor">
-      <view class="floor-img-box">
-        <image :src="cate_banners[1].cover" mode="scaleToFill"></image>
-      </view>
-      <scroll-view class="floor-list" scroll-x>
-        <view class="scoll-wrapper">
-          <view
-            v-for="(item, index) in recommendGoodsList"
-            :key="index"
-            class="floor-item"
-            @click="navToDetailPage(item)"
-          >
-            <image :src="item.small_cover" mode="aspectFill"></image>
-            <text class="title clamp">{{ item.name }}</text>
-            <text class="price">
-              ￥ {{ item.real_price | numberToCurrency }}</text
-            >
-          </view>
-          <view class="more">
-            <text>已经到底了！</text>
-          </view>
-        </view>
-      </scroll-view>
-    </view> -->
-    <!-- <view class="hot-floor">
-      <view class="floor-img-box">
-      
-        <image :src="cate_banners[2].cover" mode="scaleToFill"></image>
-      </view>
-      <scroll-view class="floor-list" scroll-x>
-        <view class="scoll-wrapper">
-          <view
-            v-for="(item, index) in goodsList"
-            :key="index"
-            class="floor-item"
-            @click="navToDetailPage(item)"
-          >
-            <image :src="item.small_cover" mode="aspectFill"></image>
-            <text class="title clamp">{{ item.name }}</text>
-            <text class="price">
-              ￥ {{ item.real_price | numberToCurrency }}</text
-            >
-          </view>
-          <view class="more">
-            <text>已经到底了！</text>
-          </view>
-        </view>
-      </scroll-view>
-    </view> -->
-    <!-- <view class="hot-floor">
-      <view class="floor-img-box">
-
-        <image :src="cate_banners[3].cover" mode="scaleToFill"></image>
-      </view>
-      <scroll-view class="floor-list" scroll-x>
-        <view class="scoll-wrapper">
-          <view
-            v-for="(item, index) in goodsList"
-            :key="index"
-            class="floor-item"
-            @click="navToDetailPage(item)"
-          >
-            <image :src="item.small_cover" mode="aspectFill"></image>
-            <text class="title clamp">{{ item.name }}</text>
-            <text class="price">
-              ￥ {{ item.real_price | numberToCurrency }}</text
-            >
-          </view>
-          <view class="more">
-            <text>已经到底了！</text>
-          </view>
-        </view>
-      </scroll-view>
-    </view> -->
     <view class="ticket-content">
       <view class="item" @click="onlineTicket()">
         <span>在线购票</span>
@@ -295,13 +59,15 @@
         <view class="en"> Ticket Notice</view>
         <span class="iconfont icon-goupiaoxuzhi"></span>
       </view>
-      <view class="item" @click="introduction">
+      <view class="item" @click="introduction()">
         <span> 景区介绍</span>
         <view class="en"> regarding</view>
         <span class="iconfont icon-guanyuwomen"></span>
       </view>
       <view class="item">
-        <span style="font-size: 36rpx;"> 客服电话:<br />0376-6376018</span>
+        <span style="font-size: 36rpx;">
+          客服电话:<br />{{ companyInfo.phone }}</span
+        >
         <view class="en"> Service Hot-Line</view>
         <!-- <span class="iconfont icon-bangzhuzhongxin-copy"></span> -->
       </view>
@@ -358,10 +124,22 @@ export default {
       keyword: '',
       videoList: [],
       ad_banners: [],
-      cate_banners: []
+      cate_banners: [],
+      companyInfo: {
+        phone: '',
+        buy_notice: '',
+        introduction: ''
+      },
+      list: [
+        '寒雨连江夜入吴',
+        '平明送客楚山孤',
+        '洛阳亲友如相问',
+        '一片冰心在玉壶'
+      ],
+      showNotice: true
     }
   },
-
+  computed: {},
   onLoad() {
     uni.setNavigationBarTitle({
       title: this.$scenicSpot
@@ -369,6 +147,9 @@ export default {
     this.loadData()
   },
   methods: {
+    Noticeclose() {
+      this.showNotice = false
+    },
     async loadData() {
       let res = await this.$api.site.getIndexPageBanners()
       console.log('indexPageBanner', res)
@@ -385,6 +166,13 @@ export default {
         console.log('navListRes::', navListRes.code, navListRes.data)
         this.navList = navListRes.data
       }
+
+      // 获取公司信息
+      let companyRes = await this.$api.site.getCompany()
+      if (companyRes.code == 'success') {
+        this.companyInfo = companyRes.data
+      }
+
       //暂时隐藏
       // let videoRes = await this.$api.site.getVideoList()
       // if (videoRes.code == 200) {
@@ -433,7 +221,9 @@ export default {
     noticeTicket() {
       // 购票须知
       uni.navigateTo({
-        url: `/pages/noticeTicket/index`
+        url: `/pages/noticeTicket/index?notice=${encodeURIComponent(
+          this.companyInfo.buy_notice
+        )}`
       })
     },
     //详情页
@@ -462,7 +252,9 @@ export default {
     },
     introduction() {
       uni.navigateTo({
-        url: '/pages/introduction/index'
+        url: `/pages/introduction/index?introduction=${encodeURIComponent(
+          this.companyInfo.introduction
+        )}`
       })
     }
   },
@@ -1054,6 +846,50 @@ page {
     font-size: 36rpx;
     color: #999999;
     margin-top: 48rpx;
+  }
+}
+.scroll-text {
+  margin-top: 0rpx;
+  padding: 10rpx 20rpx;
+  background: #fcf6ed;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 24px;
+  line-height: 24px;
+}
+
+.scroll-text .iconfont {
+  flex-shrink: 0;
+  font-size: 28rpx;
+  color: #666;
+  margin: 0 10rpx;
+}
+
+.scroll-content {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  color: transparent;
+}
+
+.scroll-content::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 100%;
+  top: 0;
+  white-space: nowrap;
+  color: #666;
+  animation: scroll-left 15s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
   }
 }
 </style>

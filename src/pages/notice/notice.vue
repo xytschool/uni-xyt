@@ -1,6 +1,8 @@
 <template>
-	<view>
-		<view class="notice-item">
+  <view>
+    <rich-text :nodes="noticeContent" class="rich-text"></rich-text>
+
+    <!-- <view class="notice-item">
 			<text class="time">11:30</text>
 			<view class="content">
 				<text class="title">新品上市，全场满199减50</text>
@@ -48,106 +50,124 @@
 					<text class="more-icon yticon icon-you"></text>
 				</view>
 			</view>
-		</view>
-	</view>
+		</view> -->
+  </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
+export default {
+  data() {
+    return {
+      dataMallZoneUrl: 'https://data.seekstarry.com',
+      introduction: '',
+      noticeContent: ''
+    }
+  },
+  onLoad(params) {
+    if (params.introduction) {
+      this.introduction = decodeURIComponent(params.introduction)
+      // 处理 HTML 内容，确保图片路径正确并添加样式
+      let processedContent = this.introduction
+        .replace(
+          /src="https:\/\/data\.seekstarry\.com/g,
+          `src="${this.dataMallZoneUrl}`
+        )
+        // 将每个img标签包装在一个div容器中
+        .replace(
+          /<img([^>]*)>/g,
+          '<div style="width:100%;max-width:698rpx;margin:0 auto;"><img$1 style="width:100%;display:block;"></div>'
+        )
 
-			}
-		},
-		methods: {
-
-		}
-	}
+      this.noticeContent = processedContent
+      console.log(this.noticeContent, 'noticeContent')
+    }
+  }
+}
 </script>
 
-<style lang='scss'>
-	page {
-		background-color: #f7f7f7;
-		padding-bottom: 30upx;
-	}
+<style lang="scss">
+page {
+  background-color: #f7f7f7;
+  padding-bottom: 30upx;
+}
 
-	.notice-item {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
+.notice-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-	.time {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 80upx;
-		padding-top: 10upx;
-		font-size: 26upx;
-		color: #7d7d7d;
-	}
+.time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80upx;
+  padding-top: 10upx;
+  font-size: 26upx;
+  color: #7d7d7d;
+}
 
-	.content {
-		width: 710upx;
-		padding: 0 24upx;
-		background-color: #fff;
-		border-radius: 4upx;
-	}
+.content {
+  width: 710upx;
+  padding: 0 24upx;
+  background-color: #fff;
+  border-radius: 4upx;
+}
 
-	.title {
-		display: flex;
-		align-items: center;
-		height: 90upx;
-		font-size: 32upx;
-		color: #303133;
-	}
+.title {
+  display: flex;
+  align-items: center;
+  height: 90upx;
+  font-size: 32upx;
+  color: #303133;
+}
 
-	.img-wrapper {
-		width: 100%;
-		height: 260upx;
-		position: relative;
-	}
+.img-wrapper {
+  width: 100%;
+  height: 260upx;
+  position: relative;
+}
 
-	.pic {
-		display: block;
-		width: 100%;
-		height: 100%;
-		border-radius: 6upx;
-	}
+.pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 6upx;
+}
 
-	.cover {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(0, 0, 0, .5);
-		font-size: 36upx;
-		color: #fff;
-	}
+.cover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 36upx;
+  color: #fff;
+}
 
-	.introduce {
-		display: inline-block;
-		padding: 16upx 0;
-		font-size: 28upx;
-		color: #606266;
-		line-height: 38upx;
-	}
+.introduce {
+  display: inline-block;
+  padding: 16upx 0;
+  font-size: 28upx;
+  color: #606266;
+  line-height: 38upx;
+}
 
-	.bot {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		height: 80upx;
-		font-size: 24upx;
-		color: #707070;
-		position: relative;
-	}
+.bot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80upx;
+  font-size: 24upx;
+  color: #707070;
+  position: relative;
+}
 
-	.more-icon {
-		font-size: 32upx;
-	}
+.more-icon {
+  font-size: 32upx;
+}
 </style>
