@@ -597,6 +597,7 @@ export default {
         num: 1,
         goods_type: this.goods.goods_type,
         express_type: this.goods.express_type,
+        need_id_card: this.goods.infos.limit.need_id_card,
         id_cards: []
       }
 

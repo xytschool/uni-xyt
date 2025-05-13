@@ -41,7 +41,7 @@
           @change="valChange"
         ></u-number-box>
         <text
-          v-if="goodsList[0].express_type === 'need_id_card'"
+          v-if="goodsList[0].need_id_card"
           class="addpeople"
           @click="navTo('/pages/addpeople/addpeople')"
         >
@@ -49,7 +49,7 @@
         </text>
       </view>
     </view>
-    <view class="personnel" v-if="goodsList[0].express_type === 'need_id_card'">
+    <view class="personnel" v-if="goodsList[0].need_id_card">
       <view v-if="getpeopleList">
         <view
           class="list b-b"
