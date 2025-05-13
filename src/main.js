@@ -3,12 +3,22 @@ import App from './App'
 import Json from './Json' //测试用数据
 import store from './store'
 import { getComId, getUserInfo, setUserInfo } from './utils/utils'
-import '@/font/iconfont.css';
+import '@/font/iconfont.css'
 import { numberToCurrencyNo } from '@/utils/numberToCurrency'
 import { transformTimestamp } from '@/utils/transformTimestamp'
-import commonShare  from '@/utils/commonShare.js'
-Vue.config.productionTip = false
+import commonShare from '@/utils/commonShare.js'
+import site from './api/site' //测试用数据
+import activity from './api/activity' //测试用数据
+import user from './api/userapi' //测试用数据
+import order from './api/order' //测试用数据
+import goods from './api/goods' //测试用数据
+import comment from './api/comment'
+import message from './api/message'
+import publicData from './api/public' //测试用数据
+import { parseDate } from './utils/date'
 import uView from 'uview-ui'
+
+Vue.config.productionTip = false
 Vue.mixin(commonShare)
 Vue.use(uView)
 App.mpType = 'app'
@@ -16,9 +26,7 @@ App.mpType = 'app'
 Vue.filter('numberToCurrency', numberToCurrencyNo)
 Vue.filter('transformTimestamp', transformTimestamp)
 
-
-
-Vue.prototype.$scenicSpot = "南湾湖"
+Vue.prototype.$scenicSpot = '南湾湖'
 const msg = (title, duration = 1500, mask = false, icon = 'none') => {
   //统一提示方便全局修改
   if (Boolean(title) === false) {
@@ -40,18 +48,16 @@ const json = (type) => {
   })
 }
 const prePage = () => {
-    let pages = getCurrentPages();
-    let prePage = pages[pages.length - 2];
-    // #ifdef H5
-    return prePage;
-    // #endif
-    return prePage.$vm;
+  let pages = getCurrentPages()
+  let prePage = pages[pages.length - 2]
+
+  return prePage
 }
 
 //#ifdef H5
-var VConsole = require('vconsole');
-var vConsole = new VConsole();
-var clientType = "h5"
+var VConsole = require('vconsole')
+var vConsole = new VConsole()
+var clientType = 'h5'
 
 var ua = navigator.userAgent.toLowerCase()
 if (ua.match(/MicroMessenger/i) == 'micromessenger') {
@@ -61,7 +67,7 @@ if (ua.match(/MicroMessenger/i) == 'micromessenger') {
 //#endif
 
 //#ifndef H5
-var clientType = "wx_miniapp"
+var clientType = 'wx_miniapp'
 //#endif
 
 //
@@ -72,16 +78,6 @@ Vue.prototype.$com_id = com_id
 Vue.config.productionTip = false
 Vue.prototype.$fire = new Vue()
 Vue.prototype.$store = store
-
-import site from './api/site' //测试用数据
-import activity from './api/activity' //测试用数据
-import user from './api/userapi' //测试用数据
-import order from './api/order' //测试用数据
-import goods from './api/goods' //测试用数据
-import comment from './api/comment'
-import message from './api/message'
-import { parseDate } from './utils/date'
-
 
 {
   // 加载必要数据
@@ -107,57 +103,57 @@ Vue.prototype.$api = {
   user,
   order,
   goods,
+  publicData,
   comment
 }
 Vue.directive('datetime', {
-    bind: function (el, binding, vnode) {
-        el.innerText = parseDate(binding.value)
-    }
+  bind: function(el, binding, vnode) {
+    el.innerText = parseDate(binding.value)
+  }
 })
 
 Vue.directive('yuan', {
-    bind: function (el, binding, vnode) {
-        if(binding.value == undefined){
-            return
-        }
-        var fen = binding.value.toString()
-        var a = 0, b = 0
-        if(binding.value < 100){
-            b = fen
-        }else{
-            a = fen.substring(0, fen.length-2)
-            b = fen.substring( fen.length-2,fen.length)
-        }
-        if(b.length == 1){
-            b = '0' + b
-        }
-        var text = el.innerText.replace(/[\d\.]+/,'')
-        el.innerText = text + a +'.' +b
-    },
-    update: function (el, binding, vnode) {
-        if(binding.value == undefined){
-            return
-        }
-        var fen = binding.value.toString()
-        var a = 0, b = 0
-        if(binding.value < 100){
-            b = fen
-        }else{
-            a = fen.substring(0, fen.length-2)
-            b = fen.substring( fen.length-2,fen.length)
-        }
-        if(b.length == 1){
-            b = '0' + b
-        }
-        var text = el.innerText.replace(/[\d\.]+/,'')
-        el.innerText = text+ a +'.' +b
+  bind: function(el, binding, vnode) {
+    if (binding.value == undefined) {
+      return
     }
+    var fen = binding.value.toString()
+    var a = 0,
+      b = 0
+    if (binding.value < 100) {
+      b = fen
+    } else {
+      a = fen.substring(0, fen.length - 2)
+      b = fen.substring(fen.length - 2, fen.length)
+    }
+    if (b.length == 1) {
+      b = '0' + b
+    }
+    var text = el.innerText.replace(/[\d\.]+/, '')
+    el.innerText = text + a + '.' + b
+  },
+  update: function(el, binding, vnode) {
+    if (binding.value == undefined) {
+      return
+    }
+    var fen = binding.value.toString()
+    var a = 0,
+      b = 0
+    if (binding.value < 100) {
+      b = fen
+    } else {
+      a = fen.substring(0, fen.length - 2)
+      b = fen.substring(fen.length - 2, fen.length)
+    }
+    if (b.length == 1) {
+      b = '0' + b
+    }
+    var text = el.innerText.replace(/[\d\.]+/, '')
+    el.innerText = text + a + '.' + b
+  }
 })
-
 
 const app = new Vue({
-    ...App
+  ...App
 })
 app.$mount()
-
-

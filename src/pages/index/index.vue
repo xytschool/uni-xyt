@@ -40,13 +40,26 @@
       </view>
     </view>
 
-    <u-notice-bar
-      mode="horizontal"
-      :show.sync="showNotice"
-      :list="list"
-      close-icon="close"
-      @close="Noticeclose"
-    ></u-notice-bar>
+    <swiper
+      v-if="showNoticeSwiper"
+      class="notice-swiper"
+      vertical
+      autoplay
+      circular
+      :interval="5000"
+    >
+      <swiper-item v-for="(value, index) in list" :key="index">
+        <u-notice-bar
+          mode="horizontal"
+          :show.sync="showNotice"
+          is-circular="false"
+          :list="value.content"
+          close-icon="close"
+          @close="Noticeclose"
+          @click="navToNoticeDetail(value.id)"
+        ></u-notice-bar>
+      </swiper-item>
+    </swiper>
 
     <view class="ticket-content">
       <view class="item" @click="onlineTicket()">
@@ -130,13 +143,9 @@ export default {
         buy_notice: '',
         introduction: ''
       },
-      list: [
-        '寒雨连江夜入吴',
-        '平明送客楚山孤',
-        '洛阳亲友如相问',
-        '一片冰心在玉壶'
-      ],
-      showNotice: true
+      list: [],
+      showNotice: true,
+      showNoticeSwiper: true
     }
   },
   computed: {},
@@ -145,10 +154,28 @@ export default {
       title: this.$scenicSpot
     })
     this.loadData()
+    this.getNoticesData()
   },
   methods: {
     Noticeclose() {
       this.showNotice = false
+      this.showNoticeSwiper = false
+    },
+    async getNoticesData() {
+      let res = await this.$api.publicData.getNotices()
+      console.log(res, 'res')
+      if (res.code === 'success' && res.data) {
+        this.list = res.data.map((notice) => {
+          const content = notice.content
+            .replace(/<[^>]+>/g, '')
+            .replace(/&nbsp;/g, ' ')
+
+          return {
+            content: [content],
+            id: notice.id
+          }
+        })
+      }
     },
     async loadData() {
       let res = await this.$api.site.getIndexPageBanners()
@@ -255,6 +282,11 @@ export default {
         url: `/pages/introduction/index?introduction=${encodeURIComponent(
           this.companyInfo.introduction
         )}`
+      })
+    },
+    navToNoticeDetail(id) {
+      uni.navigateTo({
+        url: `/pages/notice/index?id=${id}`
       })
     }
   },
@@ -891,5 +923,10 @@ page {
   100% {
     transform: translateX(-100%);
   }
+}
+
+.notice-swiper {
+  height: 80rpx;
+  background: #fcf6ed;
 }
 </style>

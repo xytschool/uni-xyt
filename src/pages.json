@@ -293,6 +293,12 @@
       "style": {
         "navigationBarTitleText": "在线购票"
       }
+    },
+    {
+      "path": "pages/notice/index",
+      "style": {
+        "navigationBarTitleText": "通知详情"
+      }
     }
   ],
   "globalStyle": {
